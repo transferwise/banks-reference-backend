@@ -32,7 +32,7 @@ public class TransferWiseBankConfig {
     }
 
     public String encodedCredentials() {
-        final String credentials = clientId + ":" + secret;
+        final var credentials = clientId + ":" + secret;
         return Base64Utils.encodeToString(credentials.getBytes(UTF_8));
     }
 }

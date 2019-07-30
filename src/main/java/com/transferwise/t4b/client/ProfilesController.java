@@ -1,14 +1,11 @@
 package com.transferwise.t4b.client;
 
-import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.CustomerRepository;
+import com.transferwise.t4b.customer.Profile;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/profiles")
@@ -23,13 +20,15 @@ public class ProfilesController {
     }
 
     @GetMapping
-    public Publisher<String> index() {
-        final Optional<Credentials> credentials = customers.findById(1L).map(c -> c.credentials);
-        credentials.map(data -> Mono.justOrEmpty(data)).flatMap(this::profiles);
-        return credentials.map(this::profiles);
+    public Publisher<Profile> index() {
+        return customers
+                .findById(1L)
+                .map(c -> c.credentials)
+                .map(this::profiles)
+                .get();
     }
 
-    private Mono<String> profiles(final Customer customer) {
-        return client.profiles(customer.credentials.accessToken);
+    private Publisher<Profile> profiles(final Credentials credentials) {
+        return client.profiles(credentials.accessToken);
     }
 }

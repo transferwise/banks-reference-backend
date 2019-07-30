@@ -5,8 +5,6 @@ import com.transferwise.t4b.client.Credentials;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 @Service
 public class CredentialsManager {
 
@@ -19,7 +17,7 @@ public class CredentialsManager {
     }
 
     public Mono<Credentials> getCredentials(final Long customerId, final String code) {
-        final Optional<Customer> customer = customers.findById(customerId);
+        final var customer = customers.findById(customerId);
         return customer
                 .filter(Customer::hasCredentials)
                 .map(this::refreshCredentials)

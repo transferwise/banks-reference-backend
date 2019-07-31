@@ -7,15 +7,18 @@ import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Function;
+import java.util.Map;
+import java.util.function.Supplier;
 
+import static com.transferwise.t4b.client.TransferWisePaths.*;
+import static java.util.Map.entry;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -37,44 +40,50 @@ public class ApiClient {
     public ApiClient(final TransferWiseBankConfig config) {
         this.config = config;
         client = WebClient.builder()
-                .baseUrl("https://api.sandbox.transferwise.tech")
+                .baseUrl(BASE_URL)
                 .filter(printlnFilter).build();
     }
 
     public Mono<Credentials> accessCredentials(final String code) {
-        return request(code, this::authenticationBody);
+        return authenticationRequest(() -> authenticationBody(code));
     }
 
     public Mono<Credentials> refresh(final Credentials credentials) {
-        return request(credentials.refreshToken, this::refreshBody);
+        return authenticationRequest(() -> refreshTokenBody(credentials.refreshToken));
     }
 
-    public Mono<Credentials> request(final String strValue, final Function<String, MultipartInserter> body) {
+    public Mono<Credentials> authenticationRequest(final Supplier<MultipartInserter> supplier) {
         return client.post()
-                .uri("/oauth/token")
+                .uri(OAUTH_TOKEN_PATH)
                 .header(AUTHORIZATION, basic())
-                .body(body.apply(strValue))
+                .body(supplier.get())
                 .retrieve()
                 .bodyToMono(Credentials.class);
     }
 
-    public Flux<Profile> profiles(final String token) {
-        return client.get()
-                .uri("/v1/profiles")
-                .header(AUTHORIZATION, bearer(token))
-                .retrieve()
-                .bodyToFlux(Profile.class);
+    public Publisher<Profile> profiles(final String token) {
+        return getRequest(PROFILES_PATH, token, Profile.class);
     }
 
     public Publisher<Recipient> recipients(final String token, final Long profileId) {
+        return getRequest(ACCOUNTS_PATH, token, Recipient.class, entry("profile", profileId.toString()));
+    }
+
+    private <T> Publisher<T> getRequest(final String uri, final String token, final Class<T> result, final Map.Entry<String, String>... params) {
         return client.get()
                 .uri(builder -> builder
-                        .path("/v1/accounts")
-                        .queryParam("profile", profileId)
+                        .path(uri)
+                        .queryParams(toMultiMap(params))
                         .build())
                 .header(AUTHORIZATION, bearer(token))
                 .retrieve()
-                .bodyToFlux(Recipient.class);
+                .bodyToFlux(result);
+    }
+
+    private MultiValueMap<String, String> toMultiMap(final Map.Entry<String, String>... entries) {
+        final var params = new LinkedMultiValueMap<String, String>();
+        params.setAll(Map.ofEntries(entries));
+        return params;
     }
 
     public Mono<Quote> quote(final String token, final QuoteRequest quoteRequest) {
@@ -87,7 +96,7 @@ public class ApiClient {
                 .bodyToMono(Quote.class);
     }
 
-    private MultipartInserter refreshBody(final String refreshToken) {
+    private MultipartInserter refreshTokenBody(final String refreshToken) {
         final var map = new LinkedMultiValueMap();
         map.add("grant_type", "refresh_token");
         map.add("refresh_token", refreshToken);

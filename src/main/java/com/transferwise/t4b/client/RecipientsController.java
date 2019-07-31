@@ -28,6 +28,6 @@ public class RecipientsController {
     }
 
     private Publisher<Recipient> recipients(final Customer customer) {
-        return client.recipients(customer.accessToken(), 6862L);
+        return client.recipients(customer.accessToken(), 6861L);
     }
 }

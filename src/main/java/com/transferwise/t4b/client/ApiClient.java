@@ -3,6 +3,7 @@ package com.transferwise.t4b.client;
 import com.transferwise.t4b.customer.Profile;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -10,15 +11,12 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Service
@@ -57,8 +55,6 @@ public class ApiClient {
                 .header(AUTHORIZATION, basic())
                 .body(body.apply(strValue))
                 .retrieve()
-                .onStatus(status -> !status.equals(OK),
-                        response -> Mono.error(new ResponseStatusException(UNAUTHORIZED, "You are not authorized to perform this request")))
                 .bodyToMono(Credentials.class);
     }
 
@@ -67,9 +63,18 @@ public class ApiClient {
                 .uri("/v1/profiles")
                 .header(AUTHORIZATION, bearer(token))
                 .retrieve()
-                .onStatus(status -> !status.equals(OK),
-                        response -> Mono.error(new ResponseStatusException(UNAUTHORIZED, "You are not authorized to perform this request")))
                 .bodyToFlux(Profile.class);
+    }
+
+    public Publisher<Recipient> recipients(final String token, final Long profileId) {
+        return client.get()
+                .uri(builder -> builder
+                        .path("/v1/accounts")
+                        .queryParam("profile", profileId)
+                        .build())
+                .header(AUTHORIZATION, bearer(token))
+                .retrieve()
+                .bodyToFlux(Recipient.class);
     }
 
     public Mono<Quote> quote(final String token, final QuoteRequest quoteRequest) {

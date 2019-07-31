@@ -13,20 +13,16 @@ public class Customer {
     @Id
     private Long id;
 
-    private final String name;
+    private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
     public Credentials credentials;
 
-    private Customer() {
-        this(null);
-    }
-
-    public Customer(final String name) {
-        this.name = name;
-    }
-
     public boolean hasCredentials() {
         return credentials != null && !credentials.isEmpty();
+    }
+
+    public String accessToken() {
+        return credentials.accessToken;
     }
 }

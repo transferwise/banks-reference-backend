@@ -1,5 +1,6 @@
 package com.transferwise.t4b.client;
 
+import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.CustomerRepository;
 import com.transferwise.t4b.customer.Profile;
 import org.reactivestreams.Publisher;
@@ -23,12 +24,11 @@ public class ProfilesController {
     public Publisher<Profile> index() {
         return customers
                 .findById(1L)
-                .map(c -> c.credentials)
                 .map(this::profiles)
                 .get();
     }
 
-    private Publisher<Profile> profiles(final Credentials credentials) {
-        return client.profiles(credentials.accessToken);
+    private Publisher<Profile> profiles(final Customer customer) {
+        return client.profiles(customer.accessToken());
     }
 }

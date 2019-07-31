@@ -1,11 +1,14 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.customer.Profile;
+import com.transferwise.t4b.quote.Quote;
+import com.transferwise.t4b.quote.QuoteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
@@ -16,6 +19,7 @@ import java.util.function.Function;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Service
 public class ApiClient {
@@ -23,10 +27,20 @@ public class ApiClient {
     private final WebClient client;
     private final TransferWiseBankConfig config;
 
+    ExchangeFilterFunction printlnFilter = (request, next) -> {
+        System.out.println("\n\n" + request.method().toString().toUpperCase() + ":\n\nURL:"
+                + request.url().toString() + ":\n\nHeaders:" + request.headers().toString() + "\n\nAttributes:"
+                + request.attributes() + "\n\n");
+
+        return next.exchange(request);
+    };
+
     @Autowired
     public ApiClient(final TransferWiseBankConfig config) {
         this.config = config;
-        client = WebClient.create("https://api.sandbox.transferwise.tech");
+        client = WebClient.builder()
+                .baseUrl("https://api.sandbox.transferwise.tech")
+                .filter(printlnFilter).build();
     }
 
     public Mono<Credentials> accessCredentials(final String code) {
@@ -56,6 +70,16 @@ public class ApiClient {
                 .onStatus(status -> !status.equals(OK),
                         response -> Mono.error(new ResponseStatusException(UNAUTHORIZED, "You are not authorized to perform this request")))
                 .bodyToFlux(Profile.class);
+    }
+
+    public Mono<Quote> quote(final String token, final QuoteRequest quoteRequest) {
+        return client.post()
+                .uri("/v1/quotes")
+                .header(AUTHORIZATION, bearer(token))
+                .contentType(APPLICATION_JSON)
+                .body(BodyInserters.fromObject(quoteRequest.toJson()))
+                .retrieve()
+                .bodyToMono(Quote.class);
     }
 
     private MultipartInserter refreshBody(final String refreshToken) {

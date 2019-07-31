@@ -2,6 +2,7 @@ package com.transferwise.t4b.client;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -18,5 +19,11 @@ public class ApiError {
         timestamp = LocalDateTime.now();
         status = cause.getStatus();
         message = cause.getReason();
+    }
+
+    public ApiError(final WebClientResponseException cause) {
+        timestamp = LocalDateTime.now();
+        status = cause.getStatusCode();
+        message = cause.getResponseBodyAsString();
     }
 }

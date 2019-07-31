@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/authenticate")
 public class AuthenticationController {
 
-    private final CredentialsManager authenticator;
+    private final CredentialsManager credentialsManager;
 
-    public AuthenticationController(final CredentialsManager authenticator) {
-        this.authenticator = authenticator;
+    public AuthenticationController(final CredentialsManager credentialsManager) {
+        this.credentialsManager = credentialsManager;
     }
 
     @GetMapping
     public Publisher<Credentials> index(@RequestParam final String code) {
-        return authenticator.getCredentials(1L, code);
+        return credentialsManager.getCredentials(1L, code);
     }
 }

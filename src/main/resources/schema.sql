@@ -1,7 +1,8 @@
 CREATE TABLE Credentials(
     id SERIAL PRIMARY KEY,
     access_token VARCHAR NOT NULL,
-    refresh_token VARCHAR NOT NULL
+    refresh_token VARCHAR NOT NULL,
+    expires_in TIMESTAMP
 );
 
 CREATE TABLE Customer(

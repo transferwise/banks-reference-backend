@@ -10,11 +10,11 @@ public class Code implements Param {
 
     @Override
     public String key() {
-        return code;
+        return "code";
     }
 
     @Override
     public String value() {
-        return null;
+        return code;
     }
 }

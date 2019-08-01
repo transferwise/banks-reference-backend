@@ -15,7 +15,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(WebClientResponseException.class)
-    public ResponseEntity<String> handleWebClientResponseException(final WebClientResponseException ex) {
+    public ResponseEntity<ApiError> handleWebClientResponseException(final WebClientResponseException ex) {
         return new ResponseEntity(new ApiError(ex), ex.getStatusCode());
         //return ResponseEntity.status(ex.getRawStatusCode()).body(ex.getResponseBodyAsString());
     }

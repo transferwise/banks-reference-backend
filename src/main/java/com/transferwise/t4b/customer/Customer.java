@@ -18,8 +18,8 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     public Credentials credentials;
 
-    public boolean hasCredentials() {
-        return credentials != null && !credentials.isEmpty();
+    public boolean hasExpiredCredentials() {
+        return credentials.isExpired();
     }
 
     public String accessToken() {

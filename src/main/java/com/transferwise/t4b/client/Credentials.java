@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
+
+import static java.time.ZonedDateTime.now;
 
 @Entity
 public class Credentials {
@@ -16,20 +19,28 @@ public class Credentials {
 
     public final String accessToken;
     public final String refreshToken;
+    public final ZonedDateTime expiresIn;
 
     private Credentials() {
-        this(null, null);
+        this(null, null, 0);
     }
 
     @JsonCreator
     public Credentials(@JsonProperty("access_token") final String accessToken,
-                       @JsonProperty("refresh_token") final String refreshToken) {
+                       @JsonProperty("refresh_token") final String refreshToken,
+                       @JsonProperty("expires_in") final Integer expiresIn) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.expiresIn = now().plusSeconds(expiresIn);
     }
 
     @JsonIgnore
     public boolean isEmpty() {
         return accessToken == null && refreshToken == null;
+    }
+
+    @JsonIgnore
+    public boolean isExpired() {
+        return now().isAfter(expiresIn);
     }
 }

@@ -16,23 +16,24 @@ public class CredentialsManager {
         this.customers = customers;
     }
 
+    public Mono<Credentials> generate(final Long customerId, final String code) {
+        final var customer = customers.findById(customerId);
+        return client
+                .accessCredentials(code)
+                .doOnSuccess(creds -> save(customer.get(), creds));
+    }
+
     public Mono<Credentials> getCredentials(final Long customerId, final String code) {
         final var customer = customers.findById(customerId);
         return customer
-                .filter(Customer::hasCredentials)
-                .map(this::refreshCredentials)
-                .orElseGet(() -> createCredentials(customer.get(), code));
+                .filter(Customer::hasExpiredCredentials)
+                .map(this::refresh)
+                .orElse(Mono.just(customer.get().credentials));
     }
 
-    private Mono<Credentials> refreshCredentials(final Customer customer) {
+    private Mono<Credentials> refresh(final Customer customer) {
         return client
                 .refresh(customer.credentials)
-                .doOnSuccess(creds -> save(customer, creds));
-    }
-
-    private Mono<Credentials> createCredentials(final Customer customer, final String code) {
-        return client
-                .accessCredentials(code)
                 .doOnSuccess(creds -> save(customer, creds));
     }
 

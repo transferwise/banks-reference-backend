@@ -2,6 +2,7 @@ package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.ApiClient;
 import com.transferwise.t4b.client.Credentials;
+import com.transferwise.t4b.client.params.Code;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -16,19 +17,19 @@ public class CredentialsManager {
         this.customers = customers;
     }
 
-    public Mono<Credentials> generate(final Long customerId, final String code) {
+    public Mono<Credentials> generate(final Long customerId, final Code code) {
         final var customer = customers.findById(customerId);
         return client
                 .accessCredentials(code)
                 .doOnSuccess(creds -> save(customer.get(), creds));
     }
 
-    public Mono<Credentials> getCredentials(final Long customerId, final String code) {
+    public Mono<Credentials> getCredentials(final Long customerId) {
         final var customer = customers.findById(customerId);
         return customer
                 .filter(Customer::hasExpiredCredentials)
                 .map(this::refresh)
-                .orElse(Mono.just(customer.get().credentials));
+                .orElseGet(() -> Mono.just(customer.get().credentials));
     }
 
     private Mono<Credentials> refresh(final Customer customer) {

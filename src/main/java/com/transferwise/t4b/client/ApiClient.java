@@ -45,7 +45,7 @@ public class ApiClient {
                 .filter(printlnFilter).build();
     }
 
-    public Mono<Credentials> accessCredentials(final String code) {
+    public Mono<Credentials> accessCredentials(final Code code) {
         return authenticationRequest(() -> authenticationBody(code));
     }
 
@@ -105,10 +105,10 @@ public class ApiClient {
         return BodyInserters.fromMultipartData(params);
     }
 
-    private MultipartInserter authenticationBody(final String code) {
+    private MultipartInserter authenticationBody(final Code code) {
         final var params = multiMap(new GrantTypeAuthorizationCode(),
                 new ClientId(config.clientId()),
-                new Code(code),
+                code,
                 new RedirectUri(config.redirectUri()));
 
         return BodyInserters.fromMultipartData(params);

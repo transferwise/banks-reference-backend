@@ -35,11 +35,6 @@ public class Credentials {
     }
 
     @JsonIgnore
-    public boolean isEmpty() {
-        return accessToken == null && refreshToken == null;
-    }
-
-    @JsonIgnore
     public boolean isExpired() {
         return now().isAfter(expiresIn);
     }

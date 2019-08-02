@@ -4,7 +4,6 @@ import com.transferwise.t4b.client.params.*;
 import com.transferwise.t4b.customer.Profile;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
-import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,6 +12,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -62,23 +62,22 @@ public class ApiClient {
                 .bodyToMono(Credentials.class);
     }
 
-    public Publisher<Profile> profiles(final String token) {
-        return getRequest(PROFILES_PATH, token, Profile.class);
+    public Flux<Profile> profiles(final String token) {
+        return getRequest(PROFILES_PATH, token).bodyToFlux(Profile.class);
     }
 
-    public Publisher<Recipient> recipients(final String token, final Long profile) {
-        return getRequest(ACCOUNTS_PATH, token, Recipient.class, new ProfileId(profile));
+    public Flux<Recipient> recipients(final String token, final Long profile) {
+        return getRequest(ACCOUNTS_PATH, token, new ProfileId(profile)).bodyToFlux(Recipient.class);
     }
 
-    private <T> Publisher<T> getRequest(final String uri, final String token, final Class<T> result, final Param... params) {
+    private WebClient.ResponseSpec getRequest(final String uri, final String token, final Param... params) {
         return client.get()
                 .uri(builder -> builder
                         .path(uri)
                         .queryParams(multiMap(params))
                         .build())
                 .header(AUTHORIZATION, bearer(token))
-                .retrieve()
-                .bodyToFlux(result);
+                .retrieve();
     }
 
     private MultiValueMap<String, String> multiMap(final Param... params) {
@@ -99,9 +98,9 @@ public class ApiClient {
                 .bodyToMono(Quote.class);
     }
 
-    public Publisher<Quote> quote(final String token, final Long quoteId) {
+    public Mono<Quote> quote(final String token, final Long quoteId) {
         final var uri = QUOTES_PATH + "/" + quoteId;
-        return getRequest(uri, token, Quote.class);
+        return getRequest(uri, token).bodyToMono(Quote.class);
     }
 
     private MultipartInserter refreshTokenBody(final String refreshToken) {

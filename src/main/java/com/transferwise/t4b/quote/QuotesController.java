@@ -4,10 +4,7 @@ import com.transferwise.t4b.client.ApiClient;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.CustomerRepository;
 import org.reactivestreams.Publisher;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -28,6 +25,14 @@ public class QuotesController {
         return customers
                 .findById(1L)
                 .map(customer -> createQuote(customer, quoteRequest))
+                .get();
+    }
+
+    @GetMapping("/{quoteId}")
+    public Publisher<Quote> show(@PathVariable final Long quoteId) {
+        return customers
+                .findById(1L)
+                .map(customer -> client.quote(customer.accessToken(), quoteId))
                 .get();
     }
 

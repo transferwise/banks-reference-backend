@@ -99,6 +99,11 @@ public class ApiClient {
                 .bodyToMono(Quote.class);
     }
 
+    public Publisher<Quote> quote(final String token, final Long quoteId) {
+        final var uri = QUOTES_PATH + "/" + quoteId;
+        return getRequest(uri, token, Quote.class);
+    }
+
     private MultipartInserter refreshTokenBody(final String refreshToken) {
         final var params = multiMap(new GrantTypeRefreshToken(), new RefreshToken(refreshToken));
 

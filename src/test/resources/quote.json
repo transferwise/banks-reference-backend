@@ -1,0 +1,7 @@
+{
+  "sourceAmount": 200,
+  "targetCurrency": "EUR",
+  "sourceCurrency": "GBP",
+  "profile": 123,
+  "targetAmount": null
+}

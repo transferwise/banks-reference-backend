@@ -1,9 +1,12 @@
 package com.transferwise.t4b.quote;
 
+import com.transferwise.t4b.support.FileReader;
 import com.transferwise.t4b.values.*;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,15 +29,10 @@ public class QuoteRequestTest {
     }
 
     @Test
-    public void generateJsonRequest() throws JSONException {
+    public void generateJsonRequest() throws JSONException, IOException {
+        final var expected = new FileReader().read("quote.json");
         final var request = new QuoteRequest(profile, gbp, eur, sourceAmount, null);
 
-        assertEquals("{\n" +
-                "  \"sourceAmount\" : 200,\n" +
-                "  \"targetCurrency\" : \"EUR\",\n" +
-                "  \"sourceCurrency\" : \"GBP\",\n" +
-                "  \"profile\" : 123,\n" +
-                "  \"targetAmount\" : null\n" +
-                "}", request.toJson(), JSONCompareMode.LENIENT);
+        assertEquals(expected, request.toJson(), JSONCompareMode.LENIENT);
     }
 }

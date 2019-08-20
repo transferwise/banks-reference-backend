@@ -1,18 +1,27 @@
 package com.transferwise.t4b.quote;
 
 import com.transferwise.t4b.client.JsonParser;
+import com.transferwise.t4b.validations.AmountRequired;
+import com.transferwise.t4b.values.*;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
+
+@AmountRequired
 public class QuoteRequest {
 
-    private Long profile;
-    private String source;
-    private String target;
-    private BigDecimal targetAmount;
-    private String type;
+    @NotNull
+    private Profile profile;
+    @NotNull
+    private SourceCurrency sourceCurrency;
+    @NotNull
+    private TargetCurrency targetCurrency;
+
+    private SourceAmount sourceAmount;
+    private TargetAmount targetAmount;
 
     private final JsonParser parser;
 
@@ -20,24 +29,38 @@ public class QuoteRequest {
         parser = new JsonParser();
     }
 
-    public Long getProfile() {
+    public QuoteRequest(final Profile profile, final SourceCurrency sourceCurrency, final TargetCurrency targetCurrency,
+                        final SourceAmount sourceAmount, final TargetAmount targetAmount) {
+        this();
+        this.profile = profile;
+        this.sourceCurrency = sourceCurrency;
+        this.targetCurrency = targetCurrency;
+        this.sourceAmount = sourceAmount;
+        this.targetAmount = targetAmount;
+    }
+
+    public boolean isAmountPresent() {
+        return nonNull(sourceAmount) || nonNull(targetAmount);
+    }
+
+    public Profile getProfile() {
         return profile;
     }
 
-    public String getSource() {
-        return source;
+    public SourceCurrency getSourceCurrency() {
+        return sourceCurrency;
     }
 
-    public String getTarget() {
-        return target;
+    public TargetCurrency getTargetCurrency() {
+        return targetCurrency;
     }
 
-    public BigDecimal getTargetAmount() {
+    public SourceAmount getSourceAmount() {
+        return sourceAmount;
+    }
+
+    public TargetAmount getTargetAmount() {
         return targetAmount;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public String toJson() {
@@ -45,11 +68,10 @@ public class QuoteRequest {
     }
 
     private Map<String, Serializable> toMap() {
-        return Map.of("profile", profile,
-                "source", source,
-                "target", target,
-                "rateType", 1L,
-                "targetAmount", targetAmount,
-                "type", type);
+        return Map.of("profile", profile.get(),
+                "sourceCurrency", sourceCurrency.get(),
+                "targetCurrency", targetCurrency.get(),
+                "sourceAmount", sourceAmount.get(),
+                "targetAmount", targetAmount.get());
     }
 }

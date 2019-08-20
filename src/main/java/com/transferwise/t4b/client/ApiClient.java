@@ -98,6 +98,15 @@ public class ApiClient {
                 .bodyToMono(Quote.class);
     }
 
+    public Mono anonymousQuote(final QuoteRequest quoteRequest) {
+        return client.post()
+                .uri(QUOTES_PATH)
+                .contentType(APPLICATION_JSON)
+                .body(BodyInserters.fromObject(quoteRequest.toJson()))
+                .retrieve()
+                .bodyToMono(Quote.class);
+    }
+
     public Mono<Quote> quote(final String token, final Long quoteId) {
         final var uri = QUOTES_PATH + "/" + quoteId;
         return getRequest(uri, token).bodyToMono(Quote.class);

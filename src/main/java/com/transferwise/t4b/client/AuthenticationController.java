@@ -21,6 +21,9 @@ public class AuthenticationController {
     }
 
     @PostMapping
+    // deeplink, ios android
+    // (db) bank created the profile?
+    // last time the update was sent - about customer
     public Publisher<Credentials> create(@RequestParam final Code code) {
         return credentialsManager.generate(1L, code);
     }

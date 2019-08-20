@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler(ResponseStatusException.class)
+    //@ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiError> handleCustomException(final ResponseStatusException cause) {
         return new ResponseEntity(new ApiError(cause), cause.getStatus());
     }

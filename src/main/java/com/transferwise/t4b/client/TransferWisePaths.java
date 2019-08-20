@@ -7,5 +7,5 @@ interface TransferWisePaths {
 
     String PROFILES_PATH = "/v1/profiles";
     String ACCOUNTS_PATH = "/v1/accounts";
-    String QUOTES_PATH = "/v1/quotes";
+    String QUOTES_PATH = "/v2/quotes/";
 }

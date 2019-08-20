@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
 
 import javax.validation.Valid;
 
@@ -24,6 +23,6 @@ public class AnonymousQuotesController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
-        return Flux.empty();
+        return client.anonymousQuote(quoteRequest);
     }
 }

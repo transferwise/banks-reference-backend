@@ -27,14 +27,14 @@ public class QuoteRequestTest {
 
     @Test
     public void generateJsonRequest() throws JSONException {
-        final var request = new QuoteRequest(profile, gbp, eur, sourceAmount, targetAmount);
+        final var request = new QuoteRequest(profile, gbp, eur, sourceAmount, null);
 
         assertEquals("{\n" +
                 "  \"sourceAmount\" : 200,\n" +
                 "  \"targetCurrency\" : \"EUR\",\n" +
                 "  \"sourceCurrency\" : \"GBP\",\n" +
                 "  \"profile\" : 123,\n" +
-                "  \"targetAmount\" : 300\n" +
+                "  \"targetAmount\" : null\n" +
                 "}", request.toJson(), JSONCompareMode.LENIENT);
     }
 }

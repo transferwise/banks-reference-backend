@@ -11,4 +11,4 @@
 --     credentials_id integer REFERENCES Credentials
 -- );
 --
--- INSERT INTO Customer(name) VALUES('John Travolta');
+-- INSERT INTO Customer(id, name, email) VALUES(1, 'John Travolta', 'john.travolta3@transferwise.com');

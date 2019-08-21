@@ -1,7 +1,9 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.*;
+import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.Profile;
+import com.transferwise.t4b.customer.User;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
+import static com.transferwise.t4b.client.BodyRequests.newUser;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -57,6 +60,17 @@ public class ApiClient {
                 .body(grantTypeClientCredentials)
                 .retrieve()
                 .bodyToMono(ClientCredentials.class);
+    }
+
+    public Mono<User> createUser(final Customer customer) {
+        return clientCredentials().flatMap(credentials ->
+                client.post()
+                        .uri(SIGNUP_PATH)
+                        .contentType(APPLICATION_JSON)
+                        .header(AUTHORIZATION, bearer(credentials.token))
+                        .body(newUser(customer.email()))
+                        .retrieve()
+                        .bodyToMono(User.class));
     }
 
     public Mono<Credentials> customerCredentials(final Code code) {

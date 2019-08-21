@@ -1,10 +1,10 @@
 package com.transferwise.t4b.customer;
 
-import org.reactivestreams.Publisher;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.transferwise.t4b.exceptions.ResourceNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/customers")
@@ -16,8 +16,8 @@ public class CustomersController {
         this.customers = customers;
     }
 
-    @PostMapping
-    public Publisher<Customer> create() {
-        return Mono.empty();
+    @GetMapping
+    public Customer show(@RequestParam final Long id) {
+        return customers.findById(id).orElseThrow(() -> new ResourceNotFoundException());
     }
 }

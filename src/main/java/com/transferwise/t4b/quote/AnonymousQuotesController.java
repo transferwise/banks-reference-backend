@@ -23,6 +23,8 @@ public class AnonymousQuotesController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
+        final var a = client.clientCredentials();
+
         return client.anonymousQuote(quoteRequest);
     }
 }

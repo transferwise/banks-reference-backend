@@ -20,7 +20,7 @@ public class CredentialsManager {
     public Mono<Credentials> generate(final Long customerId, final Code code) {
         final var customer = customers.findById(customerId);
         return client
-                .accessCredentials(code)
+                .customerCredentials(code)
                 .doOnSuccess(creds -> save(customer.get(), creds));
     }
 

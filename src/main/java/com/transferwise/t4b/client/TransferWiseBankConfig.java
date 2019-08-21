@@ -31,8 +31,11 @@ public class TransferWiseBankConfig {
         return redirectUri;
     }
 
+    public String credentials() {
+        return clientId + ":" + secret;
+    }
+
     public String encodedCredentials() {
-        final var credentials = clientId + ":" + secret;
-        return Base64Utils.encodeToString(credentials.getBytes(UTF_8));
+        return Base64Utils.encodeToString(credentials().getBytes(UTF_8));
     }
 }

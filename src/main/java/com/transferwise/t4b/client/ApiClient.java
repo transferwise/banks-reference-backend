@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Service
@@ -45,7 +46,20 @@ public class ApiClient {
                 .filter(printlnFilter).build();
     }
 
-    public Mono<Credentials> accessCredentials(final Code code) {
+    public Mono<ClientCredentials> clientCredentials() {
+        final var grantTypeClientCredentials =
+                BodyInserters.fromMultipartData(multiMap(new GrantTypeClientCredentials()));
+
+        return client.post()
+                .uri(OAUTH_TOKEN_PATH)
+                .contentType(APPLICATION_FORM_URLENCODED)
+                .header(AUTHORIZATION, basic())
+                .body(grantTypeClientCredentials)
+                .retrieve()
+                .bodyToMono(ClientCredentials.class);
+    }
+
+    public Mono<Credentials> customerCredentials(final Code code) {
         return authenticationRequest(() -> authenticationBody(code));
     }
 
@@ -63,20 +77,20 @@ public class ApiClient {
     }
 
     public Flux<Profile> profiles(final String token) {
-        return getRequest(PROFILES_PATH, token).bodyToFlux(Profile.class);
+        return getRequest(PROFILES_PATH, bearer(token)).bodyToFlux(Profile.class);
     }
 
     public Flux<Recipient> recipients(final String token, final Long profile) {
-        return getRequest(ACCOUNTS_PATH, token, new ProfileId(profile)).bodyToFlux(Recipient.class);
+        return getRequest(ACCOUNTS_PATH, bearer(token), new ProfileId(profile)).bodyToFlux(Recipient.class);
     }
 
-    private WebClient.ResponseSpec getRequest(final String uri, final String token, final Param... params) {
+    private WebClient.ResponseSpec getRequest(final String uri, final String authorization, final Param... params) {
         return client.get()
                 .uri(builder -> builder
                         .path(uri)
                         .queryParams(multiMap(params))
                         .build())
-                .header(AUTHORIZATION, bearer(token))
+                .header(AUTHORIZATION, authorization)
                 .retrieve();
     }
 
@@ -109,7 +123,7 @@ public class ApiClient {
 
     public Mono<Quote> quote(final String token, final Long quoteId) {
         final var uri = QUOTES_PATH + "/" + quoteId;
-        return getRequest(uri, token).bodyToMono(Quote.class);
+        return getRequest(uri, bearer(token)).bodyToMono(Quote.class);
     }
 
     private MultipartInserter refreshTokenBody(final String refreshToken) {

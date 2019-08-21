@@ -1,5 +1,6 @@
-package com.transferwise.t4b.client;
+package com.transferwise.t4b.authentication;
 
+import com.transferwise.t4b.client.Credentials;
 import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.customer.CredentialsManager;
 import org.reactivestreams.Publisher;

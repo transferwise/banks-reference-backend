@@ -6,14 +6,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.time.LocalDateTime;
 
 @Entity
 public class Customer {
 
     @Id
     private Long id;
-
     private String name;
+    private Boolean createdByUs;
+    private LocalDateTime updatedAt;
 
     @OneToOne(cascade = CascadeType.ALL)
     public Credentials credentials;

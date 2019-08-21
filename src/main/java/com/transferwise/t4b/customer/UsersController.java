@@ -1,7 +1,6 @@
 package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.ApiClient;
-import com.transferwise.t4b.exceptions.ResourceNotFoundException;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ public class UsersController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<User> create(@RequestParam final Long id) {
-        final var customer = customers.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+        final var customer = customers.find(id);
 
         return client.createUser(customer)
                 .map(user -> customers.save(customer.withUserCreatedByUs(user)))

@@ -1,21 +1,20 @@
-package com.transferwise.t4b.authorization;
+package com.transferwise.t4b.credentials;
 
-import com.transferwise.t4b.client.Credentials;
 import com.transferwise.t4b.client.params.Code;
-import com.transferwise.t4b.customer.CredentialsManager;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/authenticate")
-public class AuthorizationController {
+@RequestMapping("/credentials")
+public class CredentialsController {
 
     private final CredentialsManager credentialsManager;
 
-    public AuthorizationController(final CredentialsManager credentialsManager) {
+    public CredentialsController(final CredentialsManager credentialsManager) {
         this.credentialsManager = credentialsManager;
     }
 
+    // for tests
     @GetMapping
     public Publisher<Credentials> index() {
         return credentialsManager.getCredentials(1L);

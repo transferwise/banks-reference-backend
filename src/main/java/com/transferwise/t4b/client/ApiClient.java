@@ -1,6 +1,7 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.*;
+import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.Profile;
 import com.transferwise.t4b.customer.User;

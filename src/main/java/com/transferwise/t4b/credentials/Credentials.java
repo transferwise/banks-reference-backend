@@ -1,4 +1,4 @@
-package com.transferwise.t4b.client;
+package com.transferwise.t4b.credentials;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,7 +1,7 @@
 package com.transferwise.t4b.customer;
 
-import com.transferwise.t4b.client.Credentials;
 import com.transferwise.t4b.client.params.Email;
+import com.transferwise.t4b.credentials.Credentials;
 
 import javax.persistence.*;
 
@@ -17,7 +17,7 @@ public class Customer {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
-    public Credentials credentials;
+    private Credentials credentials;
 
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
@@ -64,6 +64,11 @@ public class Customer {
 
     public Customer withUserCreatedByUs(final User user) {
         this.user = user.createdByUs();
+        return this;
+    }
+
+    public Customer withCredentials(final Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 }

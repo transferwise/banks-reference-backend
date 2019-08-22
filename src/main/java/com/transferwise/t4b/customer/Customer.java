@@ -3,17 +3,17 @@ package com.transferwise.t4b.customer;
 import com.transferwise.t4b.client.Credentials;
 import com.transferwise.t4b.client.params.Email;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Customer {
 
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
+
+    @Column(unique = true)
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -21,6 +21,14 @@ public class Customer {
 
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
+
+    protected Customer() {
+    }
+
+    public Customer(final NewCustomer newCustomer) {
+        name = newCustomer.getName();
+        email = newCustomer.getEmail();
+    }
 
     public boolean hasExpiredCredentials() {
         return credentials.isExpired();

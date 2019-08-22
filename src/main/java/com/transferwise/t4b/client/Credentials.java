@@ -3,6 +3,7 @@ package com.transferwise.t4b.client;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.transferwise.t4b.client.params.RefreshToken;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -37,5 +38,9 @@ public class Credentials {
     @JsonIgnore
     public boolean isExpired() {
         return now().isAfter(expiresIn);
+    }
+
+    public RefreshToken refreshToken() {
+        return new RefreshToken(refreshToken);
     }
 }

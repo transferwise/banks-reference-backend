@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-import static com.transferwise.t4b.client.BodyRequests.newUser;
+import static com.transferwise.t4b.client.BodyRequests.*;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static java.util.stream.Collectors.toMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -50,14 +50,11 @@ public class ApiClient {
     }
 
     public Mono<ClientCredentials> clientCredentials() {
-        final var grantTypeClientCredentials =
-                BodyInserters.fromMultipartData(multiMap(new GrantTypeClientCredentials()));
-
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .header(AUTHORIZATION, basic())
-                .body(grantTypeClientCredentials)
+                .body(forClientCredentials())
                 .retrieve()
                 .bodyToMono(ClientCredentials.class);
     }
@@ -68,7 +65,7 @@ public class ApiClient {
                         .uri(SIGNUP_PATH)
                         .contentType(APPLICATION_JSON)
                         .header(AUTHORIZATION, bearer(credentials.token))
-                        .body(newUser(customer.email()))
+                        .body(forNewUser(customer.email()))
                         .retrieve()
                         .bodyToMono(User.class));
     }
@@ -78,7 +75,7 @@ public class ApiClient {
     }
 
     public Mono<Credentials> refresh(final Credentials credentials) {
-        return authenticationRequest(() -> refreshTokenBody(credentials.refreshToken));
+        return authenticationRequest(() -> forRefreshToken(credentials.refreshToken()));
     }
 
     public Mono<Credentials> authenticationRequest(final Supplier<MultipartInserter> supplier) {
@@ -138,12 +135,6 @@ public class ApiClient {
     public Mono<Quote> quote(final String token, final Long quoteId) {
         final var uri = QUOTES_PATH + "/" + quoteId;
         return getRequest(uri, bearer(token)).bodyToMono(Quote.class);
-    }
-
-    private MultipartInserter refreshTokenBody(final String refreshToken) {
-        final var params = multiMap(new GrantTypeRefreshToken(), new RefreshToken(refreshToken));
-
-        return BodyInserters.fromMultipartData(params);
     }
 
     private MultipartInserter authenticationBody(final Code code) {

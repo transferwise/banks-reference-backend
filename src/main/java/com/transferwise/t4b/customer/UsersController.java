@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 @RestController
 @RequestMapping("/users")
 public class UsersController {
@@ -21,7 +19,7 @@ public class UsersController {
         this.customers = customers;
     }
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    @PostMapping
     public Publisher<User> create(@RequestParam final Long id) {
         final var customer = customers.find(id);
 

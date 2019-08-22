@@ -9,7 +9,7 @@ import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
 
-@Entity
+@Entity(name = "currencies")
 public class Currency {
 
     @Id

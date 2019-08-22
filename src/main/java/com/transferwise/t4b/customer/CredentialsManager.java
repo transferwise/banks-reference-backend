@@ -18,10 +18,10 @@ public class CredentialsManager {
     }
 
     public Mono<Credentials> generate(final Long customerId, final Code code) {
-        final var customer = customers.findById(customerId);
+        final var customer = customers.find(customerId);
         return client
                 .customerCredentials(code)
-                .doOnSuccess(creds -> save(customer.get(), creds));
+                .doOnSuccess(creds -> save(customer, creds));
     }
 
     public Mono<Credentials> getCredentials(final Long customerId) {

@@ -1,4 +1,4 @@
-package com.transferwise.t4b.authentication;
+package com.transferwise.t4b.authorization;
 
 import com.transferwise.t4b.client.Credentials;
 import com.transferwise.t4b.client.params.Code;
@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/authenticate")
-public class AuthenticationController {
+public class AuthorizationController {
 
     private final CredentialsManager credentialsManager;
 
-    public AuthenticationController(final CredentialsManager credentialsManager) {
+    public AuthorizationController(final CredentialsManager credentialsManager) {
         this.credentialsManager = credentialsManager;
     }
 
@@ -23,9 +23,7 @@ public class AuthenticationController {
 
     @PostMapping
     // deeplink, ios android
-    // (db) bank created the profile?
-    // last time the update was sent - about customer
-    public Publisher<Credentials> create(@RequestParam final Code code) {
-        return credentialsManager.generate(1L, code);
+    public Publisher<Credentials> create(@RequestParam final Long customerId, @RequestParam final Code code) {
+        return credentialsManager.generate(customerId, code);
     }
 }

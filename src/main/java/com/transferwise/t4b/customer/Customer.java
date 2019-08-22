@@ -5,7 +5,7 @@ import com.transferwise.t4b.client.params.Email;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "customers")
 public class Customer {
 
     @Id

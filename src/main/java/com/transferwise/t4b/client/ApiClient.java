@@ -1,6 +1,8 @@
 package com.transferwise.t4b.client;
 
-import com.transferwise.t4b.client.params.*;
+import com.transferwise.t4b.client.params.Code;
+import com.transferwise.t4b.client.params.Parameter;
+import com.transferwise.t4b.client.params.ProfileId;
 import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.Profile;
@@ -9,8 +11,6 @@ import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
@@ -18,12 +18,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
 
 import static com.transferwise.t4b.client.BodyRequests.*;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
-import static java.util.stream.Collectors.toMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -72,18 +70,18 @@ public class ApiClient {
     }
 
     public Mono<Credentials> customerCredentials(final Code code) {
-        return authenticationRequest(() -> authenticationBody(code));
+        return authenticationRequest(() -> forCustomerCredentials(config, code));
     }
 
     public Mono<Credentials> refresh(final Credentials credentials) {
         return authenticationRequest(() -> forRefreshToken(credentials.refreshToken()));
     }
 
-    public Mono<Credentials> authenticationRequest(final Supplier<MultipartInserter> supplier) {
+    public Mono<Credentials> authenticationRequest(final Supplier<MultipartInserter> body) {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .header(AUTHORIZATION, basic())
-                .body(supplier.get())
+                .body(body.get())
                 .retrieve()
                 .bodyToMono(Credentials.class);
     }
@@ -104,14 +102,6 @@ public class ApiClient {
                         .build())
                 .header(AUTHORIZATION, authorization)
                 .retrieve();
-    }
-
-    private MultiValueMap<String, String> multiMap(final Parameter... parameters) {
-        final var map = Arrays.stream(parameters).collect(toMap(Parameter::key, Parameter::value));
-
-        final var multiMap = new LinkedMultiValueMap<String, String>();
-        multiMap.setAll(map);
-        return multiMap;
     }
 
     public Mono<Quote> quote(final String token, final QuoteRequest quoteRequest) {
@@ -136,15 +126,6 @@ public class ApiClient {
     public Mono<Quote> quote(final String token, final Long quoteId) {
         final var uri = QUOTES_PATH + "/" + quoteId;
         return getRequest(uri, bearer(token)).bodyToMono(Quote.class);
-    }
-
-    private MultipartInserter authenticationBody(final Code code) {
-        final var params = multiMap(new GrantTypeAuthorizationCode(),
-                new ClientId(config.clientId()),
-                code,
-                new RedirectUri(config.redirectUri()));
-
-        return BodyInserters.fromMultipartData(params);
     }
 
     private String basic() {

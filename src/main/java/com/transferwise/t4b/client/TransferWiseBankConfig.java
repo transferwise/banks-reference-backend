@@ -1,5 +1,7 @@
 package com.transferwise.t4b.client;
 
+import com.transferwise.t4b.client.params.ClientId;
+import com.transferwise.t4b.client.params.RedirectUri;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Base64Utils;
 
@@ -23,12 +25,12 @@ public class TransferWiseBankConfig {
         this.redirectUri = redirectUri;
     }
 
-    public String clientId() {
-        return clientId;
+    public ClientId clientId() {
+        return new ClientId(clientId);
     }
 
-    public String redirectUri() {
-        return redirectUri;
+    public RedirectUri redirectUri() {
+        return new RedirectUri(redirectUri);
     }
 
     public String credentials() {

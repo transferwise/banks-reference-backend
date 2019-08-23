@@ -6,6 +6,8 @@ import com.transferwise.t4b.customer.CustomerRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -21,11 +23,10 @@ public class QuotesController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public Publisher<Quote> create(@RequestBody final QuoteRequest quoteRequest) {
-        return customers
-                .findById(1L)
-                .map(customer -> createQuote(customer, quoteRequest))
-                .get();
+    public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest,
+                                   @PathVariable final Long customerId) {
+        final var customer = customers.find(customerId);
+        return createQuote(customer, quoteRequest);
     }
 
     @GetMapping("/{quoteId}")

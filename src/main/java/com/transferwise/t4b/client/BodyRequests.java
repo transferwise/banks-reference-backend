@@ -28,13 +28,13 @@ public class BodyRequests {
         return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));
     }
 
-    private static Map<String, String> map(final Param... params) {
-        return Arrays.stream(params).collect(toMap(Param::key, Param::value));
+    private static Map<String, String> map(final Parameter... parameters) {
+        return Arrays.stream(parameters).collect(toMap(Parameter::key, Parameter::value));
     }
 
-    private static MultiValueMap<String, String> multiMap(final Param... params) {
+    private static MultiValueMap<String, String> multiMap(final Parameter... parameters) {
         final var multiMap = new LinkedMultiValueMap<String, String>();
-        multiMap.setAll(map(params));
+        multiMap.setAll(map(parameters));
         return multiMap;
     }
 }

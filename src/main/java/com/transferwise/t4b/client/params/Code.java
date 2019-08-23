@@ -1,20 +1,13 @@
 package com.transferwise.t4b.client.params;
 
-public class Code implements Param {
-
-    private final String code;
+public final class Code extends Parameter {
 
     public Code(final String code) {
-        this.code = code;
+        super(code);
     }
 
     @Override
     public String key() {
         return "code";
-    }
-
-    @Override
-    public String value() {
-        return code;
     }
 }

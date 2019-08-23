@@ -1,20 +1,13 @@
 package com.transferwise.t4b.client.params;
 
-public final class ProfileId implements Param {
-
-    public final Long profile;
+public final class ProfileId extends Parameter {
 
     public ProfileId(final Long profile) {
-        this.profile = profile;
+        super(profile.toString());
     }
 
     @Override
     public String key() {
         return "profile";
-    }
-
-    @Override
-    public String value() {
-        return profile.toString();
     }
 }

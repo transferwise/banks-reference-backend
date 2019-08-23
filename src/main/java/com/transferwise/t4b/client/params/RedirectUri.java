@@ -1,20 +1,13 @@
 package com.transferwise.t4b.client.params;
 
-public class RedirectUri implements Param {
-
-    private final String uri;
+public final class RedirectUri extends Parameter {
 
     public RedirectUri(final String uri) {
-        this.uri = uri;
+        super(uri);
     }
 
     @Override
     public String key() {
         return "redirect_uri";
-    }
-
-    @Override
-    public String value() {
-        return uri;
     }
 }

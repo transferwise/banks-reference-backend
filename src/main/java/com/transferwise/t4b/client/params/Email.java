@@ -1,20 +1,13 @@
 package com.transferwise.t4b.client.params;
 
-public class Email implements Param {
-
-    private final String email;
+public final class Email extends Parameter {
 
     public Email(final String email) {
-        this.email = email;
+        super(email);
     }
 
     @Override
     public String key() {
         return "email";
-    }
-
-    @Override
-    public String value() {
-        return email;
     }
 }

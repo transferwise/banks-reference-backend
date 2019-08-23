@@ -1,14 +1,13 @@
 package com.transferwise.t4b.client.params;
 
-public class GrantTypeRefreshToken implements Param {
+public final class GrantTypeRefreshToken extends Parameter {
+
+    public GrantTypeRefreshToken() {
+        super("refresh_token");
+    }
 
     @Override
     public String key() {
         return "grant_type";
-    }
-
-    @Override
-    public String value() {
-        return "refresh_token";
     }
 }

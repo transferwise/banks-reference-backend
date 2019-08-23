@@ -1,14 +1,13 @@
 package com.transferwise.t4b.client.params;
 
-public class GrantTypeAuthorizationCode implements Param {
+public final class GrantTypeAuthorizationCode extends Parameter {
+
+    public GrantTypeAuthorizationCode() {
+        super("authorization_code");
+    }
 
     @Override
     public String key() {
         return "grant_type";
-    }
-
-    @Override
-    public String value() {
-        return "authorization_code";
     }
 }

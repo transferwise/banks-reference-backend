@@ -1,22 +1,15 @@
 package com.transferwise.t4b.client.params;
 
-import java.util.UUID;
+import static java.util.UUID.randomUUID;
 
-public class RegistrationCode implements Param {
-
-    private final UUID code;
+public final class RegistrationCode extends Parameter {
 
     public RegistrationCode() {
-        code = UUID.randomUUID();
+        super(randomUUID().toString());
     }
 
     @Override
     public String key() {
         return "registrationCode";
-    }
-
-    @Override
-    public String value() {
-        return code.toString();
     }
 }

@@ -96,18 +96,18 @@ public class ApiClient {
         return getRequest(ACCOUNTS_PATH, bearer(token), new ProfileId(profile)).bodyToFlux(Recipient.class);
     }
 
-    private WebClient.ResponseSpec getRequest(final String uri, final String authorization, final Param... params) {
+    private WebClient.ResponseSpec getRequest(final String uri, final String authorization, final Parameter... parameters) {
         return client.get()
                 .uri(builder -> builder
                         .path(uri)
-                        .queryParams(multiMap(params))
+                        .queryParams(multiMap(parameters))
                         .build())
                 .header(AUTHORIZATION, authorization)
                 .retrieve();
     }
 
-    private MultiValueMap<String, String> multiMap(final Param... params) {
-        final var map = Arrays.stream(params).collect(toMap(Param::key, Param::value));
+    private MultiValueMap<String, String> multiMap(final Parameter... parameters) {
+        final var map = Arrays.stream(parameters).collect(toMap(Parameter::key, Parameter::value));
 
         final var multiMap = new LinkedMultiValueMap<String, String>();
         multiMap.setAll(map);

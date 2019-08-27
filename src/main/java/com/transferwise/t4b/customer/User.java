@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import java.time.ZonedDateTime;
 
 import static java.time.ZonedDateTime.now;
-import static java.util.Objects.nonNull;
 
 @Entity
 @Table(name = "users")
@@ -34,15 +33,11 @@ public class User {
         return active;
     }
 
-    public Boolean getCreatedByUs() {
-        return nonNull(registrationCode);
-    }
-
     public ZonedDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public User createdByUs() {
+    public User updated() {
         updatedAt = now();
         return this;
     }

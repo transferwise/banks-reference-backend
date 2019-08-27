@@ -63,7 +63,7 @@ public class Customer {
     }
 
     public Customer withUser(final User user) {
-        this.user = user.createdByUs();
+        this.user = user.updated();
         return this;
     }
 

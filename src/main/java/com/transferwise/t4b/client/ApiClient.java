@@ -3,6 +3,7 @@ package com.transferwise.t4b.client;
 import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.client.params.Parameter;
 import com.transferwise.t4b.client.params.ProfileId;
+import com.transferwise.t4b.client.params.RegistrationCode;
 import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.Profile;
@@ -48,7 +49,18 @@ public class ApiClient {
                 .filter(printlnFilter).build();
     }
 
-    public Mono<ClientCredentials> clientCredentials() {
+    public Mono<Customer> userCredentials(final Customer customer) {
+        final var registrationCode = new RegistrationCode();
+
+        return clientCredentials().flatMap(credentials ->
+                createUser(customer, credentials, registrationCode)
+                        .map(user -> user.withRegistrationCode(registrationCode))
+                        .map(customer::withUser)
+                        .flatMap(c -> createUserCredentials(c.getUser(), credentials))
+                        .map(customer::withCredentials));
+    }
+
+    private Mono<ClientCredentials> clientCredentials() {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
@@ -58,15 +70,26 @@ public class ApiClient {
                 .bodyToMono(ClientCredentials.class);
     }
 
-    public Mono<User> createUser(final Customer customer) {
-        return clientCredentials().flatMap(credentials ->
-                client.post()
-                        .uri(SIGNUP_PATH)
-                        .contentType(APPLICATION_JSON)
-                        .header(AUTHORIZATION, bearer(credentials.token))
-                        .body(forNewUser(customer.email()))
-                        .retrieve()
-                        .bodyToMono(User.class));
+    private Mono<User> createUser(final Customer customer,
+                                  final ClientCredentials credentials,
+                                  final RegistrationCode registrationCode) {
+        return client.post()
+                .uri(SIGNUP_PATH)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, bearer(credentials.token))
+                .body(forNewUser(customer.email(), registrationCode.v1()))
+                .retrieve()
+                .bodyToMono(User.class);
+    }
+
+    private Mono<Credentials> createUserCredentials(final User user, final ClientCredentials credentials) {
+        return client.post()
+                .uri(OAUTH_TOKEN_PATH)
+                .contentType(APPLICATION_FORM_URLENCODED)
+                .header(AUTHORIZATION, basic())
+                .body(forUserCredentials(config, user))
+                .retrieve()
+                .bodyToMono(Credentials.class);
     }
 
     public Mono<Credentials> customerCredentials(final Code code) {

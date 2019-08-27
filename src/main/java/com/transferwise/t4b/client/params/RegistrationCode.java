@@ -8,8 +8,16 @@ public final class RegistrationCode extends Parameter {
         super(randomUUID().toString());
     }
 
+    public RegistrationCode(final String registrationCode) {
+        super(registrationCode);
+    }
+
     @Override
     public String key() {
-        return "registrationCode";
+        return "registration_code";
+    }
+
+    public V1RegistrationCode v1() {
+        return new V1RegistrationCode(value());
     }
 }

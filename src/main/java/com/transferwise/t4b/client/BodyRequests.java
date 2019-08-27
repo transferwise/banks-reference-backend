@@ -1,6 +1,7 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.*;
+import com.transferwise.t4b.customer.User;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -16,12 +17,20 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 
 public class BodyRequests {
 
-    static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forNewUser(final Email email) {
-        return fromObject(map(email, new RegistrationCode()));
+    static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forNewUser(final Email email, final V1RegistrationCode v1RegistrationCode) {
+        return fromObject(map(email, v1RegistrationCode));
     }
 
     static MultipartInserter forClientCredentials() {
         return fromMultipartData(multiMap(new GrantTypeClientCredentials()));
+    }
+
+    static MultipartInserter forUserCredentials(final TransferWiseBankConfig config, final User user) {
+        return fromMultipartData(
+                multiMap(new GrantTypeRegistrationCode(),
+                        user.email(),
+                        config.clientId(),
+                        user.registrationCode()));
     }
 
     static MultipartInserter forRefreshToken(final RefreshToken refreshToken) {

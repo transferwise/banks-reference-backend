@@ -62,7 +62,7 @@ public class Customer {
         return user;
     }
 
-    public Customer withUserCreatedByUs(final User user) {
+    public Customer withUser(final User user) {
         this.user = user.createdByUs();
         return this;
     }

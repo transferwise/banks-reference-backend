@@ -1,10 +1,6 @@
 package com.transferwise.t4b.client;
 
-import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.CustomerRepository;
-import com.transferwise.t4b.customer.Profile;
-import org.reactivestreams.Publisher;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,15 +16,15 @@ public class ProfilesController {
         this.customers = customers;
     }
 
-    @GetMapping
-    public Publisher<Profile> index() {
-        return customers
-                .findById(1L)
-                .map(this::profiles)
-                .get();
-    }
-
-    private Publisher<Profile> profiles(final Customer customer) {
-        return client.profiles(customer.accessToken());
-    }
+//    @GetMapping
+//    public Publisher<Profile> index() {
+//        return customers
+//                .findById(1L)
+//                .map(this::profiles)
+//                .get();
+//    }
+//
+//    private Publisher<Profile> profiles(final Customer customer) {
+//        return client.profiles(customer.accessToken());
+//    }
 }

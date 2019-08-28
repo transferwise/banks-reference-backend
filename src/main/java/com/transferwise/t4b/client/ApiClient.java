@@ -57,7 +57,9 @@ public class ApiClient {
                         .map(user -> user.withRegistrationCode(registrationCode))
                         .map(customer::withUser)
                         .flatMap(c -> createUserCredentials(c.getUser(), credentials))
-                        .map(customer::withCredentials));
+                        .map(customer::withCredentials)
+                        .flatMap(this::createPersonalProfile)
+                        .map(customer::withProfile));
     }
 
     private Mono<ClientCredentials> clientCredentials() {
@@ -92,6 +94,16 @@ public class ApiClient {
                 .bodyToMono(Credentials.class);
     }
 
+    private Mono<Profile> createPersonalProfile(final Customer customer) {
+        return client.post()
+                .uri(PROFILES_PATH)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .body(forPersonalProfile(customer))
+                .retrieve()
+                .bodyToMono(Profile.class);
+    }
+
     public Mono<Credentials> customerCredentials(final Code code) {
         return authenticationRequest(() -> forCustomerCredentials(config, code));
     }
@@ -109,9 +121,9 @@ public class ApiClient {
                 .bodyToMono(Credentials.class);
     }
 
-    public Flux<Profile> profiles(final String token) {
-        return getRequest(PROFILES_PATH, bearer(token)).bodyToFlux(Profile.class);
-    }
+//    public Flux<Profile> profiles(final String token) {
+//        return getRequest(PROFILES_PATH, bearer(token)).bodyToFlux(Profile.class);
+//    }
 
     public Flux<Recipient> recipients(final String token, final Long profile) {
         return getRequest(ACCOUNTS_PATH, bearer(token), new ProfileId(profile)).bodyToFlux(Recipient.class);

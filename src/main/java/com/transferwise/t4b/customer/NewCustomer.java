@@ -6,14 +6,21 @@ import javax.validation.constraints.NotNull;
 public class NewCustomer {
 
     @NotNull
-    private String name;
+    private String firstName;
+
+    @NotNull
+    private String lastName;
 
     @NotNull
     @Email
     private String email;
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getEmail() {

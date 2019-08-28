@@ -4,6 +4,7 @@ import com.transferwise.t4b.client.params.*;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.PersonalProfileRequest;
 import com.transferwise.t4b.customer.User;
+import com.transferwise.t4b.quote.QuoteRequest;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,6 +38,10 @@ public class BodyRequests {
 
     static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final Customer customer) {
         return fromObject(new PersonalProfileRequest(customer).toJson());
+    }
+
+    static BodyInserter<String, ReactiveHttpOutputMessage> forNewQuote(final QuoteRequest quoteRequest) {
+        return fromObject(quoteRequest.toJson());
     }
 
     static MultipartInserter forRefreshToken(final RefreshToken refreshToken) {

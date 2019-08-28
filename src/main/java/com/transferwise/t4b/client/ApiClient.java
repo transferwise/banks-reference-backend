@@ -12,7 +12,6 @@ import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -139,12 +138,12 @@ public class ApiClient {
                 .retrieve();
     }
 
-    public Mono<Quote> quote(final String token, final QuoteRequest quoteRequest) {
+    public Mono<Quote> quote(final Customer customer, final QuoteRequest quoteRequest) {
         return client.post()
                 .uri(QUOTES_PATH)
-                .header(AUTHORIZATION, bearer(token))
+                .header(AUTHORIZATION, bearer(customer.accessToken()))
                 .contentType(APPLICATION_JSON)
-                .body(BodyInserters.fromObject(quoteRequest.toJson()))
+                .body(forNewQuote(quoteRequest))
                 .retrieve()
                 .bodyToMono(Quote.class);
     }
@@ -153,7 +152,7 @@ public class ApiClient {
         return client.post()
                 .uri(QUOTES_PATH)
                 .contentType(APPLICATION_JSON)
-                .body(BodyInserters.fromObject(quoteRequest.toJson()))
+                .body(forNewQuote(quoteRequest))
                 .retrieve()
                 .bodyToMono(Quote.class);
     }

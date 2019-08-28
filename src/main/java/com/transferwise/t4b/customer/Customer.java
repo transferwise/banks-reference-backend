@@ -2,9 +2,15 @@ package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.params.Email;
 import com.transferwise.t4b.credentials.Credentials;
+import com.transferwise.t4b.quote.Quote;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "customers")
 public class Customer {
@@ -29,6 +35,9 @@ public class Customer {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
+
+    @ElementCollection(fetch = EAGER)
+    private final List<UUID> quoteIds = new ArrayList<>();
 
     protected Customer() {
     }
@@ -99,6 +108,11 @@ public class Customer {
 
     public Customer withProfile(final Profile profile) {
         this.profile = profile;
+        return this;
+    }
+
+    public Customer addQuote(final Quote quote) {
+        quoteIds.add(quote.getId());
         return this;
     }
 }

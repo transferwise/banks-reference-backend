@@ -1,0 +1,8 @@
+[
+  {
+    "id": 1234,
+    "currency": "GBP",
+    "active": true,
+    "owndeByCustomer": false
+  }
+]

@@ -8,9 +8,19 @@ import java.time.ZonedDateTime;
 public class Profile {
 
     @Id
-    private Long id;
-    private String type;
-    private ZonedDateTime createdAt;
+    private final Long id;
+    private final String type;
+    private final ZonedDateTime createdAt;
+
+    public Profile() {
+        this(null, null, null);
+    }
+
+    public Profile(final Long id, final String type, final ZonedDateTime createdAt) {
+        this.id = id;
+        this.type = type;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;

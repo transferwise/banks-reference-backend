@@ -43,13 +43,14 @@ public class Customer {
     @ElementCollection(fetch = EAGER)
     private final List<UUID> quoteIds = new ArrayList<>();
 
-    protected Customer() {
+    public Customer() {
     }
 
     public Customer(final NewCustomer newCustomer) {
         firstName = newCustomer.getFirstName();
         lastName = newCustomer.getLastName();
         email = newCustomer.getEmail();
+        dateOfBirth = newCustomer.getDateOfBirth();
     }
 
     public boolean hasExpiredCredentials() {

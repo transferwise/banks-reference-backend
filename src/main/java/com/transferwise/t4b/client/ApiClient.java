@@ -49,6 +49,11 @@ public class ApiClient {
                 .filter(printlnFilter).build();
     }
 
+    public ApiClient(final WebClient client, final TransferWiseBankConfig config) {
+        this.client = client;
+        this.config = config;
+    }
+
     public Mono<Customer> userCredentials(final Customer customer) {
         final var registrationCode = new RegistrationCode();
 

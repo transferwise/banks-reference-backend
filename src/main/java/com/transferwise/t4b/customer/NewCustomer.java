@@ -2,6 +2,7 @@ package com.transferwise.t4b.customer;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 public class NewCustomer {
 
@@ -15,6 +16,18 @@ public class NewCustomer {
     @Email
     private String email;
 
+    private LocalDate dateOfBirth;
+
+    public NewCustomer() {
+    }
+
+    public NewCustomer(@NotNull final String firstName, @NotNull final String lastName, @NotNull @Email final String email, final LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -25,5 +38,9 @@ public class NewCustomer {
 
     public String getEmail() {
         return email;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 }

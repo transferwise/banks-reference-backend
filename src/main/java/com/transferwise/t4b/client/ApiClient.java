@@ -2,7 +2,6 @@ package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.client.params.Parameter;
-import com.transferwise.t4b.client.params.ProfileId;
 import com.transferwise.t4b.client.params.RegistrationCode;
 import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.customer.Customer;
@@ -10,7 +9,9 @@ import com.transferwise.t4b.customer.Profile;
 import com.transferwise.t4b.customer.User;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
+import com.transferwise.t4b.recipient.Recipient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
@@ -25,6 +26,7 @@ import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.reactive.function.BodyInserters.fromDataBuffers;
 
 @Service
 public class ApiClient {
@@ -124,8 +126,9 @@ public class ApiClient {
 //        return getRequest(PROFILES_PATH, bearer(token)).bodyToFlux(Profile.class);
 //    }
 
-    public Flux<Recipient> recipients(final String token, final Long profile) {
-        return getRequest(ACCOUNTS_PATH, bearer(token), new ProfileId(profile)).bodyToFlux(Recipient.class);
+    public Flux<Recipient> recipients(final Customer customer) {
+        return getRequest(ACCOUNTS_PATH, bearer(customer.accessToken()), customer.profileId())
+                .bodyToFlux(Recipient.class);
     }
 
     private WebClient.ResponseSpec getRequest(final String uri, final String authorization, final Parameter... parameters) {
@@ -155,6 +158,24 @@ public class ApiClient {
                 .body(forNewQuote(quoteRequest))
                 .retrieve()
                 .bodyToMono(Quote.class);
+    }
+
+    public Mono<String> proxy(final Customer customer) {
+        return client.get()
+                .uri(recipientRequirementsPath(customer.latestQuoteId()))
+                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> proxy(final Customer customer, final ServerHttpRequest request) {
+        return client.post()
+                .uri(recipientRequirementsPath(customer.latestQuoteId()))
+                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .headers(headers -> headers.addAll(request.getHeaders()))
+                .body(fromDataBuffers(request.getBody()))
+                .retrieve()
+                .bodyToMono(String.class);
     }
 
     public Mono<Quote> quote(final String token, final Long quoteId) {

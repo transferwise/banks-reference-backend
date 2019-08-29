@@ -1,10 +1,11 @@
-package com.transferwise.t4b.client;
+package com.transferwise.t4b.recipient;
 
-import com.transferwise.t4b.customer.Customer;
+import com.transferwise.t4b.client.ApiClient;
 import com.transferwise.t4b.customer.CustomerRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -21,14 +22,10 @@ public class RecipientsController {
     }
 
     @GetMapping
-    public Publisher<Recipient> index() {
+    public Publisher<Recipient> index(@RequestParam final Long customerId) {
         return customers
-                .findById(1L)
-                .map(this::recipients)
+                .findById(customerId)
+                .map(client::recipients)
                 .orElse(Flux.empty());
-    }
-
-    private Publisher<Recipient> recipients(final Customer customer) {
-        return client.recipients(customer.accessToken(), 6861L);
     }
 }

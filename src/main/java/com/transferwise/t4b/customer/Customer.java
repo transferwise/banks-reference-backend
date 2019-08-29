@@ -1,6 +1,7 @@
 package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.params.Email;
+import com.transferwise.t4b.client.params.ProfileId;
 import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.quote.Quote;
 
@@ -114,5 +115,17 @@ public class Customer {
     public Customer addQuote(final Quote quote) {
         quoteIds.add(quote.getId());
         return this;
+    }
+
+    public ProfileId profileId() {
+        return new ProfileId(profile.getId());
+    }
+
+    public UUID latestQuoteId() {
+        if (quoteIds.isEmpty()) {
+            return null;
+        }
+
+        return quoteIds.get(quoteIds.size() - 1);
     }
 }

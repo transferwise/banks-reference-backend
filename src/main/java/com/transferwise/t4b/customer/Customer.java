@@ -1,7 +1,7 @@
 package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.params.Email;
-import com.transferwise.t4b.client.params.ProfileId;
+import com.transferwise.t4b.client.params.PersonalProfileId;
 import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.quote.Quote;
 
@@ -35,7 +35,10 @@ public class Customer {
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Profile profile;
+    private Profile personalProfile;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Profile businessProfile;
 
     @ElementCollection(fetch = EAGER)
     private final List<UUID> quoteIds = new ArrayList<>();
@@ -93,10 +96,6 @@ public class Customer {
         return user;
     }
 
-    public Profile getProfile() {
-        return profile;
-    }
-
     public Customer withUser(final User user) {
         this.user = user.updated();
         return this;
@@ -107,8 +106,20 @@ public class Customer {
         return this;
     }
 
-    public Customer withProfile(final Profile profile) {
-        this.profile = profile;
+    public Customer withPersonalProfile(final Profile personalProfile) {
+        this.personalProfile = personalProfile;
+        return this;
+    }
+
+    public Customer withProfiles(final List<Profile> profiles) {
+        profiles.forEach(profile -> {
+            if (profile.isPersonal()) {
+                personalProfile = profile;
+            } else {
+                businessProfile = profile;
+            }
+        });
+
         return this;
     }
 
@@ -117,8 +128,8 @@ public class Customer {
         return this;
     }
 
-    public ProfileId profileId() {
-        return new ProfileId(profile.getId());
+    public PersonalProfileId personalProfileId() {
+        return new PersonalProfileId(personalProfile.getId());
     }
 
     public UUID latestQuoteId() {

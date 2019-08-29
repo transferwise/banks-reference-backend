@@ -60,7 +60,7 @@ public class ApiClient {
                         .flatMap(c -> createUserCredentials(c.getUser(), credentials))
                         .map(customer::withCredentials)
                         .flatMap(this::createPersonalProfile)
-                        .map(customer::withProfile));
+                        .map(customer::withPersonalProfile));
     }
 
     private Mono<ClientCredentials> clientCredentials() {
@@ -105,8 +105,30 @@ public class ApiClient {
                 .bodyToMono(Profile.class);
     }
 
-    public Mono<Credentials> customerCredentials(final Code code) {
-        return authenticationRequest(() -> forCustomerCredentials(config, code));
+    public Mono<Customer> attachCredentialsAndProfiles(final Code code, final Customer customer) {
+        return createCustomerCredentials(code)
+                .map(customer::withCredentials)
+                .map(this::profiles)
+                .flatMap(Flux::collectList)
+                .map(customer::withProfiles);
+    }
+
+    private Mono<Credentials> createCustomerCredentials(final Code code) {
+        return client.post()
+                .uri(OAUTH_TOKEN_PATH)
+                .header(AUTHORIZATION, basic())
+                .body(forCustomerCredentials(config, code))
+                .retrieve()
+                .bodyToMono(Credentials.class);
+    }
+
+    private Flux<Profile> profiles(final Customer customer) {
+        return client
+                .get()
+                .uri(PROFILES_PATH)
+                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .retrieve()
+                .bodyToFlux(Profile.class);
     }
 
     public Mono<Credentials> refresh(final Credentials credentials) {
@@ -127,7 +149,7 @@ public class ApiClient {
 //    }
 
     public Flux<Recipient> recipients(final Customer customer) {
-        return getRequest(ACCOUNTS_PATH, bearer(customer.accessToken()), customer.profileId())
+        return getRequest(ACCOUNTS_PATH, bearer(customer.accessToken()), customer.personalProfileId())
                 .bodyToFlux(Recipient.class);
     }
 

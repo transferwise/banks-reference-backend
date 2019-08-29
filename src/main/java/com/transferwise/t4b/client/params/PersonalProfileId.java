@@ -1,8 +1,8 @@
 package com.transferwise.t4b.client.params;
 
-public final class ProfileId extends Parameter {
+public final class PersonalProfileId extends Parameter {
 
-    public ProfileId(final Long profile) {
+    public PersonalProfileId(final Long profile) {
         super(profile.toString());
     }
 

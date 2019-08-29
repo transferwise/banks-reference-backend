@@ -1,6 +1,7 @@
 package com.transferwise.t4b.credentials;
 
 import com.transferwise.t4b.client.params.Code;
+import com.transferwise.t4b.customer.Customer;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class CredentialsController {
 
     @PostMapping
     // deeplink, ios android
-    public Publisher<Credentials> create(@RequestParam final Long customerId, @RequestParam final Code code) {
+    public Publisher<Customer> create(@RequestParam final Long customerId, @RequestParam final Code code) {
         return credentialsManager.generate(customerId, code);
     }
 }

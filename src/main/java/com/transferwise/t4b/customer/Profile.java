@@ -23,4 +23,8 @@ public class Profile {
     public String getType() {
         return type;
     }
+
+    public Boolean isPersonal() {
+        return "personal".equals(type);
+    }
 }

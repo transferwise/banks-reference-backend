@@ -18,11 +18,11 @@ public class CredentialsManager {
         this.customers = customers;
     }
 
-    public Mono<Credentials> generate(final Long customerId, final Code code) {
+    public Mono<Customer> generate(final Long customerId, final Code code) {
         final var customer = customers.find(customerId);
         return client
-                .customerCredentials(code)
-                .doOnSuccess(creds -> save(customer, creds));
+                .attachCredentialsAndProfiles(code, customer)
+                .map(customers::save);
     }
 
     public Mono<Credentials> getCredentials(final Long customerId) {

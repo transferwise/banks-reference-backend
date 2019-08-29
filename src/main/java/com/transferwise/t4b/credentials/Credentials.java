@@ -36,7 +36,7 @@ public class Credentials {
     }
 
     @JsonIgnore
-    public boolean isExpired() {
+    public boolean areExpired() {
         return now().isAfter(expiresIn);
     }
 

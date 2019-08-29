@@ -11,7 +11,7 @@ interface TransferWisePaths {
     String PROFILES_PATH_V2 = "/v2/profiles";
     String ACCOUNTS_PATH = "/v1/accounts";
     String QUOTES_PATH_V1 = "/v1/quotes";
-    String QUOTES_PATH_V2 = "/v2/quotes";
+    String QUOTES_PATH_V2 = "/v2/quotes/";
 
     String SIGNUP_PATH = "/v1/user/signup/registration_code";
 

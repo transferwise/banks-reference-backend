@@ -13,13 +13,12 @@ import com.transferwise.t4b.recipient.Recipient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters.MultipartInserter;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import static com.transferwise.t4b.client.BodyRequests.*;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
@@ -99,7 +98,7 @@ public class ApiClient {
         return client.post()
                 .uri(PROFILES_PATH_V1)
                 .contentType(APPLICATION_JSON)
-                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .header(AUTHORIZATION, bearer(customer))
                 .body(forPersonalProfile(customer))
                 .retrieve()
                 .bodyToMono(Profile.class);
@@ -126,30 +125,13 @@ public class ApiClient {
         return client
                 .get()
                 .uri(PROFILES_PATH_V2)
-                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .header(AUTHORIZATION, bearer(customer))
                 .retrieve()
                 .bodyToFlux(Profile.class);
     }
 
-    public Mono<Credentials> refresh(final Credentials credentials) {
-        return authenticationRequest(() -> forRefreshToken(credentials.refreshToken()));
-    }
-
-    public Mono<Credentials> authenticationRequest(final Supplier<MultipartInserter> body) {
-        return client.post()
-                .uri(OAUTH_TOKEN_PATH)
-                .header(AUTHORIZATION, basic())
-                .body(body.get())
-                .retrieve()
-                .bodyToMono(Credentials.class);
-    }
-
-//    public Flux<Profile> profiles(final String token) {
-//        return getRequest(PROFILES_PATH, bearer(token)).bodyToFlux(Profile.class);
-//    }
-
     public Flux<Recipient> recipients(final Customer customer) {
-        return getRequest(ACCOUNTS_PATH, bearer(customer.accessToken()), customer.personalProfileId())
+        return getRequest(ACCOUNTS_PATH, bearer(customer), customer.personalProfileId())
                 .bodyToFlux(Recipient.class);
     }
 
@@ -163,14 +145,32 @@ public class ApiClient {
                 .retrieve();
     }
 
+    public Mono<Credentials> refresh(final Credentials credentials) {
+        if (credentials.areExpired()) {
+            return client.post()
+                    .uri(OAUTH_TOKEN_PATH)
+                    .header(AUTHORIZATION, basic())
+                    .body(forRefreshToken(credentials.refreshToken()))
+                    .retrieve()
+                    .bodyToMono(Credentials.class);
+        }
+
+        return Mono.just(credentials);
+    }
+
+    private <T> Mono<T> withCustomerCredentials(final Customer customer, final Function<Credentials, Mono<T>> f) {
+        return refresh(customer.getCredentials()).flatMap(f);
+    }
+
     public Mono<Quote> quote(final Customer customer, final QuoteRequest quoteRequest) {
-        return client.post()
-                .uri(QUOTES_PATH_V2)
-                .header(AUTHORIZATION, bearer(customer.accessToken()))
-                .contentType(APPLICATION_JSON)
-                .body(forNewQuote(quoteRequest))
-                .retrieve()
-                .bodyToMono(Quote.class);
+        return withCustomerCredentials(customer, credentials ->
+                client.post()
+                        .uri(QUOTES_PATH_V2)
+                        .header(AUTHORIZATION, bearer(credentials))
+                        .contentType(APPLICATION_JSON)
+                        .body(forNewQuote(quoteRequest))
+                        .retrieve()
+                        .bodyToMono(Quote.class));
     }
 
     public Mono anonymousQuote(final QuoteRequest quoteRequest) {
@@ -185,7 +185,7 @@ public class ApiClient {
     public Mono<String> proxy(final Customer customer) {
         return client.get()
                 .uri(recipientRequirementsPath(customer.latestQuoteId()))
-                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .header(AUTHORIZATION, bearer(customer))
                 .retrieve()
                 .bodyToMono(String.class);
     }
@@ -193,7 +193,7 @@ public class ApiClient {
     public Mono<String> proxy(final Customer customer, final ServerHttpRequest request) {
         return client.post()
                 .uri(recipientRequirementsPath(customer.latestQuoteId()))
-                .header(AUTHORIZATION, bearer(customer.accessToken()))
+                .header(AUTHORIZATION, bearer(customer))
                 .headers(headers -> headers.addAll(request.getHeaders()))
                 .body(fromDataBuffers(request.getBody()))
                 .retrieve()
@@ -207,6 +207,14 @@ public class ApiClient {
 
     private String basic() {
         return String.format("Basic %s", config.encodedCredentials());
+    }
+
+    private String bearer(final Credentials credentials) {
+        return String.format("Bearer %s", credentials.accessToken);
+    }
+
+    private String bearer(final Customer customer) {
+        return String.format("Bearer %s", customer.accessToken());
     }
 
     private String bearer(final String token) {

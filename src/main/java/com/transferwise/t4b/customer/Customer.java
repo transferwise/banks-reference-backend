@@ -53,7 +53,7 @@ public class Customer {
     }
 
     public boolean hasExpiredCredentials() {
-        return credentials.isExpired();
+        return credentials.areExpired();
     }
 
     public String accessToken() {

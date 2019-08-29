@@ -97,7 +97,7 @@ public class ApiClient {
 
     private Mono<Profile> createPersonalProfile(final Customer customer) {
         return client.post()
-                .uri(PROFILES_PATH)
+                .uri(PROFILES_PATH_V1)
                 .contentType(APPLICATION_JSON)
                 .header(AUTHORIZATION, bearer(customer.accessToken()))
                 .body(forPersonalProfile(customer))
@@ -125,7 +125,7 @@ public class ApiClient {
     private Flux<Profile> profiles(final Customer customer) {
         return client
                 .get()
-                .uri(PROFILES_PATH)
+                .uri(PROFILES_PATH_V2)
                 .header(AUTHORIZATION, bearer(customer.accessToken()))
                 .retrieve()
                 .bodyToFlux(Profile.class);
@@ -165,7 +165,7 @@ public class ApiClient {
 
     public Mono<Quote> quote(final Customer customer, final QuoteRequest quoteRequest) {
         return client.post()
-                .uri(QUOTES_PATH)
+                .uri(QUOTES_PATH_V2)
                 .header(AUTHORIZATION, bearer(customer.accessToken()))
                 .contentType(APPLICATION_JSON)
                 .body(forNewQuote(quoteRequest))
@@ -175,7 +175,7 @@ public class ApiClient {
 
     public Mono anonymousQuote(final QuoteRequest quoteRequest) {
         return client.post()
-                .uri(QUOTES_PATH)
+                .uri(QUOTES_PATH_V2)
                 .contentType(APPLICATION_JSON)
                 .body(forNewQuote(quoteRequest))
                 .retrieve()
@@ -201,7 +201,7 @@ public class ApiClient {
     }
 
     public Mono<Quote> quote(final String token, final Long quoteId) {
-        final var uri = QUOTES_PATH + "/" + quoteId;
+        final var uri = QUOTES_PATH_V2 + "/" + quoteId;
         return getRequest(uri, bearer(token)).bodyToMono(Quote.class);
     }
 

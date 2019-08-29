@@ -96,6 +96,14 @@ public class Customer {
         return user;
     }
 
+    public Profile getPersonalProfile() {
+        return personalProfile;
+    }
+
+    public Profile getBusinessProfile() {
+        return businessProfile;
+    }
+
     public Customer withUser(final User user) {
         this.user = user.updated();
         return this;

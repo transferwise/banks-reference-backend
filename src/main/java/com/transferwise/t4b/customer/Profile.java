@@ -10,11 +10,7 @@ public class Profile {
     @Id
     private Long id;
     private String type;
-    private final ZonedDateTime createdAt;
-
-    public Profile() {
-        createdAt = ZonedDateTime.now();
-    }
+    private ZonedDateTime createdAt;
 
     public Long getId() {
         return id;
@@ -24,7 +20,11 @@ public class Profile {
         return type;
     }
 
-    public Boolean isPersonal() {
-        return "personal".equals(type);
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    Boolean isPersonal() {
+        return "personal".equalsIgnoreCase(type);
     }
 }

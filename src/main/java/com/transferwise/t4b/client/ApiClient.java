@@ -215,11 +215,11 @@ public class ApiClient {
     }
 
     private String bearer(final Credentials credentials) {
-        return String.format("Bearer %s", credentials.accessToken);
+        return bearer(credentials.accessToken);
     }
 
     private String bearer(final Customer customer) {
-        return String.format("Bearer %s", customer.accessToken());
+        return bearer(customer.accessToken());
     }
 
     private String bearer(final String token) {

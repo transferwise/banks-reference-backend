@@ -10,6 +10,6 @@ public final class Details {
         firstName = customer.getFirstName();
         lastName = customer.getLastName();
         dateOfBirth = customer.getDateOfBirth().toString();
-        phoneNumber = "+447799922333";
+        phoneNumber = customer.getPhoneNumber();
     }
 }

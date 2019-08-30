@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserCredentialsController {
 
     private final ApiClient client;
-    private final CustomerRepository customers;
+    private final CustomersRepository customers;
 
-    public UserCredentialsController(final ApiClient client, final CustomerRepository customers) {
+    public UserCredentialsController(final ApiClient client, final CustomersRepository customers) {
         this.client = client;
         this.customers = customers;
     }

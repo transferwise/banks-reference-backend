@@ -10,9 +10,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/customers")
 public class CustomersController {
 
-    private final CustomerRepository customers;
+    private final CustomersRepository customers;
 
-    public CustomersController(final CustomerRepository customers) {
+    public CustomersController(final CustomersRepository customers) {
         this.customers = customers;
     }
 

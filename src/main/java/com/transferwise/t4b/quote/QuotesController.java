@@ -1,7 +1,7 @@
 package com.transferwise.t4b.quote;
 
 import com.transferwise.t4b.client.ApiClient;
-import com.transferwise.t4b.customer.CustomerRepository;
+import com.transferwise.t4b.customer.CustomersRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +14,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class QuotesController {
 
     private final ApiClient client;
-    private final CustomerRepository customers;
+    private final CustomersRepository customers;
 
-    public QuotesController(final ApiClient client, final CustomerRepository customers) {
+    public QuotesController(final ApiClient client, final CustomersRepository customers) {
         this.client = client;
         this.customers = customers;
     }

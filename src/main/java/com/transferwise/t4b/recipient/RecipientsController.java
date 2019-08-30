@@ -1,7 +1,7 @@
 package com.transferwise.t4b.recipient;
 
 import com.transferwise.t4b.client.ApiClient;
-import com.transferwise.t4b.customer.CustomerRepository;
+import com.transferwise.t4b.customer.CustomersRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +14,9 @@ import reactor.core.publisher.Flux;
 public class RecipientsController {
 
     private final ApiClient client;
-    private final CustomerRepository customers;
+    private final CustomersRepository customers;
 
-    public RecipientsController(final ApiClient client, final CustomerRepository customers) {
+    public RecipientsController(final ApiClient client, final CustomersRepository customers) {
         this.client = client;
         this.customers = customers;
     }

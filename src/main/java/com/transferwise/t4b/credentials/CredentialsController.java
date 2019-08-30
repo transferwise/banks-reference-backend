@@ -3,7 +3,7 @@ package com.transferwise.t4b.credentials;
 import com.transferwise.t4b.client.ApiClient;
 import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.customer.Customer;
-import com.transferwise.t4b.customer.CustomerRepository;
+import com.transferwise.t4b.customer.CustomersRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CredentialsController {
 
     private final ApiClient client;
-    private final CustomerRepository customers;
+    private final CustomersRepository customers;
 
-    public CredentialsController(final ApiClient client, final CustomerRepository customers) {
+    public CredentialsController(final ApiClient client, final CustomersRepository customers) {
         this.client = client;
         this.customers = customers;
     }

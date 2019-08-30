@@ -2,10 +2,10 @@ package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.client.params.RegistrationCode;
-import com.transferwise.t4b.credentials.Credentials;
+import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.customer.Customer;
-import com.transferwise.t4b.customer.Profile;
-import com.transferwise.t4b.customer.User;
+import com.transferwise.t4b.customer.TransferwiseProfile;
+import com.transferwise.t4b.customer.TransferwiseUser;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import com.transferwise.t4b.recipient.Recipient;
@@ -66,46 +66,46 @@ public class ApiClient {
                         .map(customer::withPersonalProfile));
     }
 
-    private Mono<ClientCredentials> clientCredentials() {
+    private Mono<TransferwiseClientCredentials> clientCredentials() {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .header(AUTHORIZATION, basic())
                 .body(forClientCredentials())
                 .retrieve()
-                .bodyToMono(ClientCredentials.class);
+                .bodyToMono(TransferwiseClientCredentials.class);
     }
 
-    private Mono<User> createUser(final Customer customer,
-                                  final ClientCredentials credentials,
-                                  final RegistrationCode registrationCode) {
+    private Mono<TransferwiseUser> createUser(final Customer customer,
+                                              final TransferwiseClientCredentials credentials,
+                                              final RegistrationCode registrationCode) {
         return client.post()
                 .uri(SIGNUP_PATH)
                 .contentType(APPLICATION_JSON)
                 .header(AUTHORIZATION, bearer(credentials.token))
                 .body(forNewUser(customer.email(), registrationCode.v1()))
                 .retrieve()
-                .bodyToMono(User.class);
+                .bodyToMono(TransferwiseUser.class);
     }
 
-    private Mono<Credentials> createUserCredentials(final User user, final ClientCredentials credentials) {
+    private Mono<TransferwiseCredentials> createUserCredentials(final TransferwiseUser user, final TransferwiseClientCredentials credentials) {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .header(AUTHORIZATION, basic())
                 .body(forUserCredentials(config, user))
                 .retrieve()
-                .bodyToMono(Credentials.class);
+                .bodyToMono(TransferwiseCredentials.class);
     }
 
-    private Mono<Profile> createPersonalProfile(final Customer customer) {
+    private Mono<TransferwiseProfile> createPersonalProfile(final Customer customer) {
         return client.post()
                 .uri(PROFILES_PATH_V1)
                 .contentType(APPLICATION_JSON)
                 .header(AUTHORIZATION, bearer(customer))
                 .body(forPersonalProfile(customer))
                 .retrieve()
-                .bodyToMono(Profile.class);
+                .bodyToMono(TransferwiseProfile.class);
     }
 
     public Mono<Customer> attachCredentialsAndProfiles(final Code code, final Customer customer) {
@@ -116,46 +116,46 @@ public class ApiClient {
                 .map(customer::withProfiles);
     }
 
-    private Mono<Credentials> createCustomerCredentials(final Code code) {
+    private Mono<TransferwiseCredentials> createCustomerCredentials(final Code code) {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .header(AUTHORIZATION, basic())
                 .body(forCustomerCredentials(config, code))
                 .retrieve()
-                .bodyToMono(Credentials.class);
+                .bodyToMono(TransferwiseCredentials.class);
     }
 
-    private Flux<Profile> profiles(final Customer customer) {
+    private Flux<TransferwiseProfile> profiles(final Customer customer) {
         return client
                 .get()
                 .uri(PROFILES_PATH_V2)
                 .header(AUTHORIZATION, bearer(customer))
                 .retrieve()
-                .bodyToFlux(Profile.class);
+                .bodyToFlux(TransferwiseProfile.class);
     }
 
     public Flux<Recipient> recipients(final Customer customer) {
         return client.get()
-                .uri(new UriWithParams(ACCOUNTS_PATH, customer.personalProfileId()))
+                .uri(new UriWithParams(ACCOUNTS_PATH, customer.profileId()))
                 .header(AUTHORIZATION, bearer(customer))
                 .retrieve()
                 .bodyToFlux(Recipient.class);
     }
 
-    public Mono<Credentials> refresh(final Credentials credentials) {
+    public Mono<TransferwiseCredentials> refresh(final TransferwiseCredentials credentials) {
         if (credentials.areExpired()) {
             return client.post()
                     .uri(OAUTH_TOKEN_PATH)
                     .header(AUTHORIZATION, basic())
                     .body(forRefreshToken(credentials.refreshToken()))
                     .retrieve()
-                    .bodyToMono(Credentials.class);
+                    .bodyToMono(TransferwiseCredentials.class);
         }
 
         return Mono.just(credentials);
     }
 
-    private <T> Mono<T> withCustomerCredentials(final Customer customer, final Function<Credentials, Mono<T>> f) {
+    private <T> Mono<T> withCustomerCredentials(final Customer customer, final Function<TransferwiseCredentials, Mono<T>> f) {
         return refresh(customer.getCredentials()).flatMap(f);
     }
 
@@ -201,7 +201,7 @@ public class ApiClient {
         return String.format("Basic %s", config.encodedCredentials());
     }
 
-    private String bearer(final Credentials credentials) {
+    private String bearer(final TransferwiseCredentials credentials) {
         return bearer(credentials.accessToken);
     }
 

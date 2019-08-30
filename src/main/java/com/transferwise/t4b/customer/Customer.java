@@ -1,8 +1,8 @@
 package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.params.Email;
-import com.transferwise.t4b.client.params.PersonalProfileId;
-import com.transferwise.t4b.credentials.Credentials;
+import com.transferwise.t4b.client.params.ProfileId;
+import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.quote.Quote;
 
 import javax.persistence.*;
@@ -29,16 +29,13 @@ public class Customer {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Credentials credentials;
+    private TransferwiseCredentials credentials;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private User user;
+    private TransferwiseUser user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Profile personalProfile;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Profile businessProfile;
+    private TransferwiseProfile profile;
 
     @ElementCollection(fetch = EAGER)
     private final List<UUID> quoteIds = new ArrayList<>();
@@ -51,10 +48,6 @@ public class Customer {
         lastName = newCustomer.getLastName();
         email = newCustomer.getEmail();
         dateOfBirth = newCustomer.getDateOfBirth();
-    }
-
-    public boolean hasExpiredCredentials() {
-        return credentials.areExpired();
     }
 
     public String accessToken() {
@@ -89,46 +82,39 @@ public class Customer {
         return phoneNumber;
     }
 
-    public Credentials getCredentials() {
+    public TransferwiseCredentials getCredentials() {
         return credentials;
     }
 
-    public User getUser() {
+    public TransferwiseUser getUser() {
         return user;
     }
 
-    public Profile getPersonalProfile() {
-        return personalProfile;
+    public TransferwiseProfile getProfile() {
+        return profile;
     }
 
-    public Profile getBusinessProfile() {
-        return businessProfile;
-    }
-
-    public Customer withUser(final User user) {
+    public Customer withUser(final TransferwiseUser user) {
         this.user = user.updated();
         return this;
     }
 
-    public Customer withCredentials(final Credentials credentials) {
+    public Customer withCredentials(final TransferwiseCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
 
-    public Customer withPersonalProfile(final Profile personalProfile) {
-        this.personalProfile = personalProfile;
+    public Customer withPersonalProfile(final TransferwiseProfile profile) {
+        this.profile = profile;
         return this;
     }
 
-    public Customer withProfiles(final List<Profile> profiles) {
-        profiles.forEach(profile -> {
-            if (profile.isPersonal()) {
-                personalProfile = profile;
-            } else {
-                businessProfile = profile;
-            }
-        });
-
+    public Customer withProfiles(final List<TransferwiseProfile> profiles) {
+        profile = profiles
+                .stream()
+                .filter(TransferwiseProfile::isPersonal)
+                .findFirst()
+                .orElse(null);
         return this;
     }
 
@@ -137,8 +123,8 @@ public class Customer {
         return this;
     }
 
-    public PersonalProfileId personalProfileId() {
-        return new PersonalProfileId(personalProfile.getId());
+    public ProfileId profileId() {
+        return new ProfileId(profile.getId());
     }
 
     public UUID latestQuoteId() {

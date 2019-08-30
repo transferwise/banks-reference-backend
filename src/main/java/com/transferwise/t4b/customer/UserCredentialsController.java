@@ -1,7 +1,7 @@
 package com.transferwise.t4b.customer;
 
 import com.transferwise.t4b.client.ApiClient;
-import com.transferwise.t4b.credentials.Credentials;
+import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class UserCredentialsController {
     }
 
     @PostMapping
-    public Publisher<Credentials> create(@RequestParam final Long id) {
+    public Publisher<TransferwiseCredentials> create(@RequestParam final Long id) {
         final var customer = customers.find(id);
         return client.userCredentials(customer)
                 .map(customers::save)

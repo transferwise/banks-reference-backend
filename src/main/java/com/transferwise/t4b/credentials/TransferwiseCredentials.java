@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 import static java.time.ZonedDateTime.now;
 
 @Entity
-public class Credentials {
+public class TransferwiseCredentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "credentials_generator")
@@ -22,14 +22,14 @@ public class Credentials {
     public final String refreshToken;
     public final ZonedDateTime expiresIn;
 
-    private Credentials() {
+    private TransferwiseCredentials() {
         this(null, null, 0);
     }
 
     @JsonCreator
-    public Credentials(@JsonProperty("access_token") final String accessToken,
-                       @JsonProperty("refresh_token") final String refreshToken,
-                       @JsonProperty("expires_in") final Integer expiresIn) {
+    public TransferwiseCredentials(@JsonProperty("access_token") final String accessToken,
+                                   @JsonProperty("refresh_token") final String refreshToken,
+                                   @JsonProperty("expires_in") final Integer expiresIn) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.expiresIn = now().plusSeconds(expiresIn);

@@ -7,14 +7,14 @@ import java.time.ZonedDateTime;
 
 import static java.time.ZonedDateTime.now;
 
-public final class ClientCredentials {
+public final class TransferwiseClientCredentials {
 
     public final String token;
     public final ZonedDateTime expiresIn;
 
     @JsonCreator
-    public ClientCredentials(@JsonProperty("access_token") final String token,
-                             @JsonProperty("expires_in") final Integer expiresIn) {
+    public TransferwiseClientCredentials(@JsonProperty("access_token") final String token,
+                                         @JsonProperty("expires_in") final Integer expiresIn) {
         this.token = token;
         this.expiresIn = now().plusSeconds(expiresIn);
     }

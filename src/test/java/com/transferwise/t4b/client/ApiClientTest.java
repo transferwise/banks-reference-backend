@@ -47,7 +47,7 @@ public class ApiClientTest {
         final var customer = client.userCredentials(Fabricator.newCustomer()).block();
         assertNotNull(customer.getCredentials());
         assertNotNull(customer.getUser());
-        assertNotNull(customer.getPersonalProfile());
+        assertNotNull(customer.getProfile());
     }
 
     private MockResponse response(final String filename) throws IOException {

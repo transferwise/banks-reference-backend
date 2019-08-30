@@ -12,7 +12,7 @@ import static java.time.ZonedDateTime.now;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class TransferwiseUser {
 
     @Id
     private Long id;
@@ -37,12 +37,12 @@ public class User {
         return updatedAt;
     }
 
-    public User updated() {
+    public TransferwiseUser updated() {
         updatedAt = now();
         return this;
     }
 
-    public User withRegistrationCode(final RegistrationCode registrationCode) {
+    public TransferwiseUser withRegistrationCode(final RegistrationCode registrationCode) {
         this.registrationCode = registrationCode.value();
         return this;
     }

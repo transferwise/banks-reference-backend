@@ -1,4 +1,4 @@
--- CREATE TABLE Credentials(
+-- CREATE TABLE TransferwiseCredentials(
 --     id SERIAL PRIMARY KEY,
 --     access_token VARCHAR NOT NULL,
 --     refresh_token VARCHAR NOT NULL,
@@ -8,7 +8,7 @@
 -- CREATE TABLE Customer(
 --     id SERIAL PRIMARY KEY,
 --     name VARCHAR(255),
---     credentials_id integer REFERENCES Credentials
+--     credentials_id integer REFERENCES TransferwiseCredentials
 -- );
 --
 -- INSERT INTO Customer(id, name, email) VALUES(1, 'John Travolta', 'john.travolta3@transferwise.com');

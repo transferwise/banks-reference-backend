@@ -28,12 +28,4 @@ public class QuotesController {
         return client.quote(customer, quoteRequest)
                 .doOnSuccess(quote -> customers.save(customer.addQuote(quote)));
     }
-
-    @GetMapping("/{quoteId}")
-    public Publisher<Quote> show(@PathVariable final Long quoteId) {
-        return customers
-                .findById(1L)
-                .map(customer -> client.quote(customer.accessToken(), quoteId))
-                .get();
-    }
 }

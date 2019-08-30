@@ -1,7 +1,6 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.Code;
-import com.transferwise.t4b.client.params.Parameter;
 import com.transferwise.t4b.client.params.RegistrationCode;
 import com.transferwise.t4b.credentials.Credentials;
 import com.transferwise.t4b.customer.Customer;
@@ -136,18 +135,11 @@ public class ApiClient {
     }
 
     public Flux<Recipient> recipients(final Customer customer) {
-        return getRequest(ACCOUNTS_PATH, bearer(customer), customer.personalProfileId())
-                .bodyToFlux(Recipient.class);
-    }
-
-    private WebClient.ResponseSpec getRequest(final String uri, final String authorization, final Parameter... parameters) {
         return client.get()
-                .uri(builder -> builder
-                        .path(uri)
-                        .queryParams(multiMap(parameters))
-                        .build())
-                .header(AUTHORIZATION, authorization)
-                .retrieve();
+                .uri(new UriWithParams(ACCOUNTS_PATH, customer.personalProfileId()))
+                .header(AUTHORIZATION, bearer(customer))
+                .retrieve()
+                .bodyToFlux(Recipient.class);
     }
 
     public Mono<Credentials> refresh(final Credentials credentials) {
@@ -203,11 +195,6 @@ public class ApiClient {
                 .body(fromDataBuffers(request.getBody()))
                 .retrieve()
                 .bodyToMono(String.class);
-    }
-
-    public Mono<Quote> quote(final String token, final Long quoteId) {
-        final var uri = QUOTES_PATH_V2 + "/" + quoteId;
-        return getRequest(uri, bearer(token)).bodyToMono(Quote.class);
     }
 
     private String basic() {

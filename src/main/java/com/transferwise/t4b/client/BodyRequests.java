@@ -24,7 +24,7 @@ public class BodyRequests {
         return fromObject(map(email, v1RegistrationCode));
     }
 
-    static MultipartInserter forClientCredentials() {
+    public static MultipartInserter forClientCredentials() {
         return fromMultipartData(multiMap(new GrantTypeClientCredentials()));
     }
 
@@ -44,7 +44,7 @@ public class BodyRequests {
         return fromObject(quoteRequest.toJson());
     }
 
-    static MultipartInserter forRefreshToken(final RefreshToken refreshToken) {
+    public static MultipartInserter forRefreshToken(final RefreshToken refreshToken) {
         return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));
     }
 

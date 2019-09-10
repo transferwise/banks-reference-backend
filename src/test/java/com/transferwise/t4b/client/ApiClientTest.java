@@ -21,7 +21,7 @@ public class ApiClientTest {
 
     private final TestBankConfig config = new TestBankConfig();
     private final Authorizations auth = new Authorizations(config);
-    private final ApiClient client = new ApiClient(WebClient.create(server.url("/").toString()), config, auth);
+    private final ApiClient client = new ApiClient(WebClient.create(server.url("/").toString()), config, auth, manager);
 
     @After
     public void tearDown() throws IOException {

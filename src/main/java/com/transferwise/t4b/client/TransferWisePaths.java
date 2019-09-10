@@ -2,7 +2,7 @@ package com.transferwise.t4b.client;
 
 import java.util.UUID;
 
-interface TransferWisePaths {
+public interface TransferWisePaths {
     String BASE_URL = "https://api.sandbox.transferwise.tech";
 
     String OAUTH_TOKEN_PATH = "/oauth/token";

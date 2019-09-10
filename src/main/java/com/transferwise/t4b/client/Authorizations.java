@@ -5,7 +5,7 @@ import com.transferwise.t4b.customer.Customer;
 import org.springframework.stereotype.Component;
 
 @Component
-class Authorizations {
+public class Authorizations {
 
     private final TransferWiseBankConfig config;
 
@@ -13,7 +13,7 @@ class Authorizations {
         this.config = config;
     }
 
-    String basic() {
+    public String basic() {
         return String.format("Basic %s", config.encodedCredentials());
     }
 

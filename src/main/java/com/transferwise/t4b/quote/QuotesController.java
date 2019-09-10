@@ -25,7 +25,6 @@ public class QuotesController {
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest,
                                    @RequestParam final Long customerId) {
         final var customer = customers.find(customerId);
-        return client.quote(customer, quoteRequest)
-                .doOnSuccess(quote -> customers.save(customer.addQuote(quote)));
+        return client.quote(customer, quoteRequest);
     }
 }

@@ -2,6 +2,7 @@ package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.client.params.RegistrationCode;
+import com.transferwise.t4b.credentials.CredentialsManager;
 import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.TransferwiseProfile;
@@ -16,8 +17,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Function;
-
 import static com.transferwise.t4b.client.BodyRequests.*;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -30,6 +29,7 @@ public class ApiClient {
     private final WebClient client;
     private final TransferWiseBankConfig config;
     private final Authorizations auth;
+    private final CredentialsManager manager;
 
     ExchangeFilterFunction printlnFilter = (request, next) -> {
         System.out.println("\n\n" + request.method().toString().toUpperCase() + ":\n\nURL:"
@@ -40,24 +40,26 @@ public class ApiClient {
     };
 
     @Autowired
-    public ApiClient(final TransferWiseBankConfig config, final Authorizations auth) {
+    public ApiClient(final TransferWiseBankConfig config, final Authorizations auth, final CredentialsManager manager) {
         this.config = config;
         this.auth = auth;
+        this.manager = manager;
         client = WebClient.builder()
                 .baseUrl(BASE_URL)
                 .filter(printlnFilter).build();
     }
 
-    public ApiClient(final WebClient client, final TransferWiseBankConfig config, final Authorizations auth) {
+    public ApiClient(final WebClient client, final TransferWiseBankConfig config, final Authorizations auth, final CredentialsManager manager) {
         this.client = client;
         this.config = config;
         this.auth = auth;
+        this.manager = manager;
     }
 
     public Mono<Customer> userCredentials(final Customer customer) {
         final var registrationCode = new RegistrationCode();
 
-        return clientCredentials().flatMap(credentials ->
+        return manager.withBankCredentials(credentials ->
                 createUser(customer, credentials, registrationCode)
                         .map(user -> user.withRegistrationCode(registrationCode))
                         .map(customer::withUser)
@@ -65,16 +67,6 @@ public class ApiClient {
                         .map(customer::withCredentials)
                         .flatMap(this::createPersonalProfile)
                         .map(customer::withPersonalProfile));
-    }
-
-    private Mono<TransferwiseClientCredentials> clientCredentials() {
-        return client.post()
-                .uri(OAUTH_TOKEN_PATH)
-                .contentType(APPLICATION_FORM_URLENCODED)
-                .header(AUTHORIZATION, auth.basic())
-                .body(forClientCredentials())
-                .retrieve()
-                .bodyToMono(TransferwiseClientCredentials.class);
     }
 
     private Mono<TransferwiseUser> createUser(final Customer customer,
@@ -100,13 +92,14 @@ public class ApiClient {
     }
 
     private Mono<TransferwiseProfile> createPersonalProfile(final Customer customer) {
-        return client.post()
-                .uri(PROFILES_PATH_V1)
-                .contentType(APPLICATION_JSON)
-                .header(AUTHORIZATION, auth.bearer(customer))
-                .body(forPersonalProfile(customer))
-                .retrieve()
-                .bodyToMono(TransferwiseProfile.class);
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.post()
+                        .uri(PROFILES_PATH_V1)
+                        .contentType(APPLICATION_JSON)
+                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .body(forPersonalProfile(customer))
+                        .retrieve()
+                        .bodyToMono(TransferwiseProfile.class));
     }
 
     public Mono<Customer> attachCredentialsAndProfiles(final Code code, final Customer customer) {
@@ -143,25 +136,8 @@ public class ApiClient {
                 .bodyToFlux(Recipient.class);
     }
 
-    public Mono<TransferwiseCredentials> refresh(final TransferwiseCredentials credentials) {
-        if (credentials.areExpired()) {
-            return client.post()
-                    .uri(OAUTH_TOKEN_PATH)
-                    .header(AUTHORIZATION, auth.basic())
-                    .body(forRefreshToken(credentials.refreshToken()))
-                    .retrieve()
-                    .bodyToMono(TransferwiseCredentials.class);
-        }
-
-        return Mono.just(credentials);
-    }
-
-    private <T> Mono<T> withCustomerCredentials(final Customer customer, final Function<TransferwiseCredentials, Mono<T>> f) {
-        return refresh(customer.getCredentials()).flatMap(f);
-    }
-
     public Mono<Quote> quote(final Customer customer, final QuoteRequest quoteRequest) {
-        return withCustomerCredentials(customer, credentials ->
+        return manager.credentialsFor(customer).flatMap(credentials ->
                 client.post()
                         .uri(QUOTES_PATH_V2)
                         .header(AUTHORIZATION, auth.bearer(credentials))
@@ -181,20 +157,22 @@ public class ApiClient {
     }
 
     public Mono<String> recipientRequirements(final Customer customer) {
-        return client.get()
-                .uri(recipientRequirementsPath(customer.latestQuoteId()))
-                .header(AUTHORIZATION, auth.bearer(customer))
-                .retrieve()
-                .bodyToMono(String.class);
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.get()
+                        .uri(recipientRequirementsPath(customer.latestQuoteId()))
+                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .retrieve()
+                        .bodyToMono(String.class));
     }
 
     public Mono<String> recipientRequirements(final Customer customer, final String bodyRequest) {
-        return client.post()
-                .uri(recipientRequirementsPath(customer.latestQuoteId()))
-                .header(AUTHORIZATION, auth.bearer(customer))
-                .contentType(APPLICATION_JSON_UTF8)
-                .body(fromObject(bodyRequest))
-                .retrieve()
-                .bodyToMono(String.class);
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.post()
+                        .uri(recipientRequirementsPath(customer.latestQuoteId()))
+                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .body(fromObject(bodyRequest))
+                        .retrieve()
+                        .bodyToMono(String.class));
     }
 }

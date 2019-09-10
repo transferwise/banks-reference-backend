@@ -27,8 +27,8 @@ public class RecipientRequirementsController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<String> create(final ServerHttpRequest request) {
-        final var customer = customers.find(22L);
+    public Publisher<String> create(@RequestParam final Long customerId, final ServerHttpRequest request) {
+        final var customer = customers.find(customerId);
         return client.proxy(customer, request);
     }
 }

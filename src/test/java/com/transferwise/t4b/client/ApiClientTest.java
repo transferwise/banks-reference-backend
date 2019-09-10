@@ -20,7 +20,8 @@ public class ApiClientTest {
     private final MockWebServer server = new MockWebServer();
 
     private final TestBankConfig config = new TestBankConfig();
-    private final ApiClient client = new ApiClient(WebClient.create(server.url("/").toString()), config);
+    private final Authorizations auth = new Authorizations(config);
+    private final ApiClient client = new ApiClient(WebClient.create(server.url("/").toString()), config, auth);
 
     @After
     public void tearDown() throws IOException {

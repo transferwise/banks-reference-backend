@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 
 import static java.time.ZonedDateTime.now;
 
-@Entity
+@Entity(name = "credentials")
 public class TransferwiseCredentials {
 
     @Id

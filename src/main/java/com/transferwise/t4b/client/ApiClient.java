@@ -10,7 +10,6 @@ import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import com.transferwise.t4b.recipient.Recipient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,7 +22,7 @@ import static com.transferwise.t4b.client.BodyRequests.*;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.*;
-import static org.springframework.web.reactive.function.BodyInserters.fromDataBuffers;
+import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 @Service
 public class ApiClient {
@@ -181,7 +180,7 @@ public class ApiClient {
                 .bodyToMono(Quote.class);
     }
 
-    public Mono<String> proxy(final Customer customer) {
+    public Mono<String> recipientRequirements(final Customer customer) {
         return client.get()
                 .uri(recipientRequirementsPath(customer.latestQuoteId()))
                 .header(AUTHORIZATION, auth.bearer(customer))
@@ -189,12 +188,12 @@ public class ApiClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> proxy(final Customer customer, final ServerHttpRequest request) {
+    public Mono<String> recipientRequirements(final Customer customer, final String bodyRequest) {
         return client.post()
                 .uri(recipientRequirementsPath(customer.latestQuoteId()))
                 .header(AUTHORIZATION, auth.bearer(customer))
                 .contentType(APPLICATION_JSON_UTF8)
-                .body(fromDataBuffers(request.getBody()))
+                .body(fromObject(bodyRequest))
                 .retrieve()
                 .bodyToMono(String.class);
     }

@@ -3,7 +3,7 @@ package com.transferwise.t4b.recipient;
 import com.transferwise.t4b.client.ApiClient;
 import com.transferwise.t4b.customer.CustomersRepository;
 import org.reactivestreams.Publisher;
-import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -23,12 +23,12 @@ public class RecipientRequirementsController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public Publisher<String> get(@RequestParam final Long customerId) {
         final var customer = customers.find(customerId);
-        return client.proxy(customer);
+        return client.recipientRequirements(customer);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<String> create(@RequestParam final Long customerId, final ServerHttpRequest request) {
+    public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
         final var customer = customers.find(customerId);
-        return client.proxy(customer, request);
+        return client.recipientRequirements(customer, rawRequest.getBody());
     }
 }

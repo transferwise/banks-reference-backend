@@ -96,7 +96,7 @@ public class ApiClient {
                 client.post()
                         .uri(PROFILES_PATH_V1)
                         .contentType(APPLICATION_JSON)
-                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .header(AUTHORIZATION, credentials.bearer())
                         .body(forPersonalProfile(customer))
                         .retrieve()
                         .bodyToMono(TransferwiseProfile.class));
@@ -140,7 +140,7 @@ public class ApiClient {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.post()
                         .uri(QUOTES_PATH_V2)
-                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .header(AUTHORIZATION, credentials.bearer())
                         .contentType(APPLICATION_JSON)
                         .body(forNewQuote(quoteRequest))
                         .retrieve()
@@ -160,7 +160,7 @@ public class ApiClient {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.get()
                         .uri(recipientRequirementsPath(customer.latestQuoteId()))
-                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .header(AUTHORIZATION, credentials.bearer())
                         .retrieve()
                         .bodyToMono(String.class));
     }
@@ -169,7 +169,7 @@ public class ApiClient {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.post()
                         .uri(recipientRequirementsPath(customer.latestQuoteId()))
-                        .header(AUTHORIZATION, auth.bearer(credentials))
+                        .header(AUTHORIZATION, credentials.bearer())
                         .contentType(APPLICATION_JSON_UTF8)
                         .body(fromObject(bodyRequest))
                         .retrieve()

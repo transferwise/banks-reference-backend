@@ -43,4 +43,8 @@ public class TransferwiseCredentials {
     public RefreshToken refreshToken() {
         return new RefreshToken(refreshToken);
     }
+
+    public String bearer() {
+        return String.format("Bearer %s", accessToken);
+    }
 }

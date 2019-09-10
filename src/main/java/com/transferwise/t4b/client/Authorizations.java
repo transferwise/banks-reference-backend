@@ -1,6 +1,5 @@
 package com.transferwise.t4b.client;
 
-import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.customer.Customer;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +14,6 @@ public class Authorizations {
 
     public String basic() {
         return String.format("Basic %s", config.encodedCredentials());
-    }
-
-    String bearer(final TransferwiseCredentials credentials) {
-        return bearer(credentials.accessToken);
     }
 
     String bearer(final Customer customer) {

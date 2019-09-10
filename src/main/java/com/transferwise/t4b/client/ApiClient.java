@@ -28,7 +28,6 @@ public class ApiClient {
 
     private final WebClient client;
     private final TransferWiseBankConfig config;
-    private final Authorizations auth;
     private final CredentialsManager manager;
 
     ExchangeFilterFunction printlnFilter = (request, next) -> {
@@ -40,19 +39,17 @@ public class ApiClient {
     };
 
     @Autowired
-    public ApiClient(final TransferWiseBankConfig config, final Authorizations auth, final CredentialsManager manager) {
+    public ApiClient(final TransferWiseBankConfig config, final CredentialsManager manager) {
         this.config = config;
-        this.auth = auth;
         this.manager = manager;
         client = WebClient.builder()
                 .baseUrl(BASE_URL)
                 .filter(printlnFilter).build();
     }
 
-    public ApiClient(final WebClient client, final TransferWiseBankConfig config, final Authorizations auth, final CredentialsManager manager) {
+    public ApiClient(final WebClient client, final TransferWiseBankConfig config, final CredentialsManager manager) {
         this.client = client;
         this.config = config;
-        this.auth = auth;
         this.manager = manager;
     }
 
@@ -63,7 +60,7 @@ public class ApiClient {
                 createUser(customer, credentials, registrationCode)
                         .map(user -> user.withRegistrationCode(registrationCode))
                         .map(customer::withUser)
-                        .flatMap(c -> createUserCredentials(c.getUser(), credentials))
+                        .flatMap(c -> createUserCredentials(c.getUser()))
                         .map(customer::withCredentials)
                         .flatMap(this::createPersonalProfile)
                         .map(customer::withPersonalProfile));
@@ -75,17 +72,17 @@ public class ApiClient {
         return client.post()
                 .uri(SIGNUP_PATH)
                 .contentType(APPLICATION_JSON)
-                .header(AUTHORIZATION, auth.bearer(credentials.token))
+                .header(AUTHORIZATION, credentials.bearer())
                 .body(forNewUser(customer.email(), registrationCode.v1()))
                 .retrieve()
                 .bodyToMono(TransferwiseUser.class);
     }
 
-    private Mono<TransferwiseCredentials> createUserCredentials(final TransferwiseUser user, final TransferwiseClientCredentials credentials) {
+    private Mono<TransferwiseCredentials> createUserCredentials(final TransferwiseUser user) {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .header(AUTHORIZATION, auth.basic())
+                .header(AUTHORIZATION, config.basicAuth())
                 .body(forUserCredentials(config, user))
                 .retrieve()
                 .bodyToMono(TransferwiseCredentials.class);
@@ -113,27 +110,28 @@ public class ApiClient {
     private Mono<TransferwiseCredentials> createCustomerCredentials(final Code code) {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
-                .header(AUTHORIZATION, auth.basic())
+                .header(AUTHORIZATION, config.basicAuth())
                 .body(forCustomerCredentials(config, code))
                 .retrieve()
                 .bodyToMono(TransferwiseCredentials.class);
     }
 
     private Flux<TransferwiseProfile> profiles(final Customer customer) {
-        return client
-                .get()
-                .uri(PROFILES_PATH_V2)
-                .header(AUTHORIZATION, auth.bearer(customer))
-                .retrieve()
-                .bodyToFlux(TransferwiseProfile.class);
+        return manager.credentialsFor(customer).flatMapMany(credentials ->
+                client.get()
+                        .uri(PROFILES_PATH_V2)
+                        .header(AUTHORIZATION, credentials.bearer())
+                        .retrieve()
+                        .bodyToFlux(TransferwiseProfile.class));
     }
 
     public Flux<Recipient> recipients(final Customer customer) {
-        return client.get()
-                .uri(new UriWithParams(ACCOUNTS_PATH, customer.profileId()))
-                .header(AUTHORIZATION, auth.bearer(customer))
-                .retrieve()
-                .bodyToFlux(Recipient.class);
+        return manager.credentialsFor(customer).flatMapMany(credentials ->
+                client.get()
+                        .uri(new UriWithParams(ACCOUNTS_PATH, customer.profileId()))
+                        .header(AUTHORIZATION, credentials.bearer())
+                        .retrieve()
+                        .bodyToFlux(Recipient.class));
     }
 
     public Mono<Quote> quote(final Customer customer, final QuoteRequest quoteRequest) {

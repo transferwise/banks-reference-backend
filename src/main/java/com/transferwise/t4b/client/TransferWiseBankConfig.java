@@ -33,11 +33,15 @@ public class TransferWiseBankConfig {
         return new RedirectUri(redirectUri);
     }
 
-    public String credentials() {
+    protected String credentials() {
         return clientId + ":" + secret;
     }
 
-    public String encodedCredentials() {
+    protected String encodedCredentials() {
         return Base64Utils.encodeToString(credentials().getBytes(UTF_8));
+    }
+
+    public String basicAuth() {
+        return String.format("Basic %s", encodedCredentials());
     }
 }

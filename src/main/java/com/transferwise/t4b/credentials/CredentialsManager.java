@@ -1,6 +1,6 @@
 package com.transferwise.t4b.credentials;
 
-import com.transferwise.t4b.client.Authorizations;
+import com.transferwise.t4b.client.TransferWiseBankConfig;
 import com.transferwise.t4b.client.TransferwiseClientCredentials;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.CustomersRepository;
@@ -21,12 +21,12 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 public class CredentialsManager {
 
     private final CustomersRepository customers;
-    private final Authorizations auth;
+    private final TransferWiseBankConfig config;
     private final WebClient client;
 
-    public CredentialsManager(final CustomersRepository customers, final Authorizations auth) {
+    public CredentialsManager(final CustomersRepository customers, final TransferWiseBankConfig config) {
         this.customers = customers;
-        this.auth = auth;
+        this.config = config;
         client = WebClient.builder().baseUrl(BASE_URL).build();
     }
 
@@ -39,7 +39,7 @@ public class CredentialsManager {
         if (credentials.areExpired()) {
             return client.post()
                     .uri(OAUTH_TOKEN_PATH)
-                    .header(AUTHORIZATION, auth.basic())
+                    .header(AUTHORIZATION, config.basicAuth())
                     .body(forRefreshToken(credentials.refreshToken()))
                     .retrieve()
                     .bodyToMono(TransferwiseCredentials.class);
@@ -56,7 +56,7 @@ public class CredentialsManager {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .header(AUTHORIZATION, auth.basic())
+                .header(AUTHORIZATION, config.basicAuth())
                 .body(forClientCredentials())
                 .retrieve()
                 .bodyToMono(TransferwiseClientCredentials.class);

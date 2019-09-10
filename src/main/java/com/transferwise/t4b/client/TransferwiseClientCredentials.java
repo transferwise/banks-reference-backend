@@ -18,4 +18,8 @@ public final class TransferwiseClientCredentials {
         this.token = token;
         this.expiresIn = now().plusSeconds(expiresIn);
     }
+
+    public String bearer() {
+        return String.format("Bearer %s", token);
+    }
 }

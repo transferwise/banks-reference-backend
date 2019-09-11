@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/credentials")
-public class CredentialsController {
+public class ExistingUserCredentialsController {
 
     private final ExistingTransferWiseUser existingUser;
     private final CustomersRepository customers;
 
-    public CredentialsController(final ExistingTransferWiseUser existingUser, final CustomersRepository customers) {
+    public ExistingUserCredentialsController(final ExistingTransferWiseUser existingUser, final CustomersRepository customers) {
         this.existingUser = existingUser;
         this.customers = customers;
     }

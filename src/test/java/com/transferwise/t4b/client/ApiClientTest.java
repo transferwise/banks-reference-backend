@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static com.transferwise.t4b.Fabricator.newCustomer;
+import static com.transferwise.t4b.support.Fabricator.newCustomer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;

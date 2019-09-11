@@ -1,4 +1,4 @@
-package com.transferwise.t4b;
+package com.transferwise.t4b.support;
 
 import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.credentials.TransferwiseProfile;

@@ -1,11 +1,9 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.Code;
-import com.transferwise.t4b.client.params.RegistrationCode;
 import com.transferwise.t4b.credentials.CredentialsManager;
 import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.credentials.TransferwiseProfile;
-import com.transferwise.t4b.credentials.TransferwiseUser;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
@@ -15,10 +13,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.transferwise.t4b.client.BodyRequests.*;
+import static com.transferwise.t4b.client.BodyRequests.forCustomerCredentials;
+import static com.transferwise.t4b.client.BodyRequests.forNewQuote;
 import static com.transferwise.t4b.client.TransferWisePaths.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 @Component
@@ -32,52 +32,6 @@ public class ApiClient {
         this.client = client;
         this.config = config;
         this.manager = manager;
-    }
-
-    public Mono<Customer> userCredentials(final Customer customer) {
-        final var registrationCode = new RegistrationCode();
-
-        return manager.withBankCredentials(credentials ->
-                createUser(customer, credentials, registrationCode)
-                        .map(user -> user.withRegistrationCode(registrationCode))
-                        .map(customer::withUser)
-                        .flatMap(c -> createUserCredentials(c.getUser()))
-                        .map(customer::withCredentials)
-                        .flatMap(this::createPersonalProfile)
-                        .map(customer::withPersonalProfile));
-    }
-
-    private Mono<TransferwiseUser> createUser(final Customer customer,
-                                              final TransferwiseClientCredentials credentials,
-                                              final RegistrationCode registrationCode) {
-        return client.post()
-                .uri(SIGNUP_PATH)
-                .contentType(APPLICATION_JSON)
-                .header(AUTHORIZATION, credentials.bearer())
-                .body(forNewUser(customer.email(), registrationCode.v1()))
-                .retrieve()
-                .bodyToMono(TransferwiseUser.class);
-    }
-
-    private Mono<TransferwiseCredentials> createUserCredentials(final TransferwiseUser user) {
-        return client.post()
-                .uri(OAUTH_TOKEN_PATH)
-                .contentType(APPLICATION_FORM_URLENCODED)
-                .header(AUTHORIZATION, config.basicAuth())
-                .body(forUserCredentials(config, user))
-                .retrieve()
-                .bodyToMono(TransferwiseCredentials.class);
-    }
-
-    private Mono<TransferwiseProfile> createPersonalProfile(final Customer customer) {
-        return manager.credentialsFor(customer).flatMap(credentials ->
-                client.post()
-                        .uri(PROFILES_PATH_V1)
-                        .contentType(APPLICATION_JSON)
-                        .header(AUTHORIZATION, credentials.bearer())
-                        .body(forPersonalProfile(customer))
-                        .retrieve()
-                        .bodyToMono(TransferwiseProfile.class));
     }
 
     public Mono<Customer> attachCredentialsAndProfiles(final Code code, final Customer customer) {

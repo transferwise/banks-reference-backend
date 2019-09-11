@@ -20,7 +20,7 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 
 public class BodyRequests {
 
-    static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forNewUser(final Email email, final V1RegistrationCode v1RegistrationCode) {
+    public static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forNewUser(final Email email, final V1RegistrationCode v1RegistrationCode) {
         return fromObject(map(email, v1RegistrationCode));
     }
 
@@ -28,7 +28,7 @@ public class BodyRequests {
         return fromMultipartData(multiMap(new GrantTypeClientCredentials()));
     }
 
-    static MultipartInserter forUserCredentials(final TransferWiseBankConfig config, final TransferwiseUser user) {
+    public static MultipartInserter forUserCredentials(final TransferWiseBankConfig config, final TransferwiseUser user) {
         return fromMultipartData(
                 multiMap(new GrantTypeRegistrationCode(),
                         user.email(),
@@ -36,7 +36,7 @@ public class BodyRequests {
                         user.registrationCode()));
     }
 
-    static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final Customer customer) {
+    public static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final Customer customer) {
         return fromObject(new PersonalProfileRequest(customer).toJson());
     }
 

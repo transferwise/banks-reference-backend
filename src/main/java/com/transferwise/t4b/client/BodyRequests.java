@@ -48,7 +48,7 @@ public class BodyRequests {
         return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));
     }
 
-    static MultipartInserter forCustomerCredentials(final TransferWiseBankConfig config, final Code code) {
+    public static MultipartInserter forCustomerCredentials(final TransferWiseBankConfig config, final Code code) {
         return fromMultipartData(
                 multiMap(new GrantTypeAuthorizationCode(),
                         config.clientId(),

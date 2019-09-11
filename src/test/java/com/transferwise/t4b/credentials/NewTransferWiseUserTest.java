@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class NewTransferWiseUserTest extends ServerTest {
 
-    private final NewTransferWiseUser request = new NewTransferWiseUser(webClient, config, manager);
+    private final NewTransferWiseUser newUser = new NewTransferWiseUser(webClient, config, manager);
 
     @Test
     public void createAllCredentialsForNewCustomer() throws IOException {
@@ -19,7 +19,7 @@ public class NewTransferWiseUserTest extends ServerTest {
         server.enqueue(response("user-credentials.json"));
         server.enqueue(response("profile.json"));
 
-        final var customer = request.create(newCustomer()).block();
+        final var customer = newUser.create(newCustomer()).block();
         assertNotNull(customer.getCredentials());
         assertNotNull(customer.getUser());
         assertNotNull(customer.getProfile());

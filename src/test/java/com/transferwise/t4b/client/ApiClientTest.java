@@ -8,7 +8,6 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +27,6 @@ public class ApiClientTest {
     private final TestBankConfig config = new TestBankConfig();
     private final WebClient webClient = WebClient.create(server.url("/").toString());
 
-    @Mock
     private final CustomersRepository customers = mock(CustomersRepository.class);
 
     private final CredentialsManager manager = new CredentialsManager(webClient, config, customers);

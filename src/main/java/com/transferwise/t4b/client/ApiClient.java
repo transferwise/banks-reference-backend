@@ -10,7 +10,7 @@ import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import com.transferwise.t4b.recipient.Recipient;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,7 +21,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
-@Service
+@Component
 public class ApiClient {
 
     private final WebClient client;

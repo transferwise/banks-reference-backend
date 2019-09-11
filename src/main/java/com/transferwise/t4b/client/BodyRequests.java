@@ -40,7 +40,7 @@ public class BodyRequests {
         return fromObject(new PersonalProfileRequest(customer).toJson());
     }
 
-    static BodyInserter<String, ReactiveHttpOutputMessage> forNewQuote(final QuoteRequest quoteRequest) {
+    public static BodyInserter<String, ReactiveHttpOutputMessage> forNewQuote(final QuoteRequest quoteRequest) {
         return fromObject(quoteRequest.toJson());
     }
 

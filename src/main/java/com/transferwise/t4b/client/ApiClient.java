@@ -2,18 +2,15 @@ package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.credentials.CredentialsManager;
 import com.transferwise.t4b.customer.Customer;
-import com.transferwise.t4b.quote.Quote;
-import com.transferwise.t4b.quote.QuoteRequest;
 import com.transferwise.t4b.recipient.Recipient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.transferwise.t4b.client.BodyRequests.forNewQuote;
-import static com.transferwise.t4b.client.TransferWisePaths.*;
+import static com.transferwise.t4b.client.TransferWisePaths.ACCOUNTS_PATH;
+import static com.transferwise.t4b.client.TransferWisePaths.recipientRequirementsPath;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
@@ -37,26 +34,6 @@ public class ApiClient {
                         .header(AUTHORIZATION, credentials.bearer())
                         .retrieve()
                         .bodyToFlux(Recipient.class));
-    }
-
-    public Mono<Quote> quote(final Customer customer, final QuoteRequest quoteRequest) {
-        return manager.credentialsFor(customer).flatMap(credentials ->
-                client.post()
-                        .uri(QUOTES_PATH_V2)
-                        .header(AUTHORIZATION, credentials.bearer())
-                        .contentType(APPLICATION_JSON)
-                        .body(forNewQuote(quoteRequest))
-                        .retrieve()
-                        .bodyToMono(Quote.class));
-    }
-
-    public Mono anonymousQuote(final QuoteRequest quoteRequest) {
-        return client.post()
-                .uri(QUOTES_PATH_V2)
-                .contentType(APPLICATION_JSON)
-                .body(forNewQuote(quoteRequest))
-                .retrieve()
-                .bodyToMono(Quote.class);
     }
 
     public Mono<String> recipientRequirements(final Customer customer) {

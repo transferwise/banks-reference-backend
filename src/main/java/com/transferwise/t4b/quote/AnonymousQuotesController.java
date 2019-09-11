@@ -1,6 +1,5 @@
 package com.transferwise.t4b.quote;
 
-import com.transferwise.t4b.client.ApiClient;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +14,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/anonymous-quotes")
 public class AnonymousQuotesController {
 
-    private final ApiClient client;
+    private final TransferWiseQuote twQuote;
 
-    public AnonymousQuotesController(final ApiClient client) {
-        this.client = client;
+    public AnonymousQuotesController(final TransferWiseQuote twQuote) {
+        this.twQuote = twQuote;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
-        return client.anonymousQuote(quoteRequest);
+        return twQuote.createAnonymous(quoteRequest);
     }
 }

@@ -1,0 +1,381 @@
+{
+  "id": "459b1da2-9acd-4d14-a3e7-c6e8483d1c2a",
+  "sourceCurrency": "EUR",
+  "targetCurrency": "BRL",
+  "sourceAmount": 2200,
+  "payOut": "BANK_TRANSFER",
+  "rate": 4.46567,
+  "createdTime": "2019-09-11T16:09:33",
+  "user": 1234,
+  "profile": 9988,
+  "rateExpirationTime": "2019-09-13T16:09:33",
+  "providedAmountType": "SOURCE",
+  "status": "PENDING",
+  "expirationTime": "2019-09-11T16:39:33",
+  "notices": [],
+  "paymentOptions": [
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "CARD",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "DEBIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "CREDIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-12T17:00:00",
+      "formattedEstimatedDelivery": "by IX 12",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.41,
+        "payIn": 0,
+        "discount": 0,
+        "total": 25.41
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9711,
+      "payIn": "BANK_TRANSFER",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.41,
+        "payIn": 0,
+        "discount": 0,
+        "total": 25.41
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9711,
+      "payIn": "SOFORT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-13T15:30:00",
+      "formattedEstimatedDelivery": "by IX 13",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.41,
+        "payIn": 0,
+        "discount": 0,
+        "total": 25.41
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9711,
+      "payIn": "TRUSTLY",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.41,
+        "payIn": 0,
+        "discount": 0,
+        "total": 25.41
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9711,
+      "payIn": "IDEAL",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 24.78,
+        "payIn": 57.84,
+        "discount": 0,
+        "total": 82.62
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9455.52,
+      "payIn": "VISA_BUSINESS_CREDIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 24.78,
+        "payIn": 57.84,
+        "discount": 0,
+        "total": 82.62
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9455.52,
+      "payIn": "MC_BUSINESS_CREDIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "VISA_CREDIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "MC_CREDIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 24.71,
+        "payIn": 64.08,
+        "discount": 0,
+        "total": 88.79
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9427.97,
+      "payIn": "INTERNATIONAL_CREDIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.01,
+        "payIn": 36.77,
+        "discount": 0,
+        "total": 61.78
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9548.58,
+      "payIn": "VISA_BUSINESS_DEBIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.01,
+        "payIn": 36.77,
+        "discount": 0,
+        "total": 61.78
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9548.58,
+      "payIn": "MC_BUSINESS_DEBIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "VISA_DEBIT_OR_PREPAID",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "MC_DEBIT_OR_PREPAID",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.33,
+        "payIn": 7.67,
+        "discount": 0,
+        "total": 33
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9677.11,
+      "payIn": "MAESTRO",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": false,
+      "estimatedDelivery": "2019-09-11T19:30:00",
+      "formattedEstimatedDelivery": "in 3 hours",
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 24.71,
+        "payIn": 64.08,
+        "discount": 0,
+        "total": 88.79
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9427.97,
+      "payIn": "INTERNATIONAL_DEBIT",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ]
+    },
+    {
+      "disabled": true,
+      "estimatedDeliveryDelays": [],
+      "fee": {
+        "transferwise": 25.58,
+        "payIn": 0,
+        "discount": 0,
+        "total": 25.58
+      },
+      "sourceAmount": 2200,
+      "targetAmount": 9710.24,
+      "payIn": "BALANCE",
+      "payOut": "BANK_TRANSFER",
+      "allowedProfileTypes": [
+        "PERSONAL"
+      ],
+      "disabledReason": {
+        "code": "error.payInmethod.disabled",
+        "message": "Open a borderless account and add funds to instantly pay for your transfers."
+      }
+    }
+  ]
+}

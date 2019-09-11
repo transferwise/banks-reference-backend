@@ -1,4 +1,4 @@
-package com.transferwise.t4b.customer;
+package com.transferwise.t4b.credentials;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -34,7 +34,7 @@ public class TransferwiseProfile {
         return createdAt;
     }
 
-    Boolean isPersonal() {
+    public Boolean isPersonal() {
         return "personal".equalsIgnoreCase(type);
     }
 }

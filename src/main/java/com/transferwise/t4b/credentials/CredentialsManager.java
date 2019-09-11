@@ -12,7 +12,6 @@ import java.util.function.Function;
 
 import static com.transferwise.t4b.client.BodyRequests.forClientCredentials;
 import static com.transferwise.t4b.client.BodyRequests.forRefreshToken;
-import static com.transferwise.t4b.client.TransferWisePaths.BASE_URL;
 import static com.transferwise.t4b.client.TransferWisePaths.OAUTH_TOKEN_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
@@ -20,14 +19,14 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 @Component
 public class CredentialsManager {
 
-    private final CustomersRepository customers;
-    private final TransferWiseBankConfig config;
     private final WebClient client;
+    private final TransferWiseBankConfig config;
+    private final CustomersRepository customers;
 
-    public CredentialsManager(final CustomersRepository customers, final TransferWiseBankConfig config) {
-        this.customers = customers;
+    public CredentialsManager(final WebClient client, final TransferWiseBankConfig config, final CustomersRepository customers) {
+        this.client = client;
         this.config = config;
-        client = WebClient.builder().baseUrl(BASE_URL).build();
+        this.customers = customers;
     }
 
     public Mono<TransferwiseCredentials> credentialsFor(final Customer customer) {

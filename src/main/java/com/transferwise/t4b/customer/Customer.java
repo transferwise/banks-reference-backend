@@ -3,6 +3,8 @@ package com.transferwise.t4b.customer;
 import com.transferwise.t4b.client.params.Email;
 import com.transferwise.t4b.client.params.ProfileId;
 import com.transferwise.t4b.credentials.TransferwiseCredentials;
+import com.transferwise.t4b.credentials.TransferwiseProfile;
+import com.transferwise.t4b.credentials.TransferwiseUser;
 import com.transferwise.t4b.quote.Quote;
 
 import javax.persistence.*;

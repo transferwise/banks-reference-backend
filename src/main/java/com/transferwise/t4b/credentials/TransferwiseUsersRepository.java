@@ -1,4 +1,4 @@
-package com.transferwise.t4b.customer;
+package com.transferwise.t4b.credentials;
 
 import org.springframework.data.repository.CrudRepository;
 

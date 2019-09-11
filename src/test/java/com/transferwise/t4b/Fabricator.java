@@ -1,9 +1,9 @@
 package com.transferwise.t4b;
 
 import com.transferwise.t4b.credentials.TransferwiseCredentials;
+import com.transferwise.t4b.credentials.TransferwiseProfile;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.NewCustomer;
-import com.transferwise.t4b.customer.TransferwiseProfile;
 
 import java.time.LocalDate;
 

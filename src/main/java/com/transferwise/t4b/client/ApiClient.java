@@ -4,15 +4,13 @@ import com.transferwise.t4b.client.params.Code;
 import com.transferwise.t4b.client.params.RegistrationCode;
 import com.transferwise.t4b.credentials.CredentialsManager;
 import com.transferwise.t4b.credentials.TransferwiseCredentials;
+import com.transferwise.t4b.credentials.TransferwiseProfile;
+import com.transferwise.t4b.credentials.TransferwiseUser;
 import com.transferwise.t4b.customer.Customer;
-import com.transferwise.t4b.customer.TransferwiseProfile;
-import com.transferwise.t4b.customer.TransferwiseUser;
 import com.transferwise.t4b.quote.Quote;
 import com.transferwise.t4b.quote.QuoteRequest;
 import com.transferwise.t4b.recipient.Recipient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,23 +27,6 @@ public class ApiClient {
     private final WebClient client;
     private final TransferWiseBankConfig config;
     private final CredentialsManager manager;
-
-    ExchangeFilterFunction printlnFilter = (request, next) -> {
-        System.out.println("\n\n" + request.method().toString().toUpperCase() + ":\n\nURL:"
-                + request.url().toString() + ":\n\nHeaders:" + request.headers().toString() + "\n\nAttributes:"
-                + request.attributes() + "\n\n");
-
-        return next.exchange(request);
-    };
-
-    @Autowired
-    public ApiClient(final TransferWiseBankConfig config, final CredentialsManager manager) {
-        this.config = config;
-        this.manager = manager;
-        client = WebClient.builder()
-                .baseUrl(BASE_URL)
-                .filter(printlnFilter).build();
-    }
 
     public ApiClient(final WebClient client, final TransferWiseBankConfig config, final CredentialsManager manager) {
         this.client = client;

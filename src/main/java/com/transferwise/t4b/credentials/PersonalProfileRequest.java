@@ -1,6 +1,8 @@
-package com.transferwise.t4b.customer;
+package com.transferwise.t4b.credentials;
 
 import com.transferwise.t4b.client.JsonParser;
+import com.transferwise.t4b.customer.Customer;
+import com.transferwise.t4b.customer.Details;
 
 public class PersonalProfileRequest {
 

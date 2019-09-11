@@ -1,7 +1,8 @@
-package com.transferwise.t4b.customer;
+package com.transferwise.t4b.credentials;
 
 import com.transferwise.t4b.client.ApiClient;
-import com.transferwise.t4b.credentials.TransferwiseCredentials;
+import com.transferwise.t4b.customer.Customer;
+import com.transferwise.t4b.customer.CustomersRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

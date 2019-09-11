@@ -1,4 +1,4 @@
-package com.transferwise.t4b.customer;
+package com.transferwise.t4b.credentials;
 
 import com.transferwise.t4b.client.params.Email;
 import com.transferwise.t4b.client.params.RegistrationCode;

@@ -1,9 +1,9 @@
 package com.transferwise.t4b.client;
 
 import com.transferwise.t4b.client.params.*;
+import com.transferwise.t4b.credentials.PersonalProfileRequest;
+import com.transferwise.t4b.credentials.TransferwiseUser;
 import com.transferwise.t4b.customer.Customer;
-import com.transferwise.t4b.customer.PersonalProfileRequest;
-import com.transferwise.t4b.customer.TransferwiseUser;
 import com.transferwise.t4b.quote.QuoteRequest;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.util.LinkedMultiValueMap;

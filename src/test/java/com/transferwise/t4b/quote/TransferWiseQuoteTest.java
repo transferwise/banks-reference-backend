@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static com.transferwise.t4b.support.Fabricator.newCustomer;
-import static com.transferwise.t4b.support.Fabricator.newQuoteRequest;
+import static com.transferwise.t4b.support.Fabricator.quoteRequest;
 import static org.junit.Assert.assertFalse;
 
 public class TransferWiseQuoteTest extends ServerTest {
@@ -17,7 +17,7 @@ public class TransferWiseQuoteTest extends ServerTest {
     public void createAnonymousQuote() throws IOException {
         server.enqueue(response("quote.json"));
 
-        final var quote = twQuote.createAnonymous(newQuoteRequest()).block();
+        final var quote = twQuote.createAnonymous(quoteRequest()).block();
         assertFalse(quote.getPaymentOptions().isEmpty());
     }
 
@@ -25,7 +25,7 @@ public class TransferWiseQuoteTest extends ServerTest {
     public void createQuote() throws IOException {
         server.enqueue(response("quote.json"));
 
-        final var quote = twQuote.create(newCustomer(), newQuoteRequest()).block();
+        final var quote = twQuote.create(newCustomer(), quoteRequest()).block();
         assertFalse(quote.getPaymentOptions().isEmpty());
     }
 }

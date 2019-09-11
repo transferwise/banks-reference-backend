@@ -24,13 +24,18 @@ public class Fabricator {
                 .withPersonalProfile(profile);
     }
 
-    public static QuoteRequest newQuoteRequest() {
-        final var profile = new Profile(1L);
-        final var gbp = new SourceCurrency("GBP");
-        final var eur = new TargetCurrency("EUR");
+    final static Profile profile = new Profile(1L);
+    final static SourceCurrency gbp = new SourceCurrency("GBP");
+    final static TargetCurrency eur = new TargetCurrency("EUR");
+
+    public static QuoteRequest quoteRequest() {
         final var sourceAmount = new SourceAmount(new BigDecimal(200L));
         final var targetAmount = new TargetAmount(new BigDecimal(300L));
 
-        return new QuoteRequest(profile, gbp, eur, sourceAmount, targetAmount);
+        return quoteRequest(sourceAmount, targetAmount);
+    }
+
+    public static QuoteRequest quoteRequest(final SourceAmount s, final TargetAmount t) {
+        return new QuoteRequest(profile, gbp, eur, s, t);
     }
 }

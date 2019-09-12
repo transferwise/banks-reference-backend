@@ -5,7 +5,9 @@ import com.transferwise.t4b.customer.Customer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import static com.transferwise.t4b.client.TransferWisePaths.TRANSFERS_PATH;
 import static com.transferwise.t4b.client.TransferWisePaths.TRANSFER_REQUIREMENTS_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -31,5 +33,16 @@ public class TransferWiseTransfers {
                         .body(fromObject(bodyRequest))
                         .retrieve()
                         .bodyToFlux(String.class));
+    }
+
+    public Mono<TransferWiseTransfer> create(final Customer customer, final String bodyRequest) {
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.post()
+                        .uri(TRANSFERS_PATH)
+                        .header(AUTHORIZATION, credentials.bearer())
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .body(fromObject(bodyRequest))
+                        .retrieve()
+                        .bodyToMono(TransferWiseTransfer.class));
     }
 }

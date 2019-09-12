@@ -20,4 +20,5 @@ public interface TransferWisePaths {
     }
 
     String TRANSFER_REQUIREMENTS_PATH = "/v1/transfer-requirements";
+    String TRANSFERS_PATH = "/v1/transfers";
 }

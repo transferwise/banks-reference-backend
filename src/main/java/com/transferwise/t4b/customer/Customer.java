@@ -6,13 +6,15 @@ import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.credentials.TransferwiseProfile;
 import com.transferwise.t4b.credentials.TransferwiseUser;
 import com.transferwise.t4b.quote.Quote;
+import com.transferwise.t4b.transfer.TransferWiseTransfer;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "customers")
@@ -30,17 +32,21 @@ public class Customer {
     @Column(unique = true)
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = ALL)
     private TransferwiseCredentials credentials;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = ALL)
     private TransferwiseUser user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = ALL)
     private TransferwiseProfile profile;
 
     @ElementCollection(fetch = EAGER)
     private final List<UUID> quoteIds = new ArrayList<>();
+
+    @OneToMany(cascade = ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private final Set<TransferWiseTransfer> transfers = new HashSet<>();
 
     public Customer() {
     }
@@ -135,5 +141,10 @@ public class Customer {
         }
 
         return quoteIds.get(quoteIds.size() - 1);
+    }
+
+    public Customer addTransfer(final TransferWiseTransfer transfer) {
+        transfers.add(transfer);
+        return this;
     }
 }

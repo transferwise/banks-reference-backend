@@ -11,23 +11,23 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/recipient/requirements")
 public class RecipientRequirementsController {
 
-    private final TransferWiseRecipientRequirements twRequirements;
+    private final TransferWiseRecipients twRecipients;
     private final CustomersRepository customers;
 
-    public RecipientRequirementsController(final TransferWiseRecipientRequirements twRequirements, final CustomersRepository customers) {
-        this.twRequirements = twRequirements;
+    public RecipientRequirementsController(final TransferWiseRecipients twRecipients, final CustomersRepository customers) {
+        this.twRecipients = twRecipients;
         this.customers = customers;
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public Publisher<String> get(@RequestParam final Long customerId) {
         final var customer = customers.find(customerId);
-        return twRequirements.all(customer);
+        return twRecipients.requirements(customer);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
         final var customer = customers.find(customerId);
-        return twRequirements.create(customer, rawRequest.getBody());
+        return twRecipients.requirements(customer, rawRequest.getBody());
     }
 }

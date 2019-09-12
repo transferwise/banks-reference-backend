@@ -24,6 +24,8 @@ public class QuotesController {
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest,
                                    @RequestParam final Long customerId) {
         final var customer = customers.find(customerId);
-        return twQuote.create(customer, quoteRequest);
+        return twQuote
+                .create(customer, quoteRequest)
+                .doOnSuccess(quote -> customers.save(customer.addQuote(quote)));
     }
 }

@@ -1,13 +1,17 @@
 package com.transferwise.t4b.quote;
 
+import com.transferwise.t4b.client.params.TargetAccount;
 import com.transferwise.t4b.credentials.CredentialsManager;
 import com.transferwise.t4b.customer.Customer;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import static com.transferwise.t4b.client.BodyRequests.forNewQuote;
+import static com.transferwise.t4b.client.BodyRequests.forQuoteUpdate;
 import static com.transferwise.t4b.client.TransferWisePaths.QUOTES_PATH_V2;
+import static com.transferwise.t4b.client.TransferWisePaths.quotesPathV2;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -41,4 +45,17 @@ public class TransferWiseQuote {
                 .retrieve()
                 .bodyToMono(Quote.class);
     }
+
+    public Mono<Quote> update(final Customer customer, final TargetAccount targetAccount) {
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.patch()
+                        .uri(quotesPathV2(customer.latestQuoteId()))
+                        .header(AUTHORIZATION, credentials.bearer())
+                        .contentType(MERGE_PATCH_JSON)
+                        .body(forQuoteUpdate(customer.profileId(), targetAccount))
+                        .retrieve()
+                        .bodyToMono(Quote.class));
+    }
+
+    private final MediaType MERGE_PATCH_JSON = MediaType.valueOf("application/merge-patch+json");
 }

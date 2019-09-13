@@ -20,6 +20,10 @@ public interface TransferWisePaths {
         return QUOTES_PATH_V1 + "/" + quoteId + "/account-requirements";
     }
 
+    static String quotesPathV2(final UUID quoteId) {
+        return QUOTES_PATH_V2 + quoteId;
+    }
+
     String TRANSFER_REQUIREMENTS_PATH = "/v1/transfer-requirements";
     String TRANSFERS_PATH = "/v1/transfers";
 }

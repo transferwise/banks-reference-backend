@@ -56,6 +56,10 @@ public class BodyRequests {
                         config.redirectUri()));
     }
 
+    public static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forQuoteUpdate(final ProfileId profileId, final TargetAccount targetAccount) {
+        return fromObject(map(profileId, targetAccount));
+    }
+
     private static Map<String, String> map(final Parameter... parameters) {
         return Arrays.stream(parameters).collect(toMap(Parameter::key, Parameter::value));
     }

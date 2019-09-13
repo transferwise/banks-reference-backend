@@ -9,7 +9,8 @@ public interface TransferWisePaths {
 
     String PROFILES_PATH_V1 = "/v1/profiles";
     String PROFILES_PATH_V2 = "/v2/profiles";
-    String ACCOUNTS_PATH = "/v1/accounts";
+    String RECIPIENTS_PATH_V1 = "/v1/accounts";
+    String RECIPIENTS_PATH_V2 = "/v2/accounts";
     String QUOTES_PATH_V1 = "/v1/quotes";
     String QUOTES_PATH_V2 = "/v2/quotes/";
 

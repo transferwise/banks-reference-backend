@@ -8,11 +8,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.transferwise.t4b.client.TransferWisePaths.ACCOUNTS_PATH;
+import static com.transferwise.t4b.client.TransferWisePaths.RECIPIENTS_PATH_V2;
 import static com.transferwise.t4b.client.TransferWisePaths.recipientRequirementsPath;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static reactor.core.publisher.Flux.fromIterable;
 
 @Component
 public class TransferWiseRecipients {
@@ -28,10 +29,11 @@ public class TransferWiseRecipients {
     public Flux<Recipient> all(final Customer customer) {
         return manager.credentialsFor(customer).flatMapMany(credentials ->
                 client.get()
-                        .uri(new UriWithParams(ACCOUNTS_PATH, customer.profileId()))
+                        .uri(new UriWithParams(RECIPIENTS_PATH_V2, customer.profileId()))
                         .header(AUTHORIZATION, credentials.bearer())
                         .retrieve()
-                        .bodyToFlux(Recipient.class));
+                        .bodyToFlux(Content.class)
+                        .flatMap(content -> fromIterable(content.recipients)));
     }
 
     public Mono<String> requirements(final Customer customer) {

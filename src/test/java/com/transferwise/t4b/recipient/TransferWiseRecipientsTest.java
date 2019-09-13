@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 
 public class TransferWiseRecipientsTest extends ServerTest {
 
-    private final TransferWiseRecipients twRecipients = new TransferWiseRecipients(webClient, manager);
+    private final TransferWiseRecipients recipients = new TransferWiseRecipients(webClient, manager);
 
     @Test
     public void findRecipientsForCustomer() throws IOException {
@@ -23,7 +23,7 @@ public class TransferWiseRecipientsTest extends ServerTest {
         when(customers.save(any(Customer.class))).thenReturn(customer);
         server.enqueue(response("recipients.json"));
 
-        final var recipient = twRecipients.all(customer).blockFirst();
+        final var recipient = recipients.all(customer).blockFirst();
 
         assertEquals("GBP", recipient.getCurrency());
         assertTrue(recipient.isActive());

@@ -5,7 +5,10 @@ public class Recipient {
     private Long id;
     private String currency;
     private boolean active;
-    private boolean owndeByCustomer;
+    private boolean ownedByCustomer;
+    private String type;
+
+    private Name name;
 
     public Long getId() {
         return id;
@@ -19,7 +22,15 @@ public class Recipient {
         return active;
     }
 
-    public boolean isOwndeByCustomer() {
-        return owndeByCustomer;
+    public boolean isOwnedByCustomer() {
+        return ownedByCustomer;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Name getName() {
+        return name;
     }
 }

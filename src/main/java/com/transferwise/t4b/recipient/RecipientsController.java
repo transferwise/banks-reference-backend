@@ -12,11 +12,11 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/recipients")
 public class RecipientsController {
 
-    private final TransferWiseRecipients twRecipients;
+    private final TransferWiseRecipients recipients;
     private final CustomersRepository customers;
 
-    public RecipientsController(final TransferWiseRecipients twRecipients, final CustomersRepository customers) {
-        this.twRecipients = twRecipients;
+    public RecipientsController(final TransferWiseRecipients recipients, final CustomersRepository customers) {
+        this.recipients = recipients;
         this.customers = customers;
     }
 
@@ -24,7 +24,7 @@ public class RecipientsController {
     public Publisher<Recipient> index(@RequestParam final Long customerId) {
         return customers
                 .findById(customerId)
-                .map(twRecipients::all)
+                .map(recipients::all)
                 .orElse(Flux.empty());
     }
 }

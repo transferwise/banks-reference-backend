@@ -27,7 +27,15 @@ public class Quote {
     private LocalDateTime expirationTime;
 
     private final List<String> notices = new ArrayList<>();
-    private final List<PaymentOption> paymentOptions = new ArrayList<>();
+    private final List<PaymentOption> paymentOptions;
+
+    public Quote() {
+        this(new ArrayList<>());
+    }
+
+    public Quote(final List<PaymentOption> paymentOptions) {
+        this.paymentOptions = paymentOptions;
+    }
 
     public UUID getId() {
         return id;

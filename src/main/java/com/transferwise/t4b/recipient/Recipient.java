@@ -1,5 +1,7 @@
 package com.transferwise.t4b.recipient;
 
+import com.transferwise.t4b.client.params.TargetAccount;
+
 public class Recipient {
 
     private Long id;
@@ -7,6 +9,7 @@ public class Recipient {
     private boolean active;
     private boolean ownedByCustomer;
     private String type;
+    private String accountSummary;
 
     private Name name;
 
@@ -32,5 +35,13 @@ public class Recipient {
 
     public Name getName() {
         return name;
+    }
+
+    public TargetAccount targetAccount() {
+        return new TargetAccount(id);
+    }
+
+    public String getAccountSummary() {
+        return accountSummary;
     }
 }

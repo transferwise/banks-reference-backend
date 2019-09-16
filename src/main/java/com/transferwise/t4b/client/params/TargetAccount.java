@@ -6,6 +6,10 @@ public final class TargetAccount extends Parameter {
         super(account);
     }
 
+    public TargetAccount(final Long account) {
+        this(account.toString());
+    }
+
     @Override
     public String key() {
         return "targetAccount";

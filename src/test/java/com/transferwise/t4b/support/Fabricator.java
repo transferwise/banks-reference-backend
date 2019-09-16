@@ -4,12 +4,15 @@ import com.transferwise.t4b.credentials.TransferwiseCredentials;
 import com.transferwise.t4b.credentials.TransferwiseProfile;
 import com.transferwise.t4b.customer.Customer;
 import com.transferwise.t4b.customer.NewCustomer;
+import com.transferwise.t4b.quote.PaymentOption;
 import com.transferwise.t4b.quote.QuoteRequest;
 import com.transferwise.t4b.values.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static com.transferwise.t4b.quote.PaymentOption.BANK_TRANSFER;
+import static com.transferwise.t4b.quote.PaymentOption.SWIFT;
 import static java.time.ZonedDateTime.now;
 
 public class Fabricator {
@@ -37,5 +40,13 @@ public class Fabricator {
 
     public static QuoteRequest quoteRequest(final SourceAmount s, final TargetAmount t) {
         return new QuoteRequest(profile, gbp, eur, s, t);
+    }
+
+    public static PaymentOption swift() {
+        return new PaymentOption(SWIFT, BANK_TRANSFER);
+    }
+
+    public static PaymentOption bankTransfer() {
+        return new PaymentOption(BANK_TRANSFER, BANK_TRANSFER);
     }
 }

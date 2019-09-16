@@ -7,4 +7,8 @@ public final class SourceAmount extends Value<BigDecimal> {
     public SourceAmount(final BigDecimal amount) {
         super(amount);
     }
+
+    public SourceAmount(final Long amount) {
+        this(new BigDecimal(amount));
+    }
 }

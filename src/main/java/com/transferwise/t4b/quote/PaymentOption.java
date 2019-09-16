@@ -8,6 +8,8 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 public final class PaymentOption {
+    public static final String BANK_TRANSFER = "BANK_TRANSFER";
+    public static final String SWIFT = "SWIFT";
 
     private Boolean disabled;
     private LocalDateTime estimatedDelivery;
@@ -23,6 +25,14 @@ public final class PaymentOption {
 
     private final List<String> allowedProfileTypes = new ArrayList<>();
     private DisabledReason disabledReason;
+
+    public PaymentOption() {
+    }
+
+    public PaymentOption(final String payIn, final String payOut) {
+        this.payIn = payIn;
+        this.payOut = payOut;
+    }
 
     public Boolean getDisabled() {
         return disabled;
@@ -66,5 +76,13 @@ public final class PaymentOption {
 
     public DisabledReason getDisabledReason() {
         return disabledReason;
+    }
+
+    public boolean isSwift() {
+        return payIn.equals(SWIFT) && payOut.equals(BANK_TRANSFER);
+    }
+
+    public boolean isBankTransfer() {
+        return payIn.equals(BANK_TRANSFER) && payOut.equals(BANK_TRANSFER);
     }
 }

@@ -9,14 +9,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/transfers")
 public class TransfersController {
 
-    private final TransferWiseTransfers transfers;
+    private final TransferService transferService;
 
-    public TransfersController(final TransferWiseTransfers transfers) {
-        this.transfers = transfers;
+    public TransfersController(final TransferService transferService) {
+        this.transferService = transferService;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final TransferRequest transferRequest) {
-        return transfers.create(customerId, transferRequest);
+        return transferService.create(customerId, transferRequest);
     }
 }

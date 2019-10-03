@@ -18,13 +18,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 @Component
-public class TransferWiseTransfers {
+public class TransferService {
 
     private final WebClient client;
     private final CredentialsManager manager;
     private final CustomersRepository customersRepository;
 
-    public TransferWiseTransfers(final WebClient client, final CredentialsManager manager, CustomersRepository customersRepository) {
+    public TransferService(final WebClient client, final CredentialsManager manager, CustomersRepository customersRepository) {
         this.client = client;
         this.manager = manager;
         this.customersRepository = customersRepository;

@@ -12,11 +12,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("activities")
-public class ActivityController {
+public class ActivitiesController {
 
     private final CustomersRepository customersRepository;
 
-    public ActivityController(CustomersRepository customersRepository) {
+    public ActivitiesController(CustomersRepository customersRepository) {
         this.customersRepository = customersRepository;
     }
 

@@ -2,6 +2,10 @@ package com.transferwise.t4b.transfer;
 
 import com.transferwise.t4b.credentials.CredentialsManager;
 import com.transferwise.t4b.customer.Customer;
+import com.transferwise.t4b.customer.CustomerTransfer;
+import com.transferwise.t4b.customer.CustomersRepository;
+import com.transferwise.t4b.quote.PaymentOption;
+import com.transferwise.t4b.recipient.Recipient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -18,10 +22,12 @@ public class TransferWiseTransfers {
 
     private final WebClient client;
     private final CredentialsManager manager;
+    private final CustomersRepository customersRepository;
 
-    public TransferWiseTransfers(final WebClient client, final CredentialsManager manager) {
+    public TransferWiseTransfers(final WebClient client, final CredentialsManager manager, CustomersRepository customersRepository) {
         this.client = client;
         this.manager = manager;
+        this.customersRepository = customersRepository;
     }
 
     public Flux<String> requirements(final Customer customer, final String bodyRequest) {
@@ -35,14 +41,38 @@ public class TransferWiseTransfers {
                         .bodyToFlux(String.class));
     }
 
-    public Mono<TransferWiseTransfer> create(final Customer customer, final String bodyRequest) {
+    public Mono<TransferWiseTransfer> create(final Long customerId, final TransferRequest transferRequest) {
+        Customer customer = customersRepository.find(customerId);
+
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.post()
                         .uri(TRANSFERS_PATH)
                         .header(AUTHORIZATION, credentials.bearer())
                         .contentType(APPLICATION_JSON_UTF8)
-                        .body(fromObject(bodyRequest))
+                        .body(fromObject(transferRequest.getTransferWiseTransfer()))
                         .retrieve()
-                        .bodyToMono(TransferWiseTransfer.class));
+                        .bodyToMono(TransferWiseTransfer.class))
+                .doOnSuccess(transferWiseTransfer -> {
+                    CustomerTransfer customerTransfer = mapToCustomerTransfer(transferWiseTransfer, transferRequest.getRecipient(), transferRequest.getPaymentOption());
+                    customersRepository.save(customer.addCustomerTransfer(customerTransfer));
+                });
     }
+
+    private CustomerTransfer mapToCustomerTransfer(TransferWiseTransfer transferWiseTransfer, Recipient recipient, PaymentOption paymentOption) {
+        return new CustomerTransfer(transferWiseTransfer.getId(),
+                recipient.getId(),
+                transferWiseTransfer.getQuoteUuid(),
+                transferWiseTransfer.getReference(),
+                transferWiseTransfer.getRate(),
+                transferWiseTransfer.getCreated(),
+                transferWiseTransfer.getSourceCurrency(),
+                transferWiseTransfer.getSourceValue(),
+                transferWiseTransfer.getTargetCurrency(),
+                transferWiseTransfer.getTargetValue(),
+                transferWiseTransfer.getCustomerTransactionId(),
+                recipient.getName().getFullName(),
+                paymentOption.getFee().getTotal());
+
+    }
+
 }

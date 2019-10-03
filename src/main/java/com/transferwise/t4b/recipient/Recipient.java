@@ -10,7 +10,6 @@ public class Recipient {
     private boolean ownedByCustomer;
     private String type;
     private String accountSummary;
-
     private Name name;
 
     public Long getId() {

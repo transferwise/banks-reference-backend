@@ -46,7 +46,7 @@ public class Customer {
 
     @OneToMany(cascade = ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private final Set<TransferWiseTransfer> transfers = new HashSet<>();
+    private final Set<CustomerTransfer> customerTransfers = new HashSet<>();
 
     public Customer() {
     }
@@ -102,6 +102,10 @@ public class Customer {
         return profile;
     }
 
+    public Set<CustomerTransfer> getCustomerTransfers() {
+        return customerTransfers;
+    }
+
     public Customer withUser(final TransferwiseUser user) {
         this.user = user.updated();
         return this;
@@ -143,8 +147,8 @@ public class Customer {
         return quoteIds.get(quoteIds.size() - 1);
     }
 
-    public Customer addTransfer(final TransferWiseTransfer transfer) {
-        transfers.add(transfer);
+    public Customer addCustomerTransfer(final CustomerTransfer customerTransfer) {
+        customerTransfers.add(customerTransfer);
         return this;
     }
 }

@@ -1,19 +1,11 @@
 package com.transferwise.t4b.transfer;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "transfers")
 public class TransferWiseTransfer {
 
-    @Id
     private Long id;
     private Long targetAccount;
     private UUID quoteUuid;
@@ -42,7 +34,6 @@ public class TransferWiseTransfer {
         return rate;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {
         return created;
     }

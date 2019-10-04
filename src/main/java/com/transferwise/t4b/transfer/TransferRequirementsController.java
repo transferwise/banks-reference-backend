@@ -14,17 +14,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/transfers/requirements")
 public class TransferRequirementsController {
 
-    private final TransferWiseTransfers transfers;
+    private final TransferService transferService;
     private final CustomersRepository customers;
 
-    public TransferRequirementsController(final TransferWiseTransfers transfers, final CustomersRepository customers) {
-        this.transfers = transfers;
+    public TransferRequirementsController(final TransferService transferService, final CustomersRepository customers) {
+        this.transferService = transferService;
         this.customers = customers;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
         final var customer = customers.find(customerId);
-        return transfers.requirements(customer, rawRequest.getBody());
+        return transferService.requirements(customer, rawRequest.getBody());
     }
 }

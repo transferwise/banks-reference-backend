@@ -2,7 +2,12 @@ package com.transferwise.banks.demo.quote;
 
 import com.transferwise.banks.demo.client.JsonParser;
 import com.transferwise.banks.demo.validations.AmountRequired;
-import com.transferwise.banks.demo.values.*;
+import com.transferwise.banks.demo.values.Profile;
+import com.transferwise.banks.demo.values.SourceAmount;
+import com.transferwise.banks.demo.values.SourceCurrency;
+import com.transferwise.banks.demo.values.TargetAmount;
+import com.transferwise.banks.demo.values.TargetCurrency;
+import com.transferwise.banks.demo.values.Value;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

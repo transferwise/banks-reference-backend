@@ -6,7 +6,11 @@ import com.transferwise.banks.demo.customer.Customer;
 import com.transferwise.banks.demo.customer.NewCustomer;
 import com.transferwise.banks.demo.quote.PaymentOption;
 import com.transferwise.banks.demo.quote.QuoteRequest;
-import com.transferwise.banks.demo.values.*;
+import com.transferwise.banks.demo.values.Profile;
+import com.transferwise.banks.demo.values.SourceAmount;
+import com.transferwise.banks.demo.values.SourceCurrency;
+import com.transferwise.banks.demo.values.TargetAmount;
+import com.transferwise.banks.demo.values.TargetCurrency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

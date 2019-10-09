@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import static com.transferwise.banks.demo.client.BodyRequests.*;
-import static com.transferwise.banks.demo.client.TransferWisePaths.*;
+import static com.transferwise.banks.demo.client.BodyRequests.forNewUser;
+import static com.transferwise.banks.demo.client.BodyRequests.forPersonalProfile;
+import static com.transferwise.banks.demo.client.BodyRequests.forUserCredentials;
+import static com.transferwise.banks.demo.client.TransferWisePaths.OAUTH_TOKEN_PATH;
+import static com.transferwise.banks.demo.client.TransferWisePaths.PROFILES_PATH_V1;
+import static com.transferwise.banks.demo.client.TransferWisePaths.SIGNUP_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

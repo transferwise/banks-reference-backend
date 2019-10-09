@@ -1,6 +1,16 @@
 package com.transferwise.banks.demo.client;
 
-import com.transferwise.banks.demo.client.params.*;
+import com.transferwise.banks.demo.client.params.Code;
+import com.transferwise.banks.demo.client.params.Email;
+import com.transferwise.banks.demo.client.params.GrantTypeAuthorizationCode;
+import com.transferwise.banks.demo.client.params.GrantTypeClientCredentials;
+import com.transferwise.banks.demo.client.params.GrantTypeRefreshToken;
+import com.transferwise.banks.demo.client.params.GrantTypeRegistrationCode;
+import com.transferwise.banks.demo.client.params.Parameter;
+import com.transferwise.banks.demo.client.params.ProfileId;
+import com.transferwise.banks.demo.client.params.RefreshToken;
+import com.transferwise.banks.demo.client.params.TargetAccount;
+import com.transferwise.banks.demo.client.params.V1RegistrationCode;
 import com.transferwise.banks.demo.credentials.PersonalProfileRequest;
 import com.transferwise.banks.demo.credentials.TransferwiseUser;
 import com.transferwise.banks.demo.customer.Customer;

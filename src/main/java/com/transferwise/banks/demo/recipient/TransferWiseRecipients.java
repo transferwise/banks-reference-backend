@@ -8,7 +8,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.transferwise.banks.demo.client.TransferWisePaths.*;
+import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V1;
+import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V2;
+import static com.transferwise.banks.demo.client.TransferWisePaths.recipientRequirementsPath;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;

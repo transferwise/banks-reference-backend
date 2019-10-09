@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V1;
 import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V2;
 import static com.transferwise.banks.demo.client.TransferWisePaths.recipientRequirementsPath;
@@ -37,19 +39,19 @@ public class TransferWiseRecipients {
                         .flatMap(content -> fromIterable(content.recipients)));
     }
 
-    public Mono<String> requirements(final Customer customer) {
+    public Mono<String> requirements(final Customer customer, final UUID quoteId) {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.get()
-                        .uri(recipientRequirementsPath(customer.latestQuoteId()))
+                        .uri(recipientRequirementsPath(quoteId))
                         .header(AUTHORIZATION, credentials.bearer())
                         .retrieve()
                         .bodyToMono(String.class));
     }
 
-    public Mono<String> requirements(final Customer customer, final String bodyRequest) {
+    public Mono<String> requirements(final Customer customer, final String bodyRequest, final UUID quoteId) {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.post()
-                        .uri(recipientRequirementsPath(customer.latestQuoteId()))
+                        .uri(recipientRequirementsPath(quoteId))
                         .header(AUTHORIZATION, credentials.bearer())
                         .contentType(APPLICATION_JSON_UTF8)
                         .body(fromObject(bodyRequest))

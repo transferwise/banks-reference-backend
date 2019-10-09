@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -24,14 +26,14 @@ public class RecipientRequirementsController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public Publisher<String> get(@RequestParam final Long customerId) {
+    public Publisher<String> get(@RequestParam final Long customerId, @RequestParam final UUID quoteId) {
         final var customer = customers.find(customerId);
-        return twRecipients.requirements(customer);
+        return twRecipients.requirements(customer, quoteId);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
+    public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest, @RequestParam final UUID quoteId) {
         final var customer = customers.find(customerId);
-        return twRecipients.requirements(customer, rawRequest.getBody());
+        return twRecipients.requirements(customer, rawRequest.getBody(), quoteId);
     }
 }

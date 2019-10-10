@@ -148,14 +148,6 @@ public class Customer {
         return new ProfileId(profile.getId());
     }
 
-    public UUID latestQuoteId() {
-        if (quoteIds.isEmpty()) {
-            return null;
-        }
-
-        return quoteIds.get(quoteIds.size() - 1);
-    }
-
     public Customer addCustomerTransfer(final CustomerTransfer customerTransfer) {
         customerTransfers.add(customerTransfer);
         return this;

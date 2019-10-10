@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 import static com.transferwise.banks.demo.client.BodyRequests.forNewQuote;
 import static com.transferwise.banks.demo.client.BodyRequests.forQuoteUpdate;
 import static com.transferwise.banks.demo.client.TransferWisePaths.QUOTES_PATH_V2;
@@ -46,10 +48,10 @@ public class TransferWiseQuote {
                 .bodyToMono(Quote.class);
     }
 
-    public Mono<Quote> update(final Customer customer, final TargetAccount targetAccount) {
+    public Mono<Quote> update(final Customer customer, final TargetAccount targetAccount, final UUID quoteId) {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.patch()
-                        .uri(quotesPathV2(customer.latestQuoteId()))
+                        .uri(quotesPathV2(quoteId))
                         .header(AUTHORIZATION, credentials.bearer())
                         .contentType(MERGE_PATCH_JSON)
                         .body(forQuoteUpdate(customer.profileId(), targetAccount))

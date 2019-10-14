@@ -1,5 +1,7 @@
 package com.transferwise.banks.demo.transfer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,6 +13,8 @@ public class TransferWiseTransfer {
     private UUID quoteUuid;
     private String reference;
     private BigDecimal rate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
     private String sourceCurrency;
     private BigDecimal sourceValue;

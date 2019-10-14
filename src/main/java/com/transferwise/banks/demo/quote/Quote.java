@@ -26,7 +26,7 @@ public class Quote {
     private String status;
     private LocalDateTime expirationTime;
 
-    private final List<String> notices = new ArrayList<>();
+    private final List<QuoteNotice> notices = new ArrayList<>();
     private final List<PaymentOption> paymentOptions;
 
     public Quote() {
@@ -97,7 +97,7 @@ public class Quote {
         return expirationTime;
     }
 
-    public List<String> getNotices() {
+    public List<QuoteNotice> getNotices() {
         return unmodifiableList(notices);
     }
 

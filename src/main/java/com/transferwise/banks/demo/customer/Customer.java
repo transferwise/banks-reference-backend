@@ -55,7 +55,7 @@ public class Customer {
 
     @OneToMany(cascade = ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private final Set<CustomerTransfer> customerTransfers = new HashSet<>();
+    private final List<CustomerTransfer> customerTransfers = new ArrayList<>();
 
     public Customer() {
     }
@@ -111,7 +111,7 @@ public class Customer {
         return profile;
     }
 
-    public Set<CustomerTransfer> getCustomerTransfers() {
+    public List<CustomerTransfer> getCustomerTransfers() {
         return customerTransfers;
     }
 

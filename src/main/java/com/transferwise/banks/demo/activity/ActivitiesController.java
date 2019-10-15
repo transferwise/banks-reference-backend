@@ -1,29 +1,27 @@
 package com.transferwise.banks.demo.activity;
 
-import com.transferwise.banks.demo.customer.Customer;
 import com.transferwise.banks.demo.customer.CustomerTransfer;
-import com.transferwise.banks.demo.customer.CustomersRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("activities")
 public class ActivitiesController {
 
-    private final CustomersRepository customersRepository;
+    private final ActivitiesService activitiesService;
 
-    public ActivitiesController(CustomersRepository customersRepository) {
-        this.customersRepository = customersRepository;
+    public ActivitiesController(ActivitiesService activitiesService) {
+        this.activitiesService = activitiesService;
     }
 
+
     @GetMapping
-    public Set<CustomerTransfer> getActivities(@RequestParam final Long customerId) {
-        Customer customer = customersRepository.find(customerId);
-        return customer.getCustomerTransfers();
+    public List<CustomerTransfer> getActivities(@RequestParam final Long customerId) {
+        return activitiesService.getCustomerTransfers(customerId);
     }
 
 }

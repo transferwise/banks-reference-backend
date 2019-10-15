@@ -6,6 +6,8 @@ import com.transferwise.banks.demo.customer.CustomerTransfer;
 import com.transferwise.banks.demo.customer.CustomersRepository;
 import com.transferwise.banks.demo.quote.PaymentOption;
 import com.transferwise.banks.demo.recipient.Recipient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -13,12 +15,15 @@ import reactor.core.publisher.Mono;
 
 import static com.transferwise.banks.demo.client.TransferWisePaths.TRANSFERS_PATH;
 import static com.transferwise.banks.demo.client.TransferWisePaths.TRANSFER_REQUIREMENTS_PATH;
+import static java.util.Collections.emptyList;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 @Component
 public class TransferService {
+
+    private static final Logger log = LoggerFactory.getLogger(TransferService.class);
 
     private final WebClient client;
     private final CredentialsManager manager;
@@ -53,6 +58,7 @@ public class TransferService {
                         .retrieve()
                         .bodyToMono(TransferWiseTransfer.class))
                 .doOnSuccess(transferWiseTransfer -> {
+                    log.info("Saving transfer response {}", transferWiseTransfer);
                     CustomerTransfer customerTransfer = mapToCustomerTransfer(transferWiseTransfer, transferRequest.getRecipient(), transferRequest.getPaymentOption());
                     customersRepository.save(customer.addCustomerTransfer(customerTransfer));
                 });
@@ -71,7 +77,8 @@ public class TransferService {
                 transferWiseTransfer.getTargetValue(),
                 transferWiseTransfer.getCustomerTransactionId(),
                 recipient.getName().getFullName(),
-                paymentOption.getFee().getTotal());
+                paymentOption.getFee().getTotal(),
+                emptyList());
 
     }
 

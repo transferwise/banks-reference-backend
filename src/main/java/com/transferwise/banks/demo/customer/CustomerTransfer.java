@@ -1,13 +1,21 @@
 package com.transferwise.banks.demo.customer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.Comparator.comparing;
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "customer_transfers")
@@ -28,10 +36,14 @@ public class CustomerTransfer {
     private String recipientName;
     private BigDecimal fee;
 
+    @OneToMany(cascade = ALL, mappedBy = "customerTransferId")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<CustomerTransferStatus> transferStatuses = new ArrayList<>();
+
     public CustomerTransfer() {
     }
 
-    public CustomerTransfer(Long id, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee) {
+    public CustomerTransfer(Long id, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, List<CustomerTransferStatus> transferStatuses) {
         this.id = id;
         this.targetAccount = targetAccount;
         this.quoteUuid = quoteUuid;
@@ -45,6 +57,7 @@ public class CustomerTransfer {
         this.customerTransactionId = customerTransactionId;
         this.recipientName = recipientName;
         this.fee = fee;
+        this.transferStatuses = transferStatuses;
     }
 
     public Long getId() {
@@ -98,5 +111,10 @@ public class CustomerTransfer {
 
     public BigDecimal getFee() {
         return fee;
+    }
+
+    public List<CustomerTransferStatus> getTransferStatuses() {
+        transferStatuses.sort(comparing(CustomerTransferStatus::getEventTime));
+        return transferStatuses;
     }
 }

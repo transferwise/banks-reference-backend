@@ -14,14 +14,12 @@ public class ActivitiesController {
 
     private final ActivitiesService activitiesService;
 
-    public ActivitiesController(ActivitiesService activitiesService) {
+    public ActivitiesController(final ActivitiesService activitiesService) {
         this.activitiesService = activitiesService;
     }
-
 
     @GetMapping
     public List<CustomerTransfer> getActivities(@RequestParam final Long customerId) {
         return activitiesService.getCustomerTransfers(customerId);
     }
-
 }

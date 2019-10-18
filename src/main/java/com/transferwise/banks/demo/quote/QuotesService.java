@@ -16,11 +16,13 @@ public class QuotesService {
     private final CustomersRepository customers;
     private final TransferWiseQuote twQuote;
     private final TransferWiseRecipients twRecipients;
+    private final PaymentOptionService paymentOptionService;
 
-    public QuotesService(CustomersRepository customers, TransferWiseQuote twQuote, TransferWiseRecipients twRecipients) {
+    public QuotesService(CustomersRepository customers, TransferWiseQuote twQuote, TransferWiseRecipients twRecipients, PaymentOptionService paymentOptionService) {
         this.customers = customers;
         this.twQuote = twQuote;
         this.twRecipients = twRecipients;
+        this.paymentOptionService = paymentOptionService;
     }
 
 
@@ -39,7 +41,8 @@ public class QuotesService {
                 .update(customer, targetAccount, quoteId)
                 .zipWith(recipientMono)
                 .map(quoteRecipientTuple2 -> {
-                    PaymentOption paymentOption = new BestPaymentOption(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2().getType()).get();
+                    PaymentOption paymentOption = paymentOptionService.getBestPaymentOption(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2().getType());
+
                     return new TransferSummary(paymentOption, quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2());
                 });
     }

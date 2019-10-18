@@ -8,29 +8,31 @@ import static com.transferwise.banks.demo.support.Fabricator.bankTransfer;
 import static com.transferwise.banks.demo.support.Fabricator.swift;
 import static org.junit.Assert.assertTrue;
 
-public class BestPaymentOptionTest {
+public class PaymentOptionServiceTest {
+
+    private PaymentOptionService paymentOptionService = new PaymentOptionService();
 
     @Test
     public void bankTransferIsTheDefaultPaymentOption() {
         final var quote = new Quote(List.of(bankTransfer(), swift()));
-        final var bestPaymentOption = new BestPaymentOption(quote, "BANK_TRANSFER");
+        final var bestPaymentOption = paymentOptionService.getBestPaymentOption(quote, "BANK_TRANSFER");
 
-        assertTrue(bestPaymentOption.get().isBankTransfer());
+        assertTrue(bestPaymentOption.isBankTransfer());
     }
 
     @Test
     public void swiftIsTheBestToRecipientTypeSwift() {
         final var quote = new Quote(List.of(bankTransfer(), swift()));
-        final var bestPaymentOption = new BestPaymentOption(quote, "SWIFT");
+        final var bestPaymentOption = paymentOptionService.getBestPaymentOption(quote, "SWIFT");
 
-        assertTrue(bestPaymentOption.get().isSwift());
+        assertTrue(bestPaymentOption.isSwift());
     }
 
     @Test
     public void usesBankTransferWhenSwiftOptionIsNotAvailable() {
         final var quote = new Quote(List.of(bankTransfer()));
-        final var bestPaymentOption = new BestPaymentOption(quote, "SWIFT");
+        final var bestPaymentOption = paymentOptionService.getBestPaymentOption(quote, "SWIFT");
 
-        assertTrue(bestPaymentOption.get().isBankTransfer());
+        assertTrue(bestPaymentOption.isBankTransfer());
     }
 }

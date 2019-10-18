@@ -26,6 +26,10 @@ public class TransferWiseTransfer {
         return id;
     }
 
+    public Long getTargetAccount() {
+        return targetAccount;
+    }
+
     public UUID getQuoteUuid() {
         return quoteUuid;
     }

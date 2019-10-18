@@ -20,7 +20,7 @@ public class TransfersController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final TransferRequest transferRequest) {
+    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final TransferWiseTransfer transferRequest) {
         return transferService.create(customerId, transferRequest);
     }
 }

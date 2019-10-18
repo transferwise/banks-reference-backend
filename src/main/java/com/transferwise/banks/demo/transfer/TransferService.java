@@ -4,8 +4,10 @@ import com.transferwise.banks.demo.credentials.CredentialsManager;
 import com.transferwise.banks.demo.customer.Customer;
 import com.transferwise.banks.demo.customer.CustomerTransfer;
 import com.transferwise.banks.demo.customer.CustomersRepository;
-import com.transferwise.banks.demo.quote.PaymentOption;
+import com.transferwise.banks.demo.quote.Quote;
+import com.transferwise.banks.demo.quote.TransferWiseQuote;
 import com.transferwise.banks.demo.recipient.Recipient;
+import com.transferwise.banks.demo.recipient.TransferWiseRecipients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,11 +30,15 @@ public class TransferService {
     private final WebClient client;
     private final CredentialsManager manager;
     private final CustomersRepository customersRepository;
+    private final TransferWiseQuote twQuote;
+    private final TransferWiseRecipients twRecipients;
 
-    public TransferService(final WebClient client, final CredentialsManager manager, CustomersRepository customersRepository) {
+    public TransferService(final WebClient client, final CredentialsManager manager, CustomersRepository customersRepository, TransferWiseQuote twQuote, TransferWiseRecipients twRecipients) {
         this.client = client;
         this.manager = manager;
         this.customersRepository = customersRepository;
+        this.twQuote = twQuote;
+        this.twRecipients = twRecipients;
     }
 
     public Flux<String> requirements(final Customer customer, final String bodyRequest) {
@@ -46,7 +52,7 @@ public class TransferService {
                         .bodyToFlux(String.class));
     }
 
-    public Mono<TransferWiseTransfer> create(final Long customerId, final TransferRequest transferRequest) {
+    public Mono<TransferWiseTransfer> create(final Long customerId, final TransferWiseTransfer transferRequest) {
         Customer customer = customersRepository.find(customerId);
 
         return manager.credentialsFor(customer).flatMap(credentials ->
@@ -54,19 +60,23 @@ public class TransferService {
                         .uri(TRANSFERS_PATH)
                         .header(AUTHORIZATION, credentials.bearer())
                         .contentType(APPLICATION_JSON_UTF8)
-                        .body(fromObject(transferRequest.getTransferWiseTransfer()))
+                        .body(fromObject(transferRequest))
                         .retrieve()
                         .bodyToMono(TransferWiseTransfer.class))
                 .doOnSuccess(transferWiseTransfer -> {
-                    log.info("Saving transfer response {}", transferWiseTransfer);
-                    CustomerTransfer customerTransfer = mapToCustomerTransfer(transferWiseTransfer, transferRequest.getRecipient(), transferRequest.getPaymentOption());
-                    customersRepository.save(customer.addCustomerTransfer(customerTransfer));
+                    twQuote.get(customer, transferWiseTransfer.getQuoteUuid())
+                            .zipWith(twRecipients.getRecipient(customer, transferRequest.getTargetAccount()))
+                            .subscribe(quoteRecipientTuple2 -> {
+                                log.info("Saving transfer response {}", transferWiseTransfer);
+                                CustomerTransfer customerTransfer = mapToCustomerTransfer(transferWiseTransfer, quoteRecipientTuple2.getT2(), quoteRecipientTuple2.getT1());
+                                customersRepository.save(customer.addCustomerTransfer(customerTransfer));
+                            });
                 });
     }
 
-    private CustomerTransfer mapToCustomerTransfer(TransferWiseTransfer transferWiseTransfer, Recipient recipient, PaymentOption paymentOption) {
+    private CustomerTransfer mapToCustomerTransfer(TransferWiseTransfer transferWiseTransfer, Recipient recipient, Quote quote) {
         return new CustomerTransfer(transferWiseTransfer.getId(),
-                recipient.getId(),
+                transferWiseTransfer.getTargetAccount(),
                 transferWiseTransfer.getQuoteUuid(),
                 transferWiseTransfer.getReference(),
                 transferWiseTransfer.getRate(),
@@ -77,7 +87,7 @@ public class TransferService {
                 transferWiseTransfer.getTargetValue(),
                 transferWiseTransfer.getCustomerTransactionId(),
                 recipient.getName().getFullName(),
-                paymentOption.getFee().getTotal(),
+                quote.getFee(),
                 emptyList());
 
     }

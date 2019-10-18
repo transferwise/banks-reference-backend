@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.transfer;
 
-import com.transferwise.banks.demo.quote.BestPaymentOption;
 import com.transferwise.banks.demo.quote.PaymentOption;
 import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.recipient.Recipient;
@@ -13,8 +12,8 @@ public class TransferSummary {
     private final Quote quote;
     private final Recipient recipient;
 
-    TransferSummary(final Quote quote, final Recipient recipient) {
-        paymentOption = new BestPaymentOption(quote, recipient.getType()).get();
+    public TransferSummary(final PaymentOption paymentOption, final Quote quote, final Recipient recipient) {
+        this.paymentOption = paymentOption;
         this.quote = quote;
         this.recipient = recipient;
     }

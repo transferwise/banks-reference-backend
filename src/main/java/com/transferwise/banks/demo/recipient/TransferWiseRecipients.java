@@ -1,13 +1,21 @@
 package com.transferwise.banks.demo.recipient;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.transferwise.banks.demo.client.UriWithParams;
 import com.transferwise.banks.demo.credentials.CredentialsManager;
 import com.transferwise.banks.demo.customer.Customer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V1;
@@ -20,6 +28,11 @@ import static reactor.core.publisher.Flux.fromIterable;
 
 @Component
 public class TransferWiseRecipients {
+
+    private static final Logger log = LoggerFactory.getLogger(TransferWiseRecipients.class);
+
+    private static final String TYPE = "type";
+    private static final String EMAIL = "email";
 
     private final WebClient client;
     private final CredentialsManager manager;
@@ -39,13 +52,29 @@ public class TransferWiseRecipients {
                         .flatMap(content -> fromIterable(content.recipients)));
     }
 
-    public Mono<String> requirements(final Customer customer, final UUID quoteId) {
+    public Mono<List<Map>> requirements(final Customer customer, final UUID quoteId) {
         return manager.credentialsFor(customer).flatMap(credentials ->
                 client.get()
                         .uri(recipientRequirementsPath(quoteId))
                         .header(AUTHORIZATION, credentials.bearer())
                         .retrieve()
-                        .bodyToMono(String.class));
+                        .bodyToMono(String.class))
+                .map(json -> {
+                    List<Map> accountRequirements = new ArrayList<>();
+
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        accountRequirements = mapper.readValue(json, new TypeReference<List<Map>>() {
+                        });
+
+                        accountRequirements.removeIf(requirement -> EMAIL.equals(requirement.get(TYPE)));
+
+                    } catch (IOException e) {
+                        log.error("Error while parsing account requirements json for quoteId {}", quoteId, e);
+                    }
+
+                    return accountRequirements;
+                });
     }
 
     public Mono<String> requirements(final Customer customer, final String bodyRequest, final UUID quoteId) {

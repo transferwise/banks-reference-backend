@@ -1,5 +1,7 @@
 package com.transferwise.banks.demo.customer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -16,16 +18,22 @@ public class NewCustomer {
     @Email
     private String email;
 
+    @NotNull
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfBirth;
+
+    @NotNull
+    private String phoneNumber;
 
     public NewCustomer() {
     }
 
-    public NewCustomer(@NotNull final String firstName, @NotNull final String lastName, @NotNull @Email final String email, final LocalDate dateOfBirth) {
+    public NewCustomer(@NotNull final String firstName, @NotNull final String lastName, @NotNull @Email final String email, @NotNull final LocalDate dateOfBirth, @NotNull String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -42,5 +50,9 @@ public class NewCustomer {
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

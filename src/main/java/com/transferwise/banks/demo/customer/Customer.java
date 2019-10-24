@@ -56,6 +56,7 @@ public class Customer {
         lastName = newCustomer.getLastName();
         email = newCustomer.getEmail();
         dateOfBirth = newCustomer.getDateOfBirth();
+        phoneNumber = newCustomer.getPhoneNumber();
     }
 
     public String accessToken() {

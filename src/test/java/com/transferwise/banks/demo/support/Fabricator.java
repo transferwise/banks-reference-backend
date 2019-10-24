@@ -26,7 +26,7 @@ public class Fabricator {
         final var profile = new TransferwiseProfile(1L, "personal", now());
         final var dob = LocalDate.of(1989, 5, 16);
 
-        return new Customer(new NewCustomer("Fulano", "de Tal", "fulano@email.com", dob))
+        return new Customer(new NewCustomer("Fulano", "de Tal", "fulano@email.com", dob, "+37211223344"))
                 .withCredentials(credentials)
                 .withPersonalProfile(profile);
     }

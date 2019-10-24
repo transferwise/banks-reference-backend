@@ -9,6 +9,6 @@ public final class SourceAmount extends Value<BigDecimal> {
     }
 
     public SourceAmount(final Long amount) {
-        this(new BigDecimal(amount));
+        this(BigDecimal.valueOf(amount));
     }
 }

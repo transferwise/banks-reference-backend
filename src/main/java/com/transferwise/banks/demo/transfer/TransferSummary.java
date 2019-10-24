@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.transfer;
 
-import com.transferwise.banks.demo.quote.PaymentOption;
 import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.recipient.Recipient;
 
@@ -8,12 +7,10 @@ import java.math.BigDecimal;
 
 public class TransferSummary {
 
-    private final PaymentOption paymentOption;
     private final Quote quote;
     private final Recipient recipient;
 
-    public TransferSummary(final PaymentOption paymentOption, final Quote quote, final Recipient recipient) {
-        this.paymentOption = paymentOption;
+    public TransferSummary(final Quote quote, final Recipient recipient) {
         this.quote = quote;
         this.recipient = recipient;
     }
@@ -38,7 +35,8 @@ public class TransferSummary {
         return recipient.getAccountSummary();
     }
 
-    public PaymentOption getPaymentOption() {
-        return paymentOption;
+    public String getPayOut() {
+        return quote.getPayOut();
     }
+
 }

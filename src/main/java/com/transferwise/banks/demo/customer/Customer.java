@@ -5,12 +5,10 @@ import com.transferwise.banks.demo.client.params.ProfileId;
 import com.transferwise.banks.demo.credentials.TransferwiseCredentials;
 import com.transferwise.banks.demo.credentials.TransferwiseProfile;
 import com.transferwise.banks.demo.credentials.TransferwiseUser;
-import com.transferwise.banks.demo.quote.Quote;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,13 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "customers")
 public class Customer {
@@ -49,9 +43,6 @@ public class Customer {
 
     @OneToOne(cascade = ALL)
     private TransferwiseProfile profile;
-
-    @ElementCollection(fetch = EAGER)
-    private final List<UUID> quoteIds = new ArrayList<>();
 
     @OneToMany(cascade = ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -137,11 +128,6 @@ public class Customer {
                 .filter(TransferwiseProfile::isPersonal)
                 .findFirst()
                 .orElse(null);
-        return this;
-    }
-
-    public Customer addQuote(final Quote quote) {
-        quoteIds.add(quote.getId());
         return this;
     }
 

@@ -6,9 +6,9 @@ import com.transferwise.banks.demo.customer.CustomerTransferStatusRepository;
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class TransferStatusService {
 
     private static final Logger log = LoggerFactory.getLogger(TransferStatusService.class);

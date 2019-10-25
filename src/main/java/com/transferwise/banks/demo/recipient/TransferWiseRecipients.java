@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V1;
 import static com.transferwise.banks.demo.client.TransferWisePaths.RECIPIENTS_PATH_V2;
+import static com.transferwise.banks.demo.client.TransferWisePaths.recipientByIdPath;
 import static com.transferwise.banks.demo.client.TransferWisePaths.recipientRequirementsPath;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -40,6 +41,15 @@ public class TransferWiseRecipients {
     public TransferWiseRecipients(final WebClient client, final CredentialsManager manager) {
         this.client = client;
         this.manager = manager;
+    }
+
+    public Mono<Recipient> getRecipient(final Customer customer, final Long recipientId) {
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.get()
+                        .uri(recipientByIdPath(recipientId))
+                        .header(AUTHORIZATION, credentials.bearer())
+                        .retrieve()
+                        .bodyToMono(Recipient.class));
     }
 
     public Flux<Recipient> all(final Customer customer) {

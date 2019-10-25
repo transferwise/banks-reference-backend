@@ -20,6 +20,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @Component
 public class TransferWiseQuote {
 
+    private static final MediaType MERGE_PATCH_JSON = MediaType.valueOf("application/merge-patch+json");
+
     private final WebClient client;
     private final CredentialsManager manager;
 
@@ -59,5 +61,12 @@ public class TransferWiseQuote {
                         .bodyToMono(Quote.class));
     }
 
-    private final MediaType MERGE_PATCH_JSON = MediaType.valueOf("application/merge-patch+json");
+    public Mono<Quote> get(final Customer customer, final UUID quoteId) {
+        return manager.credentialsFor(customer).flatMap(credentials ->
+                client.get()
+                        .uri(quotesPathV2(quoteId))
+                        .header(AUTHORIZATION, credentials.bearer())
+                        .retrieve()
+                        .bodyToMono(Quote.class));
+    }
 }

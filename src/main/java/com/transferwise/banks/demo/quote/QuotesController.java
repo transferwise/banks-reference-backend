@@ -1,7 +1,9 @@
 package com.transferwise.banks.demo.quote;
 
-import com.transferwise.banks.demo.customer.CustomersRepository;
+import com.transferwise.banks.demo.client.params.TargetAccount;
+import com.transferwise.banks.demo.transfer.TransferSummary;
 import org.reactivestreams.Publisher;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -16,20 +19,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/quotes")
 public class QuotesController {
 
-    private final TransferWiseQuote twQuote;
-    private final CustomersRepository customers;
+    private final QuotesService quotesService;
 
-    public QuotesController(final TransferWiseQuote twQuote, final CustomersRepository customers) {
-        this.twQuote = twQuote;
-        this.customers = customers;
+    public QuotesController(QuotesService quotesService) {
+        this.quotesService = quotesService;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest,
                                    @RequestParam final Long customerId) {
-        final var customer = customers.find(customerId);
-        return twQuote
-                .create(customer, quoteRequest)
-                .doOnSuccess(quote -> customers.save(customer.addQuote(quote)));
+        return quotesService.createQuote(customerId, quoteRequest);
+    }
+
+    @PatchMapping(produces = APPLICATION_JSON_VALUE)
+    public Publisher<TransferSummary> patch(@RequestParam final Long customerId,
+                                            @RequestParam final TargetAccount targetAccount,
+                                            @RequestParam final UUID quoteId) {
+        return quotesService.updateQuote(customerId, targetAccount, quoteId);
     }
 }

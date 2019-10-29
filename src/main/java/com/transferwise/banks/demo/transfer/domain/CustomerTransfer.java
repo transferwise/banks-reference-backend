@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.Comparator.comparing;
+
 public class CustomerTransfer {
 
     private Long id;
@@ -105,6 +107,7 @@ public class CustomerTransfer {
     }
 
     public List<CustomerTransferStatus> getTransferStatuses() {
+        transferStatuses.sort(comparing(CustomerTransferStatus::getEventTime));
         return transferStatuses;
     }
 }

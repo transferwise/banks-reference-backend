@@ -1,7 +1,7 @@
 package com.transferwise.banks.demo.quote.web;
 
 import com.transferwise.banks.demo.client.params.TargetAccount;
-import com.transferwise.banks.demo.quote.Quote;
+import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.CreateQuote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import com.transferwise.banks.demo.transfer.domain.TransferSummary;
@@ -36,11 +36,6 @@ public class QuotesController {
 
         CreateQuote createQuote = quotesMapperWeb.mapToCreateQuote(quoteRequest);
         return quotesService.createQuote(customerId, createQuote);
-
-        /*final var customer = customers.find(customerId);
-        return twQuote
-                .create(customer, quoteRequest)
-                .doOnSuccess(quote -> customers.save(customer.addQuote(quote)));*/
     }
 
     @PatchMapping(produces = APPLICATION_JSON_VALUE)

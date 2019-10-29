@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.quote;
+package com.transferwise.banks.demo.quote.domain;
 
 public class DisabledReason {
     private String code;

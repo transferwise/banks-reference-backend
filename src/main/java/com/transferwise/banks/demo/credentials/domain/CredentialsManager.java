@@ -79,36 +79,4 @@ public class CredentialsManager {
 
         return new CreatePersonalProfile("personal", personalProfileDetails);
     }
-
-    /*public Mono<TransferwiseCredentials> credentialsFor(final CustomerEntity customerId) {
-        return refresh(customerEntity.getCredentials())
-                .doOnSuccess(c -> customers.save(customerEntity.withCredentials(c)));
-    }
-
-    private Mono<TransferwiseCredentials> refresh(final TransferwiseCredentials credentials) {
-        if (credentials.areExpired()) {
-            return client.post()
-                    .uri(OAUTH_TOKEN_PATH)
-                    .header(AUTHORIZATION, config.basicAuth())
-                    .body(forRefreshToken(credentials.refreshToken()))
-                    .retrieve()
-                    .bodyToMono(TransferwiseCredentials.class);
-        }
-
-        return Mono.just(credentials);
-    }
-
-    public <T> Mono<T> withBankCredentials(final Function<TransferwiseClientCredentials, Mono<T>> f) {
-        return bankCredentials().flatMap(f);
-    }
-
-    private Mono<TransferwiseClientCredentials> bankCredentials() {
-        return client.post()
-                .uri(OAUTH_TOKEN_PATH)
-                .contentType(APPLICATION_FORM_URLENCODED)
-                .header(AUTHORIZATION, config.basicAuth())
-                .body(forClientCredentials())
-                .retrieve()
-                .bodyToMono(TransferwiseClientCredentials.class);
-    }*/
 }

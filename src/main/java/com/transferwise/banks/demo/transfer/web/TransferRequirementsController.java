@@ -23,8 +23,5 @@ public class TransferRequirementsController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
         return transferService.requirements(customerId, rawRequest.getBody());
-
-        /*final var customer = customers.find(customerId);
-        return transferService.requirements(customer, rawRequest.getBody());*/
     }
 }

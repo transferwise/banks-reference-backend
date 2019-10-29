@@ -4,9 +4,9 @@ import com.transferwise.banks.demo.client.params.Parameter;
 import com.transferwise.banks.demo.client.params.ProfileId;
 import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
-import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.quote.domain.CreateAnonymousQuote;
 import com.transferwise.banks.demo.quote.domain.CreateQuote;
+import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesTWClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
@@ -32,11 +32,9 @@ class QuotesTWClientImpl implements QuotesTWClient {
     private static final MediaType MERGE_PATCH_JSON = MediaType.valueOf("application/merge-patch+json");
 
     private final WebClient client;
-    private final QuotesMapperTWClient quotesMapperTWClient;
 
-    QuotesTWClientImpl(WebClient client, QuotesMapperTWClient quotesMapperTWClient) {
+    QuotesTWClientImpl(WebClient client) {
         this.client = client;
-        this.quotesMapperTWClient = quotesMapperTWClient;
     }
 
 

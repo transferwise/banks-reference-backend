@@ -28,15 +28,10 @@ public class RecipientRequirementsController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public Publisher<List<Map>> get(@RequestParam final Long customerId, @RequestParam final UUID quoteId) {
         return recipientsService.getRequirements(customerId, quoteId);
-
-        /*final var customer = customers.find(customerId);
-        return twRecipients.requirements(customer, quoteId);*/
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest, @RequestParam final UUID quoteId) {
         return recipientsService.createRequirements(customerId, quoteId, rawRequest.getBody());
-        /*final var customer = customers.find(customerId);
-        return twRecipients.requirements(customer, rawRequest.getBody(), quoteId);*/
     }
 }

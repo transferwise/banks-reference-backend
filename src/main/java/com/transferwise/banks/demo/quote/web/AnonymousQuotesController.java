@@ -1,6 +1,6 @@
 package com.transferwise.banks.demo.quote.web;
 
-import com.transferwise.banks.demo.quote.Quote;
+import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;

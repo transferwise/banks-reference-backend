@@ -4,7 +4,6 @@ import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
-import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.recipient.domain.RecipientsService;
 import com.transferwise.banks.demo.transfer.domain.TransferSummary;

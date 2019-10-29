@@ -2,7 +2,6 @@ package com.transferwise.banks.demo.quote.domain;
 
 import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
-import com.transferwise.banks.demo.quote.Quote;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

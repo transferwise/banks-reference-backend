@@ -1,6 +1,6 @@
 package com.transferwise.banks.demo.transfer.domain;
 
-import com.transferwise.banks.demo.quote.Quote;
+import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.recipient.domain.Recipient;
 
 import java.math.BigDecimal;

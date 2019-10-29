@@ -5,13 +5,11 @@ import com.transferwise.banks.demo.client.params.Email;
 import com.transferwise.banks.demo.client.params.GrantTypeAuthorizationCode;
 import com.transferwise.banks.demo.client.params.GrantTypeClientCredentials;
 import com.transferwise.banks.demo.client.params.GrantTypeRefreshToken;
-import com.transferwise.banks.demo.client.params.GrantTypeRegistrationCode;
 import com.transferwise.banks.demo.client.params.Parameter;
 import com.transferwise.banks.demo.client.params.ProfileId;
 import com.transferwise.banks.demo.client.params.RefreshToken;
 import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.client.params.V1RegistrationCode;
-import com.transferwise.banks.demo.credentials.TransferwiseUser;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,13 +33,13 @@ public class BodyRequests {
         return fromMultipartData(multiMap(new GrantTypeClientCredentials()));
     }
 
-    public static MultipartInserter forUserCredentials(final TransferWiseBankConfig config, final TransferwiseUser user) {
+    /*public static MultipartInserter forUserCredentials(final TransferWiseBankConfig config, final TransferwiseUser user) {
         return fromMultipartData(
                 multiMap(new GrantTypeRegistrationCode(),
                         user.email(),
                         config.clientId(),
                         user.registrationCode()));
-    }
+    }*/
 /*
     public static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final CustomerEntity customerEntity) {
         return fromObject(new PersonalProfileRequest(customerEntity).toJson());

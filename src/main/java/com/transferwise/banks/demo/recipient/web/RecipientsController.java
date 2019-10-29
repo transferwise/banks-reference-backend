@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -27,20 +26,11 @@ public class RecipientsController {
 
     @GetMapping
     public Publisher<Recipient> index(@RequestParam final Long customerId) {
-
         return recipientsService.getAllRecipients(customerId);
-
-        /*return customers
-                .findById(customerId)
-                .map(recipients::all)
-                .orElse(Flux.empty());*/
     }
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces =  APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Mono<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
-
         return recipientsService.create(customerId, rawRequest.getBody());
-        /*final var customer = customers.find(customerId);
-        return recipients.create(customer, rawRequest.getBody());*/
     }
 }

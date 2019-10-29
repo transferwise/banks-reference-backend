@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.quote;
+package com.transferwise.banks.demo.quote.domain;
 
 import java.math.BigDecimal;
 

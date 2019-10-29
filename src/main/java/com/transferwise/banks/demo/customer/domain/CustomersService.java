@@ -6,6 +6,4 @@ public interface CustomersService {
 
     Customer save(Customer customer);
 
-    //CustomerCredentials findCustomerCredentials(Long customerId);
-
 }

@@ -1,7 +1,7 @@
 package com.transferwise.banks.demo.transfer.domain;
 
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
-import com.transferwise.banks.demo.quote.Quote;
+import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import com.transferwise.banks.demo.recipient.domain.RecipientsService;
 import org.slf4j.Logger;

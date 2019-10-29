@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user-credentials")
 public class CredentialsController {
 
-    /*private final NewTransferWiseUser newUser;
-    private final CustomersRepository customers;*/
     private final CredentialsManager credentialsManager;
 
     public CredentialsController(CredentialsManager credentialsManager) {
@@ -22,10 +20,6 @@ public class CredentialsController {
     @PostMapping("/sign-up")
     public void signUp(@RequestParam final Long customerId) {
         credentialsManager.signUp(customerId);
-        /*final var customer = customers.find(id);
-        return newUser.create(customer)
-                .map(customers::save)
-                .map(CustomerEntity::getCredentials);*/
     }
 
     @PostMapping("/existing")

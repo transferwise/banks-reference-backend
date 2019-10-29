@@ -17,7 +17,7 @@ class QuoteRequest extends AnonymousQuoteRequest {
 
     public QuoteRequest(final Profile profile, final SourceCurrency sourceCurrency, final TargetCurrency targetCurrency,
                         final SourceAmount sourceAmount, final TargetAmount targetAmount) {
-        this();
+        super(sourceCurrency, targetCurrency, sourceAmount, targetAmount);
         this.profile = profile;
     }
 

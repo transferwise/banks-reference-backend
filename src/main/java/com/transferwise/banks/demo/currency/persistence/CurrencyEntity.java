@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.currency;
+package com.transferwise.banks.demo.currency.persistence;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -10,24 +10,36 @@ import java.util.List;
 import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "currencies")
-public class Currency {
+class CurrencyEntity {
 
     @Id
-    public final String code;
-    public final String name;
-    public final Boolean mostPopular;
+    private String code;
+    private String name;
+    private Boolean mostPopular;
 
     @ElementCollection(fetch = EAGER)
-    private final List<String> countries = new ArrayList<>();
+    private List<String> countries = new ArrayList<>();
 
-    public Currency() {
+    public CurrencyEntity() {
         this(null, null, false);
     }
 
-    public Currency(final String code, final String name, final Boolean mostPopular) {
+    public CurrencyEntity(final String code, final String name, final Boolean mostPopular) {
         this.code = code;
         this.name = name;
         this.mostPopular = mostPopular;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Boolean getMostPopular() {
+        return mostPopular;
     }
 
     public List<String> getCountries() {

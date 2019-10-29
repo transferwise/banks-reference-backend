@@ -1,5 +1,6 @@
 package com.transferwise.banks.demo.transfer.web;
 
+import com.transferwise.banks.demo.transfer.domain.TransferRequest;
 import com.transferwise.banks.demo.transfer.domain.TransferService;
 import com.transferwise.banks.demo.transfer.domain.TransferWiseTransfer;
 import org.reactivestreams.Publisher;
@@ -22,7 +23,7 @@ public class TransfersController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final TransferWiseTransfer transferRequest) {
+    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final TransferRequest transferRequest) {
         return transferService.create(customerId, transferRequest);
     }
 }

@@ -1,6 +1,7 @@
 package com.transferwise.banks.demo.transfer.twclient;
 
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
+import com.transferwise.banks.demo.transfer.domain.TransferRequest;
 import com.transferwise.banks.demo.transfer.domain.TransferWiseTransfer;
 import com.transferwise.banks.demo.transfer.domain.TransfersTWClient;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ class TransfersTWClientImpl implements TransfersTWClient {
     }
 
     @Override
-    public Mono<TransferWiseTransfer> createTransfer(TWUserTokens twUserTokens, TransferWiseTransfer transferRequest) {
+    public Mono<TransferWiseTransfer> createTransfer(TWUserTokens twUserTokens, TransferRequest transferRequest) {
         return client.post()
                 .uri(TRANSFERS_PATH)
                 .header(AUTHORIZATION, twUserTokens.bearer())

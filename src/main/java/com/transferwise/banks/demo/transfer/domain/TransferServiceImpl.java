@@ -32,7 +32,7 @@ class TransferServiceImpl implements TransferService {
 
 
     @Override
-    public Mono<TransferWiseTransfer> create(final Long customerId, final TransferWiseTransfer transferRequest) {
+    public Mono<TransferWiseTransfer> create(final Long customerId, final TransferRequest transferRequest) {
         return credentialsManager.refreshTokens(customerId).flatMap(twUserTokens ->
                 transfersTWClient.createTransfer(twUserTokens, transferRequest))
                 .doOnSuccess(transferWiseTransfer -> {

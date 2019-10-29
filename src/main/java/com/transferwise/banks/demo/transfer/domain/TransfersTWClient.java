@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 public interface TransfersTWClient {
 
-    Mono<TransferWiseTransfer> createTransfer(TWUserTokens twUserTokens, TransferWiseTransfer transferRequest);
+    Mono<TransferWiseTransfer> createTransfer(TWUserTokens twUserTokens, TransferRequest transferRequest);
 
     Flux<String> requirements(TWUserTokens twUserTokens, String requestBody);
 }

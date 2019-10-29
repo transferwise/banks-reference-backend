@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 public interface TransferService {
 
-    Mono<TransferWiseTransfer> create(Long customerId, TransferWiseTransfer transferRequest);
+    Mono<TransferWiseTransfer> create(Long customerId, TransferRequest transferRequest);
 
     Flux<String> requirements(Long customerId, String requestBody);
 }

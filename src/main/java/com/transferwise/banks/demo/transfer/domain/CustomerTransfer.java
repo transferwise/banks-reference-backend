@@ -1,5 +1,6 @@
 package com.transferwise.banks.demo.transfer.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.transferwise.banks.demo.transfer.domain.status.CustomerTransferStatus;
 
 import java.math.BigDecimal;
@@ -16,6 +17,8 @@ public class CustomerTransfer {
     private UUID quoteUuid;
     private String reference;
     private BigDecimal rate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
     private String sourceCurrency;
     private BigDecimal sourceValue;

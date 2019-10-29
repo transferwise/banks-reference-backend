@@ -1,6 +1,7 @@
 package com.transferwise.banks.demo.transfer.domain;
 
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
+import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import com.transferwise.banks.demo.recipient.domain.RecipientsService;
 import org.slf4j.Logger;
@@ -9,10 +10,14 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 @Component
 class TransferServiceImpl implements TransferService {
 
     private static final Logger log = LoggerFactory.getLogger(TransferServiceImpl.class);
+
+    private static final String BANK_TRANSFER = "BANK_TRANSFER";
 
     private final CredentialsManager credentialsManager;
     private final TransfersTWClient transfersTWClient;
@@ -36,7 +41,9 @@ class TransferServiceImpl implements TransferService {
                         .zipWith(recipientsService.getRecipient(customerId, transferRequest.getTargetAccount()))
                         .subscribe(quoteRecipientTuple2 -> {
                             log.info("Saving transfer response {}", transferWiseTransfer);
-                            customerTransferPersistence.saveCustomerTransfer(customerId, transferWiseTransfer, quoteRecipientTuple2.getT2(), quoteRecipientTuple2.getT1());
+                            Quote quote = quoteRecipientTuple2.getT1();
+                            BigDecimal fee = extractFee(quote);
+                            customerTransferPersistence.saveCustomerTransfer(customerId, transferWiseTransfer, quoteRecipientTuple2.getT2(), fee);
                         }));
     }
 
@@ -44,5 +51,16 @@ class TransferServiceImpl implements TransferService {
     public Flux<String> requirements(Long customerId, String requestBody) {
         return credentialsManager.refreshTokens(customerId)
                 .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, requestBody));
+    }
+
+    //TODO - confirm if this makes sense
+    private BigDecimal extractFee(final Quote quote) {
+        return quote.getPaymentOptions()
+                .stream()
+                .filter(paymentOption -> BANK_TRANSFER.equalsIgnoreCase(paymentOption.getPayIn()))
+                .findFirst()
+                .map(paymentOption -> paymentOption.getFee().getTotal())
+                .orElse(null);
+
     }
 }

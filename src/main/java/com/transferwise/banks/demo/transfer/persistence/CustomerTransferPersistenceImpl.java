@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.transfer.persistence;
 
-import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.transfer.domain.CustomerTransfer;
 import com.transferwise.banks.demo.transfer.domain.CustomerTransferPersistence;
@@ -8,6 +7,7 @@ import com.transferwise.banks.demo.transfer.domain.TransferWiseTransfer;
 import com.transferwise.banks.demo.transfer.domain.status.CustomerTransferStatus;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -23,8 +23,8 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
     }
 
     @Override
-    public void saveCustomerTransfer(final Long customerId, final TransferWiseTransfer transferWiseTransfer, final Recipient recipient, final Quote quote) {
-        CustomerTransferEntity customerTransferEntity = mapToEntity(customerId, transferWiseTransfer, recipient, quote);
+    public void saveCustomerTransfer(final Long customerId, final TransferWiseTransfer transferWiseTransfer, final Recipient recipient, final BigDecimal fee) {
+        CustomerTransferEntity customerTransferEntity = mapToEntity(customerId, transferWiseTransfer, recipient, fee);
         customerTransferRepository.save(customerTransferEntity);
     }
 
@@ -42,7 +42,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
                 .collect(toList());
     }
 
-    private CustomerTransferEntity mapToEntity(final Long customerId, final TransferWiseTransfer transferWiseTransfer, final Recipient recipient, final Quote quote) {
+    private CustomerTransferEntity mapToEntity(final Long customerId, final TransferWiseTransfer transferWiseTransfer, final Recipient recipient, final BigDecimal fee) {
         return new CustomerTransferEntity(transferWiseTransfer.getId(),
                 customerId,
                 transferWiseTransfer.getTargetAccount(),
@@ -56,7 +56,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
                 transferWiseTransfer.getTargetValue(),
                 transferWiseTransfer.getCustomerTransactionId(),
                 recipient.getName().getFullName(),
-                quote.getFee(),
+                fee,
                 emptyList());
 
     }

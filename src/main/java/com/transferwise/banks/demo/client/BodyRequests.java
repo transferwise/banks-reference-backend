@@ -1,8 +1,6 @@
 package com.transferwise.banks.demo.client;
 
-import com.transferwise.banks.demo.client.params.Code;
 import com.transferwise.banks.demo.client.params.Email;
-import com.transferwise.banks.demo.client.params.GrantTypeAuthorizationCode;
 import com.transferwise.banks.demo.client.params.GrantTypeClientCredentials;
 import com.transferwise.banks.demo.client.params.GrantTypeRefreshToken;
 import com.transferwise.banks.demo.client.params.Parameter;
@@ -53,14 +51,14 @@ public class BodyRequests {
         return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));
     }
 
-    public static MultipartInserter forCustomerCredentials(final TransferWiseBankConfig config, final Code code) {
+    /*public static MultipartInserter forCustomerCredentials(final TransferWiseBankConfig config, final Code code) {
         return fromMultipartData(
                 multiMap(new GrantTypeAuthorizationCode(),
                         config.clientId(),
                         code,
                         config.redirectUri()));
     }
-
+*/
     public static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forQuoteUpdate(final ProfileId profileId, final TargetAccount targetAccount) {
         return fromObject(map(profileId, targetAccount));
     }

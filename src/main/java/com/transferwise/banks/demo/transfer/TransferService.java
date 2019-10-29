@@ -1,12 +1,13 @@
 package com.transferwise.banks.demo.transfer;
 
-import com.transferwise.banks.demo.credentials.CredentialsManager;
-import com.transferwise.banks.demo.customer.Customer;
+import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
+import com.transferwise.banks.demo.customer.persistence.CustomerEntity;
 import com.transferwise.banks.demo.customer.CustomerTransfer;
+import com.transferwise.banks.demo.customer.persistence.CustomersRepository;
 import com.transferwise.banks.demo.customer.CustomersRepository;
 import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.quote.TransferWiseQuote;
-import com.transferwise.banks.demo.recipient.Recipient;
+import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.recipient.TransferWiseRecipients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,8 @@ public class TransferService {
         this.twRecipients = twRecipients;
     }
 
-    public Flux<String> requirements(final Customer customer, final String bodyRequest) {
-        return manager.credentialsFor(customer).flatMapMany(credentials ->
+    public Flux<String> requirements(final CustomerEntity customerEntity, final String bodyRequest) {
+        return manager.credentialsFor(customerEntity).flatMapMany(credentials ->
                 client.post()
                         .uri(TRANSFER_REQUIREMENTS_PATH)
                         .header(AUTHORIZATION, credentials.bearer())
@@ -53,9 +54,9 @@ public class TransferService {
     }
 
     public Mono<TransferWiseTransfer> create(final Long customerId, final TransferWiseTransfer transferRequest) {
-        Customer customer = customersRepository.find(customerId);
+        CustomerEntity customerEntity = customersRepository.find(customerId);
 
-        return manager.credentialsFor(customer).flatMap(credentials ->
+        return manager.credentialsFor(customerEntity).flatMap(credentials ->
                 client.post()
                         .uri(TRANSFERS_PATH)
                         .header(AUTHORIZATION, credentials.bearer())
@@ -69,7 +70,7 @@ public class TransferService {
                             .subscribe(quoteRecipientTuple2 -> {
                                 log.info("Saving transfer response {}", transferWiseTransfer);
                                 CustomerTransfer customerTransfer = mapToCustomerTransfer(transferWiseTransfer, quoteRecipientTuple2.getT2(), quoteRecipientTuple2.getT1());
-                                customersRepository.save(customer.addCustomerTransfer(customerTransfer));
+                                customersRepository.save(customerEntity.addCustomerTransfer(customerTransfer));
                             });
                 });
     }

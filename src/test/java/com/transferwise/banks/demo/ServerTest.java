@@ -1,7 +1,7 @@
 package com.transferwise.banks.demo;
 
-import com.transferwise.banks.demo.credentials.CredentialsManager;
-import com.transferwise.banks.demo.customer.CustomersRepository;
+import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
+import com.transferwise.banks.demo.customer.persistence.CustomersRepository;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;

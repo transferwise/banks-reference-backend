@@ -1,7 +1,7 @@
 package com.transferwise.banks.demo.recipient;
 
 import com.transferwise.banks.demo.ServerTest;
-import com.transferwise.banks.demo.customer.Customer;
+import com.transferwise.banks.demo.customer.persistence.CustomerEntity;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class TransferWiseRecipientsTest extends ServerTest {
     public void findRecipientsForCustomer() throws IOException {
         final var customer = newCustomer();
 
-        when(customers.save(any(Customer.class))).thenReturn(customer);
+        when(customers.save(any(CustomerEntity.class))).thenReturn(customer);
         server.enqueue(response("recipients.json"));
 
         final var recipient = recipients.all(customer).blockFirst();

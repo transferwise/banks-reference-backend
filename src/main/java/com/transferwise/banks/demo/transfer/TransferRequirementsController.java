@@ -1,6 +1,6 @@
 package com.transferwise.banks.demo.transfer;
 
-import com.transferwise.banks.demo.customer.CustomersRepository;
+import com.transferwise.banks.demo.customer.persistence.CustomersRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.PostMapping;

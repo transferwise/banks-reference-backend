@@ -11,10 +11,7 @@ import com.transferwise.banks.demo.client.params.ProfileId;
 import com.transferwise.banks.demo.client.params.RefreshToken;
 import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.client.params.V1RegistrationCode;
-import com.transferwise.banks.demo.credentials.PersonalProfileRequest;
 import com.transferwise.banks.demo.credentials.TransferwiseUser;
-import com.transferwise.banks.demo.customer.Customer;
-import com.transferwise.banks.demo.quote.QuoteRequest;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -45,14 +42,14 @@ public class BodyRequests {
                         config.clientId(),
                         user.registrationCode()));
     }
-
-    public static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final Customer customer) {
-        return fromObject(new PersonalProfileRequest(customer).toJson());
+/*
+    public static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final CustomerEntity customerEntity) {
+        return fromObject(new PersonalProfileRequest(customerEntity).toJson());
     }
 
     public static BodyInserter<String, ReactiveHttpOutputMessage> forNewQuote(final QuoteRequest quoteRequest) {
         return fromObject(quoteRequest.toJson());
-    }
+    }*/
 
     public static MultipartInserter forRefreshToken(final RefreshToken refreshToken) {
         return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));

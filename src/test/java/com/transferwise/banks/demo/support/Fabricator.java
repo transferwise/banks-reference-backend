@@ -2,10 +2,10 @@ package com.transferwise.banks.demo.support;
 
 import com.transferwise.banks.demo.credentials.TransferwiseCredentials;
 import com.transferwise.banks.demo.credentials.TransferwiseProfile;
-import com.transferwise.banks.demo.customer.Customer;
+import com.transferwise.banks.demo.customer.persistence.CustomerEntity;
 import com.transferwise.banks.demo.customer.NewCustomer;
 import com.transferwise.banks.demo.quote.PaymentOption;
-import com.transferwise.banks.demo.quote.QuoteRequest;
+import com.transferwise.banks.demo.quote.web.QuoteRequest;
 import com.transferwise.banks.demo.values.Profile;
 import com.transferwise.banks.demo.values.SourceAmount;
 import com.transferwise.banks.demo.values.SourceCurrency;
@@ -21,12 +21,12 @@ import static java.time.ZonedDateTime.now;
 
 public class Fabricator {
 
-    public static Customer newCustomer() {
+    public static CustomerEntity newCustomer() {
         final var credentials = new TransferwiseCredentials("", "", 1);
         final var profile = new TransferwiseProfile(1L, "personal", now());
         final var dob = LocalDate.of(1989, 5, 16);
 
-        return new Customer(new NewCustomer("Fulano", "de Tal", "fulano@email.com", dob, "+37211223344"))
+        return new CustomerEntity(new NewCustomer("Fulano", "de Tal", "fulano@email.com", dob, "+37211223344"))
                 .withCredentials(credentials)
                 .withPersonalProfile(profile);
     }

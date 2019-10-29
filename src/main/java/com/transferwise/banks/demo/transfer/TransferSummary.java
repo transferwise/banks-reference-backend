@@ -1,7 +1,7 @@
 package com.transferwise.banks.demo.transfer;
 
 import com.transferwise.banks.demo.quote.Quote;
-import com.transferwise.banks.demo.recipient.Recipient;
+import com.transferwise.banks.demo.recipient.domain.Recipient;
 
 import java.math.BigDecimal;
 

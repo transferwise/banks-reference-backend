@@ -1,24 +1,10 @@
 package com.transferwise.banks.demo.credentials;
 
 import com.transferwise.banks.demo.client.TransferWiseBankConfig;
-import com.transferwise.banks.demo.client.TransferwiseClientCredentials;
-import com.transferwise.banks.demo.client.params.RegistrationCode;
-import com.transferwise.banks.demo.customer.Customer;
-import org.springframework.stereotype.Component;
+import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import static com.transferwise.banks.demo.client.BodyRequests.forNewUser;
-import static com.transferwise.banks.demo.client.BodyRequests.forPersonalProfile;
-import static com.transferwise.banks.demo.client.BodyRequests.forUserCredentials;
-import static com.transferwise.banks.demo.client.TransferWisePaths.OAUTH_TOKEN_PATH;
-import static com.transferwise.banks.demo.client.TransferWisePaths.PROFILES_PATH_V1;
-import static com.transferwise.banks.demo.client.TransferWisePaths.SIGNUP_PATH;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-
-@Component
+//@Component
 public class NewTransferWiseUser {
 
     private final WebClient client;
@@ -31,27 +17,27 @@ public class NewTransferWiseUser {
         this.manager = manager;
     }
 
-    public Mono<Customer> create(final Customer customer) {
+   /* public Mono<CustomerEntity> create(final CustomerEntity customerEntity) {
         final var registrationCode = new RegistrationCode();
 
         return manager.withBankCredentials(credentials ->
-                createUser(customer, credentials, registrationCode)
+                createUser(customerEntity, credentials, registrationCode)
                         .map(user -> user.withRegistrationCode(registrationCode))
-                        .map(customer::withUser)
+                        .map(customerEntity::withUser)
                         .flatMap(c -> createUserCredentials(c.getUser()))
-                        .map(customer::withCredentials)
+                        .map(customerEntity::withCredentials)
                         .flatMap(this::createPersonalProfile)
-                        .map(customer::withPersonalProfile));
+                        .map(customerEntity::withPersonalProfile));
     }
 
-    private Mono<TransferwiseUser> createUser(final Customer customer,
+    private Mono<TransferwiseUser> createUser(final CustomerEntity customerEntity,
                                               final TransferwiseClientCredentials credentials,
                                               final RegistrationCode registrationCode) {
         return client.post()
                 .uri(SIGNUP_PATH)
                 .contentType(APPLICATION_JSON)
                 .header(AUTHORIZATION, credentials.bearer())
-                .body(forNewUser(customer.email(), registrationCode.v1()))
+                .body(forNewUser(customerEntity.email(), registrationCode.v1()))
                 .retrieve()
                 .bodyToMono(TransferwiseUser.class);
     }
@@ -66,14 +52,14 @@ public class NewTransferWiseUser {
                 .bodyToMono(TransferwiseCredentials.class);
     }
 
-    private Mono<TransferwiseProfile> createPersonalProfile(final Customer customer) {
-        return manager.credentialsFor(customer).flatMap(credentials ->
+    private Mono<TransferwiseProfile> createPersonalProfile(final CustomerEntity customerEntity) {
+        return manager.credentialsFor(customerEntity).flatMap(credentials ->
                 client.post()
                         .uri(PROFILES_PATH_V1)
                         .contentType(APPLICATION_JSON)
                         .header(AUTHORIZATION, credentials.bearer())
-                        .body(forPersonalProfile(customer))
+                        .body(forPersonalProfile(customerEntity))
                         .retrieve()
                         .bodyToMono(TransferwiseProfile.class));
-    }
+    }*/
 }

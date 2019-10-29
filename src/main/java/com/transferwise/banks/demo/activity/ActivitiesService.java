@@ -1,7 +1,5 @@
 package com.transferwise.banks.demo.activity;
 
-import com.transferwise.banks.demo.customer.CustomerTransfer;
-import com.transferwise.banks.demo.customer.CustomersRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

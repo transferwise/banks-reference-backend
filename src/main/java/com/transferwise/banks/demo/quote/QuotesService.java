@@ -1,18 +1,8 @@
 package com.transferwise.banks.demo.quote;
 
-import com.transferwise.banks.demo.client.params.TargetAccount;
-import com.transferwise.banks.demo.customer.CustomersRepository;
-import com.transferwise.banks.demo.recipient.Recipient;
-import com.transferwise.banks.demo.recipient.TransferWiseRecipients;
-import com.transferwise.banks.demo.transfer.TransferSummary;
-import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
-
-import java.util.UUID;
-
-@Component
+//@Component
 public class QuotesService {
-
+/*
     private final CustomersRepository customers;
     private final TransferWiseQuote twQuote;
     private final TransferWiseRecipients twRecipients;
@@ -39,5 +29,5 @@ public class QuotesService {
                 .update(customer, targetAccount, quoteId)
                 .zipWith(recipientMono)
                 .map(quoteRecipientTuple2 -> new TransferSummary(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2()));
-    }
+    }*/
 }

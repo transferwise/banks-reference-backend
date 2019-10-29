@@ -1,9 +1,9 @@
 package com.transferwise.banks.demo.activity;
 
-import com.transferwise.banks.demo.customer.Customer;
+import com.transferwise.banks.demo.customer.persistence.CustomerEntity;
 import com.transferwise.banks.demo.customer.CustomerTransfer;
 import com.transferwise.banks.demo.customer.CustomerTransferStatus;
-import com.transferwise.banks.demo.customer.CustomersRepository;
+import com.transferwise.banks.demo.customer.persistence.CustomersRepository;
 import com.transferwise.banks.demo.support.Fabricator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,17 +34,17 @@ public class ActivitiesServiceTest {
         //given
         LocalDateTime now = LocalDateTime.now();
         Long customerId = 123L;
-        Customer customer = Fabricator.newCustomer();
+        CustomerEntity customerEntity = Fabricator.newCustomer();
         CustomerTransfer customerTransferNow = createCustomerTransfer(now);
-        customer.addCustomerTransfer(customerTransferNow);
+        customerEntity.addCustomerTransfer(customerTransferNow);
 
         CustomerTransfer customerTransferBefore = createCustomerTransfer(now.minusDays(2));
-        customer.addCustomerTransfer(customerTransferBefore);
+        customerEntity.addCustomerTransfer(customerTransferBefore);
 
         CustomerTransfer customerTransferAfter = createCustomerTransfer(now.plusDays(1));
-        customer.addCustomerTransfer(customerTransferAfter);
+        customerEntity.addCustomerTransfer(customerTransferAfter);
 
-        given(customersRepository.find(customerId)).willReturn(customer);
+        given(customersRepository.find(customerId)).willReturn(customerEntity);
 
         //when
         List<CustomerTransfer> customerTransfers = activitiesService.getCustomerTransfers(customerId);

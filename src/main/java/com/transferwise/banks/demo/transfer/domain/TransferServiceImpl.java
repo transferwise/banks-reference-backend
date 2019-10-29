@@ -27,25 +27,17 @@ class TransferServiceImpl implements TransferService {
         this.recipientsService = recipientsService;
         this.customerTransferPersistence = customerTransferPersistence;
     }
-    /*private final TransferWiseQuote twQuote;
-    private final TransferWiseRecipients twRecipients;*/
-
 
     @Override
     public Mono<TransferWiseTransfer> create(final Long customerId, final TransferRequest transferRequest) {
         return credentialsManager.refreshTokens(customerId).flatMap(twUserTokens ->
                 transfersTWClient.createTransfer(twUserTokens, transferRequest))
-                .doOnSuccess(transferWiseTransfer -> {
-                    quotesService.getQuote(customerId, transferWiseTransfer.getQuoteUuid())
-                            .zipWith(recipientsService.getRecipient(customerId, transferRequest.getTargetAccount()))
-                            .subscribe(quoteRecipientTuple2 -> {
-                                log.info("Saving transfer response {}", transferWiseTransfer);
-                                customerTransferPersistence.saveCustomerTransfer(customerId, transferWiseTransfer, quoteRecipientTuple2.getT2(), quoteRecipientTuple2.getT1());
-
-                                /*CustomerTransferEntity customerTransferEntity = mapToCustomerTransfer(transferWiseTransfer, quoteRecipientTuple2.getT2(), quoteRecipientTuple2.getT1());
-                                customersRepository.save(customerEntity.addCustomerTransfer(customerTransferEntity));*/
-                            });
-                });
+                .doOnSuccess(transferWiseTransfer -> quotesService.getQuote(customerId, transferWiseTransfer.getQuoteUuid())
+                        .zipWith(recipientsService.getRecipient(customerId, transferRequest.getTargetAccount()))
+                        .subscribe(quoteRecipientTuple2 -> {
+                            log.info("Saving transfer response {}", transferWiseTransfer);
+                            customerTransferPersistence.saveCustomerTransfer(customerId, transferWiseTransfer, quoteRecipientTuple2.getT2(), quoteRecipientTuple2.getT1());
+                        }));
     }
 
     @Override
@@ -53,17 +45,4 @@ class TransferServiceImpl implements TransferService {
         return credentialsManager.refreshTokens(customerId)
                 .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, requestBody));
     }
-
-    /*public Flux<String> requirements(final CustomerEntity customerEntity, final String bodyRequest) {
-        return credentialsManager.credentialsFor(customerEntity).flatMapMany(credentials ->
-                client.post()
-                        .uri(TRANSFER_REQUIREMENTS_PATH)
-                        .header(AUTHORIZATION, credentials.bearer())
-                        .contentType(APPLICATION_JSON_UTF8)
-                        .body(fromObject(bodyRequest))
-                        .retrieve()
-                        .bodyToFlux(String.class));
-    }*/
-
-
 }

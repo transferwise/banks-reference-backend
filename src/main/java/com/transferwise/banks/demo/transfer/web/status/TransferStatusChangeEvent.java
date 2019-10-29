@@ -1,11 +1,11 @@
-package com.transferwise.banks.demo.transfer.status;
+package com.transferwise.banks.demo.transfer.web.status;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.transferwise.banks.demo.customer.CustomerTransferStatus;
+import com.transferwise.banks.demo.transfer.domain.status.CustomerTransferStatus;
 
 import java.time.ZonedDateTime;
 
-public class TransferStatusChangeEvent {
+class TransferStatusChangeEvent {
 
     private TransferStatusChangeData data;
 

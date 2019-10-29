@@ -7,8 +7,7 @@ import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.recipient.domain.RecipientsService;
-import com.transferwise.banks.demo.transfer.TransferSummary;
-import org.reactivestreams.Publisher;
+import com.transferwise.banks.demo.transfer.domain.TransferSummary;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -30,19 +29,18 @@ class QuotesServiceImpl implements QuotesService {
     }
 
     @Override
-    public Publisher<Quote> createAnonymousQuote(CreateAnonymousQuote createAnonymousQuote) {
+    public Mono<Quote> createAnonymousQuote(CreateAnonymousQuote createAnonymousQuote) {
         return quotesTWClient.createAnonymousQuote(createAnonymousQuote);
     }
 
     @Override
-    public Publisher<Quote> createQuote(Long customerId, CreateQuote createQuote) {
+    public Mono<Quote> createQuote(Long customerId, CreateQuote createQuote) {
         return credentialsManager.refreshTokens(customerId)
                 .flatMap(twUserTokens -> quotesTWClient.createQuote(twUserTokens, createQuote));
     }
 
     @Override
-    public Publisher<TransferSummary> updateQuote(Long customerId, UUID quoteId, TargetAccount targetAccount) {
-
+    public Mono<TransferSummary> updateQuote(Long customerId, UUID quoteId, TargetAccount targetAccount) {
         return twProfilePersistence.findByCustomerId(customerId)
                 .map(twProfile -> {
                     Mono<Recipient> recipientMono = recipientsService.getRecipient(customerId, Long.valueOf(targetAccount.value()));
@@ -55,6 +53,12 @@ class QuotesServiceImpl implements QuotesService {
                 .orElseThrow(ResourceNotFoundException::new);
 
 
+    }
+
+    @Override
+    public Mono<Quote> getQuote(Long customerId, UUID quoteUuid) {
+        return credentialsManager.refreshTokens(customerId)
+                .flatMap(twUserTokens -> quotesTWClient.getQuote(twUserTokens, quoteUuid));
     }
 
 

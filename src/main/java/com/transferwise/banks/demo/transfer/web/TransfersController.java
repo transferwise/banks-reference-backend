@@ -1,5 +1,7 @@
-package com.transferwise.banks.demo.transfer;
+package com.transferwise.banks.demo.transfer.web;
 
+import com.transferwise.banks.demo.transfer.domain.TransferService;
+import com.transferwise.banks.demo.transfer.domain.TransferWiseTransfer;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

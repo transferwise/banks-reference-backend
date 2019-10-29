@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.validations;
+package com.transferwise.banks.demo.quote.web;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

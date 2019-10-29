@@ -1,10 +1,10 @@
-package com.transferwise.banks.demo.transfer.status;
+package com.transferwise.banks.demo.transfer.web.status;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.ZonedDateTime;
 
-public class TransferStatusChangeData {
+class TransferStatusChangeData {
 
     private TransferStatusChangeResource resource;
 

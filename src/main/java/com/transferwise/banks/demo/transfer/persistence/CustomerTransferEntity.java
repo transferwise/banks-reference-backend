@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.customer;
+package com.transferwise.banks.demo.transfer.persistence;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.LazyCollection;
@@ -19,10 +19,11 @@ import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "customer_transfers")
-public class CustomerTransfer {
+class CustomerTransferEntity {
 
     @Id
     private Long id;
+    private Long customerId;
     private Long targetAccount;
     private UUID quoteUuid;
     private String reference;
@@ -38,13 +39,14 @@ public class CustomerTransfer {
 
     @OneToMany(cascade = ALL, mappedBy = "customerTransferId")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<CustomerTransferStatus> transferStatuses = new ArrayList<>();
+    private List<CustomerTransferStatusEntity> transferStatuses = new ArrayList<>();
 
-    public CustomerTransfer() {
+    public CustomerTransferEntity() {
     }
 
-    public CustomerTransfer(Long id, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, List<CustomerTransferStatus> transferStatuses) {
+    public CustomerTransferEntity(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, List<CustomerTransferStatusEntity> transferStatuses) {
         this.id = id;
+        this.customerId = customerId;
         this.targetAccount = targetAccount;
         this.quoteUuid = quoteUuid;
         this.reference = reference;
@@ -62,6 +64,10 @@ public class CustomerTransfer {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
     }
 
     public Long getTargetAccount() {
@@ -113,8 +119,8 @@ public class CustomerTransfer {
         return fee;
     }
 
-    public List<CustomerTransferStatus> getTransferStatuses() {
-        transferStatuses.sort(comparing(CustomerTransferStatus::getEventTime));
+    public List<CustomerTransferStatusEntity> getTransferStatuses() {
+        transferStatuses.sort(comparing(CustomerTransferStatusEntity::getEventTime));
         return transferStatuses;
     }
 }

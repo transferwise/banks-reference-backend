@@ -1,6 +1,7 @@
-package com.transferwise.banks.demo.activity;
+package com.transferwise.banks.demo.activity.web;
 
-import com.transferwise.banks.demo.customer.CustomerTransfer;
+import com.transferwise.banks.demo.activity.domain.ActivitiesService;
+import com.transferwise.banks.demo.transfer.domain.CustomerTransfer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

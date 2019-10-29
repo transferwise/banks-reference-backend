@@ -14,4 +14,6 @@ public interface QuotesTWClient {
     Mono<Quote> createQuote(TWUserTokens twUserTokens, CreateQuote createQuote);
 
     Mono<Quote> updateQuote(TWUserTokens twUserTokens, UUID quoteId, Long profileId, TargetAccount targetAccount);
+
+    Mono<Quote> getQuote(TWUserTokens twUserTokens, UUID quoteUuid);
 }

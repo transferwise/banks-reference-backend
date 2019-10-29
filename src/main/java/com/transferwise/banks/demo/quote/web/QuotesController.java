@@ -4,7 +4,7 @@ import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.quote.Quote;
 import com.transferwise.banks.demo.quote.domain.CreateQuote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
-import com.transferwise.banks.demo.transfer.TransferSummary;
+import com.transferwise.banks.demo.transfer.domain.TransferSummary;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;

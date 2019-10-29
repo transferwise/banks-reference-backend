@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.transfer;
+package com.transferwise.banks.demo.transfer.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

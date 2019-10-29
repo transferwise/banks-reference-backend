@@ -1,0 +1,93 @@
+package com.transferwise.banks.demo.transfer.persistence;
+
+import com.transferwise.banks.demo.quote.Quote;
+import com.transferwise.banks.demo.recipient.domain.Recipient;
+import com.transferwise.banks.demo.transfer.domain.CustomerTransfer;
+import com.transferwise.banks.demo.transfer.domain.CustomerTransferPersistence;
+import com.transferwise.banks.demo.transfer.domain.TransferWiseTransfer;
+import com.transferwise.banks.demo.transfer.domain.status.CustomerTransferStatus;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+
+@Component
+class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
+
+    private final CustomerTransferRepository customerTransferRepository;
+
+    CustomerTransferPersistenceImpl(CustomerTransferRepository customerTransferRepository) {
+        this.customerTransferRepository = customerTransferRepository;
+    }
+
+    @Override
+    public void saveCustomerTransfer(final Long customerId, final TransferWiseTransfer transferWiseTransfer, final Recipient recipient, final Quote quote) {
+        CustomerTransferEntity customerTransferEntity = mapToEntity(customerId, transferWiseTransfer, recipient, quote);
+        customerTransferRepository.save(customerTransferEntity);
+    }
+
+    @Override
+    public boolean existsById(final Long transferId) {
+        return customerTransferRepository.existsById(transferId);
+    }
+
+    @Override
+    public List<CustomerTransfer> getCustomerTransfers(Long customerId) {
+        List<CustomerTransferEntity> customerTransferEntities = customerTransferRepository.findAllByCustomerId(customerId);
+
+        return customerTransferEntities.stream()
+                .map(this::mapToCustomerTransfer)
+                .collect(toList());
+    }
+
+    private CustomerTransferEntity mapToEntity(final Long customerId, final TransferWiseTransfer transferWiseTransfer, final Recipient recipient, final Quote quote) {
+        return new CustomerTransferEntity(transferWiseTransfer.getId(),
+                customerId,
+                transferWiseTransfer.getTargetAccount(),
+                transferWiseTransfer.getQuoteUuid(),
+                transferWiseTransfer.getReference(),
+                transferWiseTransfer.getRate(),
+                transferWiseTransfer.getCreated(),
+                transferWiseTransfer.getSourceCurrency(),
+                transferWiseTransfer.getSourceValue(),
+                transferWiseTransfer.getTargetCurrency(),
+                transferWiseTransfer.getTargetValue(),
+                transferWiseTransfer.getCustomerTransactionId(),
+                recipient.getName().getFullName(),
+                quote.getFee(),
+                emptyList());
+
+    }
+
+    private CustomerTransfer mapToCustomerTransfer(final CustomerTransferEntity customerTransferEntity) {
+        List<CustomerTransferStatus> customerTransferStatuses = customerTransferEntity.getTransferStatuses()
+                .stream()
+                .map(this::mapToCustomerTransferStatus)
+                .collect(toList());
+
+        return new CustomerTransfer(customerTransferEntity.getId(),
+                customerTransferEntity.getCustomerId(),
+                customerTransferEntity.getTargetAccount(),
+                customerTransferEntity.getQuoteUuid(),
+                customerTransferEntity.getReference(),
+                customerTransferEntity.getRate(),
+                customerTransferEntity.getCreated(),
+                customerTransferEntity.getSourceCurrency(),
+                customerTransferEntity.getSourceValue(),
+                customerTransferEntity.getTargetCurrency(),
+                customerTransferEntity.getTargetValue(),
+                customerTransferEntity.getCustomerTransactionId(),
+                customerTransferEntity.getRecipientName(),
+                customerTransferEntity.getFee(),
+                customerTransferStatuses);
+
+    }
+
+    private CustomerTransferStatus mapToCustomerTransferStatus(final CustomerTransferStatusEntity customerTransferStatusEntity) {
+        return new CustomerTransferStatus(customerTransferStatusEntity.getCustomerTransferId(),
+                customerTransferStatusEntity.getNewState(),
+                customerTransferStatusEntity.getEventTime());
+    }
+}

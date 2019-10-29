@@ -77,6 +77,15 @@ class QuotesTWClientImpl implements QuotesTWClient {
 
     }
 
+    @Override
+    public Mono<Quote> getQuote(TWUserTokens twUserTokens, UUID quoteUuid) {
+        return client.get()
+                .uri(quotesPathV2(quoteUuid))
+                .header(AUTHORIZATION, twUserTokens.bearer())
+                .retrieve()
+                .bodyToMono(Quote.class);
+    }
+
     private BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forQuoteUpdate(final ProfileId profileId, final TargetAccount targetAccount) {
         return fromObject(map(profileId, targetAccount));
     }

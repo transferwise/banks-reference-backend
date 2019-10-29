@@ -1,6 +1,6 @@
-package com.transferwise.banks.demo.transfer;
+package com.transferwise.banks.demo.transfer.web;
 
-import com.transferwise.banks.demo.customer.persistence.CustomersRepository;
+import com.transferwise.banks.demo.transfer.domain.TransferService;
 import org.reactivestreams.Publisher;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +15,16 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TransferRequirementsController {
 
     private final TransferService transferService;
-    private final CustomersRepository customers;
 
-    public TransferRequirementsController(final TransferService transferService, final CustomersRepository customers) {
+    public TransferRequirementsController(final TransferService transferService) {
         this.transferService = transferService;
-        this.customers = customers;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Publisher<String> create(@RequestParam final Long customerId, final HttpEntity<String> rawRequest) {
-        final var customer = customers.find(customerId);
-        return transferService.requirements(customer, rawRequest.getBody());
+        return transferService.requirements(customerId, rawRequest.getBody());
+
+        /*final var customer = customers.find(customerId);
+        return transferService.requirements(customer, rawRequest.getBody());*/
     }
 }

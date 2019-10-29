@@ -1,6 +1,5 @@
-package com.transferwise.banks.demo.validations;
+package com.transferwise.banks.demo.quote.web;
 
-import com.transferwise.banks.demo.quote.web.QuoteRequest;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

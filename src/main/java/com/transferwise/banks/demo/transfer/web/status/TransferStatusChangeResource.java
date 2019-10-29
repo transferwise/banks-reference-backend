@@ -1,8 +1,8 @@
-package com.transferwise.banks.demo.transfer.status;
+package com.transferwise.banks.demo.transfer.web.status;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TransferStatusChangeResource {
+class TransferStatusChangeResource {
 
     private static final String TYPE = "transfer";
 

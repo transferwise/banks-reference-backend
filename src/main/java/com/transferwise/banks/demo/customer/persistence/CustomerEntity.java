@@ -1,25 +1,12 @@
 package com.transferwise.banks.demo.customer.persistence;
 
 import com.transferwise.banks.demo.client.params.Email;
-import com.transferwise.banks.demo.client.params.ProfileId;
-import com.transferwise.banks.demo.credentials.TransferwiseCredentials;
-import com.transferwise.banks.demo.credentials.TransferwiseProfile;
-import com.transferwise.banks.demo.credentials.TransferwiseUser;
-import com.transferwise.banks.demo.customer.CustomerTransfer;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
 
 @Entity(name = "customers")
 class CustomerEntity {
@@ -39,15 +26,15 @@ class CustomerEntity {
     /*@OneToOne(cascade = ALL)
     private TransferwiseCredentials credentials;*/
 
-    @OneToOne(cascade = ALL)
-    private TransferwiseUser user;
+    /*@OneToOne(cascade = ALL)
+    private TransferwiseUser user;*/
 
-    @OneToOne(cascade = ALL)
-    private TransferwiseProfile profile;
+    /*@OneToOne(cascade = ALL)
+    private TransferwiseProfile profile;*/
 
-    @OneToMany(cascade = ALL)
+    /*@OneToMany(cascade = ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private final List<CustomerTransfer> customerTransfers = new ArrayList<>();
+    private final List<CustomerTransfer> customerTransfers = new ArrayList<>();*/
 
     public CustomerEntity() {
     }
@@ -96,7 +83,7 @@ class CustomerEntity {
         return credentials;
     }*/
 
-    public TransferwiseUser getUser() {
+/*    public TransferwiseUser getUser() {
         return user;
     }
 
@@ -111,14 +98,14 @@ class CustomerEntity {
     public CustomerEntity withUser(final TransferwiseUser user) {
         this.user = user.updated();
         return this;
-    }
+    }*/
 
     /*public CustomerEntity withCredentials(final TransferwiseCredentials credentials) {
         this.credentials = credentials;
         return this;
     }*/
 
-    public CustomerEntity withPersonalProfile(final TransferwiseProfile profile) {
+    /*public CustomerEntity withPersonalProfile(final TransferwiseProfile profile) {
         this.profile = profile;
         return this;
     }
@@ -134,10 +121,10 @@ class CustomerEntity {
 
     public ProfileId profileId() {
         return new ProfileId(profile.getId());
-    }
+    }*/
 
-    public CustomerEntity addCustomerTransfer(final CustomerTransfer customerTransfer) {
+    /*public CustomerEntity addCustomerTransfer(final CustomerTransfer customerTransfer) {
         customerTransfers.add(customerTransfer);
         return this;
-    }
+    }*/
 }

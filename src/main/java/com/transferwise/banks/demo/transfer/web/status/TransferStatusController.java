@@ -1,5 +1,6 @@
-package com.transferwise.banks.demo.transfer.status;
+package com.transferwise.banks.demo.transfer.web.status;
 
+import com.transferwise.banks.demo.transfer.domain.status.TransferStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

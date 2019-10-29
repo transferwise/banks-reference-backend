@@ -1,7 +1,6 @@
 package com.transferwise.banks.demo.quote.web;
 
 import com.transferwise.banks.demo.client.JsonParser;
-import com.transferwise.banks.demo.validations.AmountRequired;
 import com.transferwise.banks.demo.values.SourceAmount;
 import com.transferwise.banks.demo.values.SourceCurrency;
 import com.transferwise.banks.demo.values.TargetAmount;

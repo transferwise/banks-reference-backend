@@ -63,14 +63,8 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
     public Mono<TWUser> signUp(final String email,
                                final String registrationCode) {
 
-        return twClientCredentials().flatMap(twClientCredentials ->
-                client.post()
-                        .uri(SIGNUP_PATH)
-                        .contentType(APPLICATION_JSON)
-                        .header(AUTHORIZATION, twClientCredentials.bearer())
-                        .body(fromObject(new TWSignUpRequest(email, registrationCode)))
-                        .retrieve()
-                        .bodyToMono(TWUser.class));
+        return twClientCredentials()
+                .flatMap(twClientCredentials -> signUp(email, registrationCode, twClientCredentials));
     }
 
     @Override
@@ -97,8 +91,8 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
                 .body(forUserCredentials(twUser))
                 .retrieve()
                 .bodyToMono(TWUserTokensResponse.class)
-                .map(twUserTokensResponse -> new TWUserTokens(twUser.getTwUserId(),
-                        twUser.getCustomerId(),
+                .map(twUserTokensResponse -> new TWUserTokens(twUser.getCustomerId(),
+                        twUser.getTwUserId(),
                         twUserTokensResponse.getAccessToken(),
                         twUserTokensResponse.getRefreshToken(),
                         now().plusSeconds(twUserTokensResponse.getExpiresIn())));
@@ -141,6 +135,16 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
                 .body(fromObject(GRANT_TYPE_CLIENT_CREDENTIALS))
                 .retrieve()
                 .bodyToMono(TWClientCredentials.class);
+    }
+
+    private Mono<TWUser> signUp(String email, String registrationCode, TWClientCredentials twClientCredentials) {
+        return client.post()
+                .uri(SIGNUP_PATH)
+                .contentType(APPLICATION_JSON)
+                .header(AUTHORIZATION, twClientCredentials.bearer())
+                .body(fromObject(new TWSignUpRequest(email, registrationCode)))
+                .retrieve()
+                .bodyToMono(TWUser.class);
     }
 
 

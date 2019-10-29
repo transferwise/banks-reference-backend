@@ -2,8 +2,11 @@ package com.transferwise.banks.demo.credentials.twclient;
 
 class TWProfileResponse {
 
-    private final Long id;
-    private final String type;
+    private Long id;
+    private String type;
+
+    public TWProfileResponse() {
+    }
 
     public TWProfileResponse(final Long id, final String type) {
         this.id = id;

@@ -2,9 +2,12 @@ package com.transferwise.banks.demo.credentials.domain;
 
 public class TWProfile {
 
-    private final Long twProfileId;
-    private final Long customerId;
-    private final String type;
+    private Long twProfileId;
+    private Long customerId;
+    private String type;
+
+    public TWProfile() {
+    }
 
     public TWProfile(Long twProfileId, Long customerId, String type) {
         this.twProfileId = twProfileId;

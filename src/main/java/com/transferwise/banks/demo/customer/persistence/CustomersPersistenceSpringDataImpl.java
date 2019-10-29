@@ -1,10 +1,9 @@
 package com.transferwise.banks.demo.customer.persistence;
 
-import com.transferwise.banks.demo.customer.domain.CustomersPersistence;
 import com.transferwise.banks.demo.customer.domain.Customer;
+import com.transferwise.banks.demo.customer.domain.CustomersPersistence;
+import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 class CustomersPersistenceSpringDataImpl implements CustomersPersistence {
@@ -19,8 +18,10 @@ class CustomersPersistenceSpringDataImpl implements CustomersPersistence {
     }
 
     @Override
-    public Optional<Customer> findById(final Long customerId) {
-        return customersRepository.findById(customerId).map(customersMapperPersistence::mapToCustomer);
+    public Customer findById(final Long customerId) {
+        return customersRepository.findById(customerId)
+                .map(customersMapperPersistence::mapToCustomer)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

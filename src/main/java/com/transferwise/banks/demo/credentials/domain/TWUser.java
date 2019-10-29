@@ -8,6 +8,9 @@ public class TWUser {
     private String email;
     private Boolean active;
 
+    public TWUser() {
+    }
+
     public TWUser(Long twUserId, String registrationCode, Long customerId, String email, Boolean active) {
         this.twUserId = twUserId;
         this.registrationCode = registrationCode;

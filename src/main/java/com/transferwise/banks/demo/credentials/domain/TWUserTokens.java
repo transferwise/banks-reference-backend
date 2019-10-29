@@ -10,6 +10,9 @@ public class TWUserTokens {
     private String refreshToken;
     private ZonedDateTime expiryTime;
 
+    public TWUserTokens() {
+    }
+
     public TWUserTokens(Long customerId, Long twUserId, String accessToken, String refreshToken, ZonedDateTime expiryTime) {
         this.customerId = customerId;
         this.twUserId = twUserId;
@@ -18,12 +21,12 @@ public class TWUserTokens {
         this.expiryTime = expiryTime;
     }
 
-    public Long getTwUserId() {
-        return twUserId;
-    }
-
     public Long getCustomerId() {
         return customerId;
+    }
+
+    public Long getTwUserId() {
+        return twUserId;
     }
 
     public String getAccessToken() {

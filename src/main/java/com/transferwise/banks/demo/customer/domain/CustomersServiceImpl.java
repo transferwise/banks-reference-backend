@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.customer.domain;
 
-import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +12,7 @@ class CustomersServiceImpl implements CustomersService {
     }
 
     public Customer find(Long id) {
-        return customersPersistence.findById(id)
-                .orElseThrow(ResourceNotFoundException::new);
+        return customersPersistence.findById(id);
     }
 
     public Customer save(Customer customer) {

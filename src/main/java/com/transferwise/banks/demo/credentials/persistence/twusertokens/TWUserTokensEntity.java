@@ -15,6 +15,9 @@ class TWUserTokensEntity {
     private String refreshToken;
     private ZonedDateTime expiryTime;
 
+    public TWUserTokensEntity() {
+    }
+
     public TWUserTokensEntity(Long customerId, Long twUserId, String accessToken, String refreshToken, ZonedDateTime expiryTime) {
         this.customerId = customerId;
         this.twUserId = twUserId;

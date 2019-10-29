@@ -37,33 +37,31 @@ public class CredentialsManager {
     public void signUp(final Long customerId) {
         String registrationCode = UUID.randomUUID().toString();
 
-        customersPersistence.findById(customerId)
-                .ifPresentOrElse(
-                        (customer) -> credentialsTWClient.signUp(customer.getEmail(), registrationCode)
-                                .map(twUser ->
-                                        twUserPersistence.save(twUser
-                                                .withCustomerId(customerId)
-                                                .withRegistrationCode(registrationCode))
-                                )
-                                .map(twUser -> credentialsTWClient.getUserTokens(twUser)
-                                        .map(twUserTokensPersistence::save)
-                                        .map(twUserTokens -> credentialsTWClient.createPersonalProfile(twUserTokens, buildCreatePersonalProfile(customer))
-                                                .map(twProfilePersistence::save))),
-                        () -> {
-                            throw new ResourceNotFoundException();
-                        });
+        Customer customer = customersPersistence.findById(customerId);
+
+        credentialsTWClient.signUp(customer.getEmail(), registrationCode) //todo when there's conflict, it's not blowing up
+                .subscribe(twUser -> {
+                    TWUser savedTwUser = twUserPersistence.save(twUser
+                            .withCustomerId(customerId)
+                            .withRegistrationCode(registrationCode));
+                    credentialsTWClient.getUserTokens(savedTwUser)
+                            .subscribe(twUserTokens -> {
+                                TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
+                                credentialsTWClient.createPersonalProfile(savedTwUserTokens, buildCreatePersonalProfile(customer))
+                                        .subscribe(twProfilePersistence::save);
+                            });
+                });
     }
 
     //TODO should this return the userTokens back?
     public void existing(final Long customerId, final String code) {
-        customersPersistence.findById(customerId)
-                .ifPresentOrElse(
-                        (customer) -> credentialsTWClient.getUserTokensForCode(code, customerId)
-                                .map(twUserTokensPersistence::save)
-                                .map(twUserTokens -> credentialsTWClient.createPersonalProfile(twUserTokens, buildCreatePersonalProfile(customer))),
-                        () -> {
-                            throw new ResourceNotFoundException();
-                        });
+        Customer customer = customersPersistence.findById(customerId);
+
+        credentialsTWClient.getUserTokensForCode(code, customerId)
+                .subscribe(twUserTokens -> {
+                    TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
+                    credentialsTWClient.createPersonalProfile(savedTwUserTokens, buildCreatePersonalProfile(customer));
+                });
     }
 
     public Mono<TWUserTokens> refreshTokens(final Long customerId) {

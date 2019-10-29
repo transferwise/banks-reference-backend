@@ -11,6 +11,9 @@ class TWProfileEntity {
     private Long customerId;
     private String type;
 
+    public TWProfileEntity() {
+    }
+
     public TWProfileEntity(Long twProfileId, Long customerId, String type) {
         this.twProfileId = twProfileId;
         this.customerId = customerId;

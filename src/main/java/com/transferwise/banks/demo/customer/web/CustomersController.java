@@ -17,11 +17,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/customers")
 public class CustomersController {
 
-    private final CustomersMapperWeb customersMapperWeb;
     private final CustomersService customersService;
 
-    public CustomersController(CustomersMapperWeb customersMapperWeb, CustomersService customersService) {
-        this.customersMapperWeb = customersMapperWeb;
+    public CustomersController(CustomersService customersService) {
         this.customersService = customersService;
     }
 
@@ -32,6 +30,14 @@ public class CustomersController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Customer create(@Valid @RequestBody final NewCustomerRequest newCustomerRequest) {
-        return customersService.save(customersMapperWeb.mapToCustomer(newCustomerRequest));
+        return customersService.save(mapToCustomer(newCustomerRequest));
+    }
+
+    private Customer mapToCustomer(final NewCustomerRequest newCustomerRequest) {
+        return new Customer(newCustomerRequest.getFirstName(),
+                newCustomerRequest.getLastName(),
+                newCustomerRequest.getDateOfBirth(),
+                newCustomerRequest.getPhoneNumber(),
+                newCustomerRequest.getEmail());
     }
 }

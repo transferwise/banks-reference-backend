@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.swagger;
+package com.transferwise.banks.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

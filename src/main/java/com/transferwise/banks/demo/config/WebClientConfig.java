@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.client;
+package com.transferwise.banks.demo.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

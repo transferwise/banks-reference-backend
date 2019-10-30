@@ -149,7 +149,12 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
                 .header(AUTHORIZATION, twClientCredentials.bearer())
                 .body(fromObject(new TWSignUpRequest(email, registrationCode)))
                 .retrieve()
-                .bodyToMono(TWUser.class);
+                .bodyToMono(TWUserResponse.class)
+                .map(twUserResponse -> new TWUser(twUserResponse.getId(),
+                        null,
+                        null,
+                        twUserResponse.getEmail(),
+                        twUserResponse.getActive()));
     }
 
 

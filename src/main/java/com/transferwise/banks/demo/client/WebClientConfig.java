@@ -1,14 +1,16 @@
 package com.transferwise.banks.demo.client;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static com.transferwise.banks.demo.client.TransferWisePaths.BASE_URL;
-
 @Configuration
 public class WebClientConfig {
+
+    @Value("${transferwise.api.url}")
+    private String transferWiseApiUrl;
 
     @Bean
     public WebClient webClient() {
@@ -19,6 +21,6 @@ public class WebClientConfig {
 
             return next.exchange(request);
         };
-        return WebClient.builder().baseUrl(BASE_URL).filter(printlnFilter).build();
+        return WebClient.builder().baseUrl(transferWiseApiUrl).filter(printlnFilter).build();
     }
 }

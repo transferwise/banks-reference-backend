@@ -3,7 +3,6 @@ package com.transferwise.banks.demo.client;
 import java.util.UUID;
 
 public interface TransferWisePaths {
-    String BASE_URL = "https://api.sandbox.transferwise.tech";
 
     String OAUTH_TOKEN_PATH = "/oauth/token";
 

@@ -34,33 +34,36 @@ public class CredentialsManager {
     }
 
     //TODO should this return the userTokens back?
-    public void signUp(final Long customerId) {
+    public Mono<TWUserTokens> signUp(final Long customerId) {
         String registrationCode = UUID.randomUUID().toString();
 
         Customer customer = customersPersistence.findById(customerId);
 
-        credentialsTWClient.signUp(customer.getEmail(), registrationCode) //todo when there's conflict, it's not blowing up
-                .subscribe(twUser -> {
+        return credentialsTWClient.signUp(customer.getEmail(), registrationCode) //todo when there's conflict, it's not blowing up
+                .flatMap(twUser -> {
                     TWUser savedTwUser = twUserPersistence.save(twUser
                             .withCustomerId(customerId)
                             .withRegistrationCode(registrationCode));
-                    credentialsTWClient.getUserTokens(savedTwUser)
-                            .subscribe(twUserTokens -> {
+                    return credentialsTWClient.getUserTokens(savedTwUser)
+                            .map(twUserTokens -> {
                                 TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
                                 credentialsTWClient.createPersonalProfile(savedTwUserTokens, buildCreatePersonalProfile(customer))
-                                        .subscribe(twProfilePersistence::save);
+                                        .doOnSuccess(twProfilePersistence::save);
+                                return savedTwUserTokens;
                             });
+
                 });
     }
 
     //TODO should this return the userTokens back?
-    public void existing(final Long customerId, final String code) {
+    public Mono<TWUserTokens> existing(final Long customerId, final String code) {
         Customer customer = customersPersistence.findById(customerId);
 
-        credentialsTWClient.getUserTokensForCode(code, customerId)
-                .subscribe(twUserTokens -> {
+        return credentialsTWClient.getUserTokensForCode(code, customerId)
+                .map(twUserTokens -> {
                     TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
                     credentialsTWClient.createPersonalProfile(savedTwUserTokens, buildCreatePersonalProfile(customer));
+                    return savedTwUserTokens;
                 });
     }
 

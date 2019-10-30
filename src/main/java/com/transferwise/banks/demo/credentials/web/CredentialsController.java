@@ -2,6 +2,8 @@ package com.transferwise.banks.demo.credentials.web;
 
 import com.transferwise.banks.demo.client.params.Code;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
+import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
+import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,12 +20,12 @@ public class CredentialsController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(@RequestParam final Long customerId) {
-        credentialsManager.signUp(customerId);
+    public Publisher<TWUserTokens> signUp(@RequestParam final Long customerId) {
+        return credentialsManager.signUp(customerId);
     }
 
     @PostMapping("/existing")
-    public void existing(@RequestParam final Long customerId, @RequestParam final Code code) {
-        credentialsManager.existing(customerId, code.value());
+    public Publisher<TWUserTokens> existing(@RequestParam final Long customerId, @RequestParam final Code code) {
+        return credentialsManager.existing(customerId, code.value());
     }
 }

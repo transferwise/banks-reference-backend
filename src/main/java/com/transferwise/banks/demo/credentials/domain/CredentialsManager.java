@@ -33,7 +33,6 @@ public class CredentialsManager {
         this.twProfilePersistence = twProfilePersistence;
     }
 
-    //TODO should this return the userTokens back?
     public Mono<TWUserTokens> signUp(final Long customerId) {
         String registrationCode = UUID.randomUUID().toString();
 
@@ -55,7 +54,6 @@ public class CredentialsManager {
                 });
     }
 
-    //TODO should this return the userTokens back?
     public Mono<TWUserTokens> existing(final Long customerId, final String code) {
         Customer customer = customersPersistence.findById(customerId);
 

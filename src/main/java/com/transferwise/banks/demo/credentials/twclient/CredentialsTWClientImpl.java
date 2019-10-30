@@ -101,21 +101,17 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
 
     @Override
     public Mono<TWUserTokens> refresh(final TWUserTokens twUserTokens) {
-        if (now().isAfter(twUserTokens.getExpiryTime())) {
-            return client.post()
-                    .uri(OAUTH_TOKEN_PATH)
-                    .header(AUTHORIZATION, basicAuth())
-                    .body(forRefreshToken(new RefreshToken(twUserTokens.getRefreshToken())))
-                    .retrieve()
-                    .bodyToMono(TWUserTokensResponse.class)
-                    .map(twUserTokensResponse -> new TWUserTokens(twUserTokens.getCustomerId(),
-                            twUserTokens.getTwUserId(),
-                            twUserTokensResponse.getAccessToken(),
-                            twUserTokensResponse.getRefreshToken(),
-                            now().plusSeconds(twUserTokensResponse.getExpiresIn())));
-        }
-
-        return Mono.just(twUserTokens);
+        return client.post()
+                .uri(OAUTH_TOKEN_PATH)
+                .header(AUTHORIZATION, basicAuth())
+                .body(forRefreshToken(new RefreshToken(twUserTokens.getRefreshToken())))
+                .retrieve()
+                .bodyToMono(TWUserTokensResponse.class)
+                .map(twUserTokensResponse -> new TWUserTokens(twUserTokens.getCustomerId(),
+                        twUserTokens.getTwUserId(),
+                        twUserTokensResponse.getAccessToken(),
+                        twUserTokensResponse.getRefreshToken(),
+                        now().plusSeconds(twUserTokensResponse.getExpiresIn())));
     }
 
     private Mono<TWClientCredentials> twClientCredentials() {

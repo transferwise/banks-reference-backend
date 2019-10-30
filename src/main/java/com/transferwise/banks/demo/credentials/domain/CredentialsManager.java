@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import static java.time.ZonedDateTime.now;
+
 @Component
 public class CredentialsManager {
 
@@ -67,8 +69,14 @@ public class CredentialsManager {
 
     public Mono<TWUserTokens> refreshTokens(final Long customerId) {
         return twUserTokensPersistence.findByCustomerId(customerId)
-                .map(twUserTokens -> credentialsTWClient.refresh(twUserTokens)
-                        .doOnSuccess(twUserTokensPersistence::save))
+                .map(twUserTokens -> {
+                    if (now().isAfter(twUserTokens.getExpiryTime())) {
+                        return credentialsTWClient.refresh(twUserTokens)
+                                .doOnSuccess(twUserTokensPersistence::save);
+                    } else {
+                        return Mono.just(twUserTokens);
+                    }
+                })
                 .orElseThrow(ResourceNotFoundException::new);
     }
 

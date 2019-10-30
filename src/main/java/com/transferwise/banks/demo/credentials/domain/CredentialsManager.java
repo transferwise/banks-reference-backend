@@ -38,7 +38,7 @@ public class CredentialsManager {
 
         Customer customer = customersPersistence.findById(customerId);
 
-        return credentialsTWClient.signUp(customer.getEmail(), registrationCode) //todo when there's conflict, it's not blowing up
+        return credentialsTWClient.signUp(customer.getEmail(), registrationCode)
                 .flatMap(twUser -> {
                     TWUser savedTwUser = twUserPersistence.save(twUser
                             .withCustomerId(customerId)

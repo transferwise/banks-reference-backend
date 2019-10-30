@@ -1,32 +1,25 @@
 package com.transferwise.banks.demo;
 
-import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
-import com.transferwise.banks.demo.customer.persistence.CustomersRepository;
+import com.transferwise.banks.demo.config.MockWebServerConfig;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.After;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 
 import static com.transferwise.banks.demo.support.FileReader.read;
-import static org.mockito.Mockito.mock;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(properties = "spring.main.allow-bean-definition-overriding=true", classes = {T4bBackendApplication.class, MockWebServerConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class ServerTest {
 
-    protected final MockWebServer server = new MockWebServer();
-    protected final TestBankConfig config = new TestBankConfig();
-    protected final WebClient webClient = WebClient.create(server.url("/").toString());
-
-    protected final CustomersRepository customers = mock(CustomersRepository.class);
-    protected final CredentialsManager manager = new CredentialsManager(webClient, config, customers);
-
-    @After
-    public void tearDown() throws IOException {
-        server.shutdown();
-    }
+    @Autowired
+    protected MockWebServer mockWebServer;
 
     protected MockResponse response(final String filename) throws IOException {
         return new MockResponse()

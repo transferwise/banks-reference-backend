@@ -121,7 +121,12 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
                     .header(AUTHORIZATION, basicAuth())
                     .body(forRefreshToken(new RefreshToken(twUserTokens.getRefreshToken())))
                     .retrieve()
-                    .bodyToMono(TWUserTokens.class);
+                    .bodyToMono(TWUserTokensResponse.class)
+                    .map(twUserTokensResponse -> new TWUserTokens(twUserTokens.getCustomerId(),
+                            twUserTokens.getTwUserId(),
+                            twUserTokensResponse.getAccessToken(),
+                            twUserTokensResponse.getRefreshToken(),
+                            now().plusSeconds(twUserTokensResponse.getExpiresIn())));
         }
 
         return Mono.just(twUserTokens);

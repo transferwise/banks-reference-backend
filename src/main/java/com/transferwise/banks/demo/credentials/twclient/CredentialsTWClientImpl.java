@@ -1,15 +1,6 @@
 package com.transferwise.banks.demo.credentials.twclient;
 
-import com.transferwise.banks.demo.client.params.ClientId;
-import com.transferwise.banks.demo.client.params.Code;
-import com.transferwise.banks.demo.client.params.Email;
-import com.transferwise.banks.demo.client.params.GrantTypeAuthorizationCode;
-import com.transferwise.banks.demo.client.params.GrantTypeRefreshToken;
-import com.transferwise.banks.demo.client.params.GrantTypeRegistrationCode;
-import com.transferwise.banks.demo.client.params.Parameter;
-import com.transferwise.banks.demo.client.params.RedirectUri;
 import com.transferwise.banks.demo.client.params.RefreshToken;
-import com.transferwise.banks.demo.client.params.RegistrationCode;
 import com.transferwise.banks.demo.credentials.domain.CreatePersonalProfile;
 import com.transferwise.banks.demo.credentials.domain.CredentialsTWClient;
 import com.transferwise.banks.demo.credentials.domain.TWProfile;
@@ -18,25 +9,20 @@ import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.Map;
-
+import static com.transferwise.banks.demo.client.BodyRequests.forAuthorizationCode;
+import static com.transferwise.banks.demo.client.BodyRequests.forRefreshToken;
+import static com.transferwise.banks.demo.client.BodyRequests.forUserCredentials;
 import static com.transferwise.banks.demo.client.TransferWisePaths.OAUTH_TOKEN_PATH;
 import static com.transferwise.banks.demo.client.TransferWisePaths.PROFILES_PATH_V1;
 import static com.transferwise.banks.demo.client.TransferWisePaths.SIGNUP_PATH;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.ZonedDateTime.now;
-import static java.util.stream.Collectors.toMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.BodyInserters.fromMultipartData;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 @Component
@@ -44,13 +30,13 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
 
     private static final String GRANT_TYPE_CLIENT_CREDENTIALS = "grant_type=client_credentials";
 
-    @Value("${twbank.clientId}") //TODO maybe rename properties?
+    @Value("${twbank.clientId}")
     private String clientId;
 
-    @Value("${twbank.secret}") //TODO maybe rename properties?
+    @Value("${twbank.secret}")
     private String secret;
 
-    @Value("${twbank.redirectUri}") //TODO maybe rename properties?
+    @Value("${twbank.redirectUri}")
     private String redirectUri;
 
     private final WebClient client;
@@ -72,7 +58,7 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
                 .header(AUTHORIZATION, basicAuth())
-                .body(forAuthorizationCode(code))
+                .body(forAuthorizationCode(clientId, redirectUri, code))
                 .retrieve()
                 .bodyToMono(TWUserTokensResponse.class)
                 .map(twUserTokensResponse -> new TWUserTokens(customerId,
@@ -88,7 +74,7 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
                 .uri(OAUTH_TOKEN_PATH)
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .header(AUTHORIZATION, basicAuth())
-                .body(forUserCredentials(twUser))
+                .body(forUserCredentials(clientId, twUser))
                 .retrieve()
                 .bodyToMono(TWUserTokensResponse.class)
                 .map(twUserTokensResponse -> new TWUserTokens(twUser.getCustomerId(),
@@ -169,38 +155,5 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
     private String credentials() {
         return clientId + ":" + secret;
     }
-
-
-    private BodyInserters.MultipartInserter forUserCredentials(final TWUser twUser) {
-        return fromMultipartData(
-                multiMap(new GrantTypeRegistrationCode(),
-                        new Email(twUser.getEmail()),
-                        new ClientId(clientId),
-                        new RegistrationCode(twUser.getRegistrationCode())));
-    }
-
-    private BodyInserters.MultipartInserter forAuthorizationCode(final String code) {
-        return fromMultipartData(
-                multiMap(new GrantTypeAuthorizationCode(),
-                        new ClientId(clientId),
-                        new Code(code),
-                        new RedirectUri(redirectUri)));
-    }
-
-    //TODO check if it makes sense to keep these in a BodyRequests class or if we should rewrite it
-    private static Map<String, String> map(final Parameter... parameters) {
-        return Arrays.stream(parameters).collect(toMap(Parameter::key, Parameter::value));
-    }
-
-    private static MultiValueMap<String, String> multiMap(final Parameter... parameters) {
-        final var multiMap = new LinkedMultiValueMap<String, String>();
-        multiMap.setAll(map(parameters));
-        return multiMap;
-    }
-
-    private static BodyInserters.MultipartInserter forRefreshToken(final RefreshToken refreshToken) {
-        return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));
-    }
-
 
 }

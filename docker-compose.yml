@@ -6,7 +6,6 @@ services:
     image: postgres:9.6
     restart: always
     volumes:
-      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
       - db-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"

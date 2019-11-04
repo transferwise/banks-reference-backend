@@ -15,6 +15,9 @@ public interface TransferWisePaths {
 
     String SIGNUP_PATH = "/v1/user/signup/registration_code";
 
+    String TRANSFER_REQUIREMENTS_PATH = "/v1/transfer-requirements";
+    String TRANSFERS_PATH = "/v1/transfers";
+
     static String recipientRequirementsPath(final UUID quoteId) {
         return QUOTES_PATH_V1 + "/" + quoteId + "/account-requirements";
     }
@@ -26,7 +29,4 @@ public interface TransferWisePaths {
     static String quotesPathV2(final UUID quoteId) {
         return QUOTES_PATH_V2 + quoteId;
     }
-
-    String TRANSFER_REQUIREMENTS_PATH = "/v1/transfer-requirements";
-    String TRANSFERS_PATH = "/v1/transfers";
 }

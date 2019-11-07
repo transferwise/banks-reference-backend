@@ -10,8 +10,7 @@ public class CreateQuote {
     private BigDecimal sourceAmount;
     private BigDecimal targetAmount;
 
-    public CreateQuote(Long profileId, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount) {
-        this.profileId = profileId;
+    public CreateQuote(String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount) {
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
         this.sourceAmount = sourceAmount;
@@ -36,5 +35,10 @@ public class CreateQuote {
 
     public BigDecimal getTargetAmount() {
         return targetAmount;
+    }
+
+    public CreateQuote withProfileId(final Long profileId) {
+        this.profileId = profileId;
+        return this;
     }
 }

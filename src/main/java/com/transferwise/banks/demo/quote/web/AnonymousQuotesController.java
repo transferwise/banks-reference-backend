@@ -25,7 +25,7 @@ public class AnonymousQuotesController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public Publisher<Quote> create(@Valid @RequestBody final AnonymousQuoteRequest anonymousQuoteRequest) {
-        return quotesService.createAnonymousQuote(quotesMapperWeb.mapToCreateAnonymousQuote(anonymousQuoteRequest));
+    public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
+        return quotesService.createAnonymousQuote(quotesMapperWeb.mapToCreateAnonymousQuote(quoteRequest));
     }
 }

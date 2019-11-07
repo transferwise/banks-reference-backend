@@ -10,16 +10,15 @@ import static java.util.Optional.ofNullable;
 @Component
 class QuotesMapperWeb {
 
-    public CreateAnonymousQuote mapToCreateAnonymousQuote(AnonymousQuoteRequest anonymousQuoteRequest) {
-        return new CreateAnonymousQuote(anonymousQuoteRequest.getSourceCurrency().get(),
-                anonymousQuoteRequest.getTargetCurrency().get(),
-                getOrNull(anonymousQuoteRequest.getSourceAmount()),
-                getOrNull(anonymousQuoteRequest.getTargetAmount()));
+    public CreateAnonymousQuote mapToCreateAnonymousQuote(QuoteRequest quoteRequest) {
+        return new CreateAnonymousQuote(quoteRequest.getSourceCurrency().get(),
+                quoteRequest.getTargetCurrency().get(),
+                getOrNull(quoteRequest.getSourceAmount()),
+                getOrNull(quoteRequest.getTargetAmount()));
     }
 
     public CreateQuote mapToCreateQuote(QuoteRequest quoteRequest) {
-        return new CreateQuote(quoteRequest.getProfile().get(),
-                quoteRequest.getSourceCurrency().get(),
+        return new CreateQuote(quoteRequest.getSourceCurrency().get(),
                 quoteRequest.getTargetCurrency().get(),
                 getOrNull(quoteRequest.getSourceAmount()),
                 getOrNull(quoteRequest.getTargetAmount()));

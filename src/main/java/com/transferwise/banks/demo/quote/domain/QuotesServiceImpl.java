@@ -34,8 +34,10 @@ class QuotesServiceImpl implements QuotesService {
 
     @Override
     public Mono<Quote> createQuote(Long customerId, CreateQuote createQuote) {
-        return credentialsManager.refreshTokens(customerId)
-                .flatMap(twUserTokens -> quotesTWClient.createQuote(twUserTokens, createQuote));
+        return twProfilePersistence.findByCustomerId(customerId)
+                .map(twProfile -> credentialsManager.refreshTokens(customerId)
+                        .flatMap(twUserTokens -> quotesTWClient.createQuote(twUserTokens, createQuote.withProfileId(twProfile.getTwProfileId()))))
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

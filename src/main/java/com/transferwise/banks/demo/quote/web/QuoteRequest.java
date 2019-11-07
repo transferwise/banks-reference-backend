@@ -1,27 +1,53 @@
 package com.transferwise.banks.demo.quote.web;
 
-import com.transferwise.banks.demo.values.Profile;
 import com.transferwise.banks.demo.values.SourceAmount;
 import com.transferwise.banks.demo.values.SourceCurrency;
 import com.transferwise.banks.demo.values.TargetAmount;
 import com.transferwise.banks.demo.values.TargetCurrency;
 
-@AmountRequired
-class QuoteRequest extends AnonymousQuoteRequest {
+import javax.validation.constraints.NotNull;
 
-    private Profile profile;
+import static java.util.Objects.nonNull;
+
+@AmountRequired
+class QuoteRequest {
+
+    @NotNull
+    private SourceCurrency sourceCurrency;
+    @NotNull
+    private TargetCurrency targetCurrency;
+    private SourceAmount sourceAmount;
+    private TargetAmount targetAmount;
 
     public QuoteRequest() {
-        super();
     }
 
-    public QuoteRequest(final Profile profile, final SourceCurrency sourceCurrency, final TargetCurrency targetCurrency,
+    public QuoteRequest(final SourceCurrency sourceCurrency, final TargetCurrency targetCurrency,
                         final SourceAmount sourceAmount, final TargetAmount targetAmount) {
-        super(sourceCurrency, targetCurrency, sourceAmount, targetAmount);
-        this.profile = profile;
+        this();
+        this.sourceCurrency = sourceCurrency;
+        this.targetCurrency = targetCurrency;
+        this.sourceAmount = sourceAmount;
+        this.targetAmount = targetAmount;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public boolean isAmountPresent() {
+        return nonNull(sourceAmount) || nonNull(targetAmount);
+    }
+
+    public SourceCurrency getSourceCurrency() {
+        return sourceCurrency;
+    }
+
+    public TargetCurrency getTargetCurrency() {
+        return targetCurrency;
+    }
+
+    public SourceAmount getSourceAmount() {
+        return sourceAmount;
+    }
+
+    public TargetAmount getTargetAmount() {
+        return targetAmount;
     }
 }

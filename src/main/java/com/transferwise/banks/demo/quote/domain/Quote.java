@@ -1,5 +1,7 @@
 package com.transferwise.banks.demo.quote.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,13 +19,19 @@ public class Quote {
     private BigDecimal targetAmount;
     private String payOut;
     private BigDecimal rate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime createdTime;
     private BigDecimal fee;
     private Integer user;
     private Integer profile;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime rateExpirationTime;
     private String providedAmountType;
     private String status;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime expirationTime;
 
     private final List<QuoteNotice> notices = new ArrayList<>();

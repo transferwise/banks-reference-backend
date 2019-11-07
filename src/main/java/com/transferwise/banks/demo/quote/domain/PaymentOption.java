@@ -1,5 +1,7 @@
 package com.transferwise.banks.demo.quote.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ public final class PaymentOption {
     public static final String SWIFT = "SWIFT";
 
     private Boolean disabled;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime estimatedDelivery;
     private String formattedEstimatedDelivery;
 

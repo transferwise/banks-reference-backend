@@ -10,7 +10,7 @@ public class Customer {
     private String firstName;
     private String lastName;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String email;

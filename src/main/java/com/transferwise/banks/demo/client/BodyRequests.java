@@ -1,20 +1,18 @@
 package com.transferwise.banks.demo.client;
 
+import com.transferwise.banks.demo.client.params.ClientId;
 import com.transferwise.banks.demo.client.params.Code;
 import com.transferwise.banks.demo.client.params.Email;
 import com.transferwise.banks.demo.client.params.GrantTypeAuthorizationCode;
-import com.transferwise.banks.demo.client.params.GrantTypeClientCredentials;
 import com.transferwise.banks.demo.client.params.GrantTypeRefreshToken;
 import com.transferwise.banks.demo.client.params.GrantTypeRegistrationCode;
 import com.transferwise.banks.demo.client.params.Parameter;
 import com.transferwise.banks.demo.client.params.ProfileId;
+import com.transferwise.banks.demo.client.params.RedirectUri;
 import com.transferwise.banks.demo.client.params.RefreshToken;
+import com.transferwise.banks.demo.client.params.RegistrationCode;
 import com.transferwise.banks.demo.client.params.TargetAccount;
-import com.transferwise.banks.demo.client.params.V1RegistrationCode;
-import com.transferwise.banks.demo.credentials.PersonalProfileRequest;
-import com.transferwise.banks.demo.credentials.TransferwiseUser;
-import com.transferwise.banks.demo.customer.Customer;
-import com.transferwise.banks.demo.quote.QuoteRequest;
+import com.transferwise.banks.demo.credentials.domain.TWUser;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -30,40 +28,24 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 
 public class BodyRequests {
 
-    public static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forNewUser(final Email email, final V1RegistrationCode v1RegistrationCode) {
-        return fromObject(map(email, v1RegistrationCode));
-    }
-
-    public static MultipartInserter forClientCredentials() {
-        return fromMultipartData(multiMap(new GrantTypeClientCredentials()));
-    }
-
-    public static MultipartInserter forUserCredentials(final TransferWiseBankConfig config, final TransferwiseUser user) {
-        return fromMultipartData(
-                multiMap(new GrantTypeRegistrationCode(),
-                        user.email(),
-                        config.clientId(),
-                        user.registrationCode()));
-    }
-
-    public static BodyInserter<String, ReactiveHttpOutputMessage> forPersonalProfile(final Customer customer) {
-        return fromObject(new PersonalProfileRequest(customer).toJson());
-    }
-
-    public static BodyInserter<String, ReactiveHttpOutputMessage> forNewQuote(final QuoteRequest quoteRequest) {
-        return fromObject(quoteRequest.toJson());
-    }
-
     public static MultipartInserter forRefreshToken(final RefreshToken refreshToken) {
         return fromMultipartData(multiMap(new GrantTypeRefreshToken(), refreshToken));
     }
 
-    public static MultipartInserter forCustomerCredentials(final TransferWiseBankConfig config, final Code code) {
+    public static MultipartInserter forAuthorizationCode(final String clientId, final String redirectUri, final String code) {
         return fromMultipartData(
                 multiMap(new GrantTypeAuthorizationCode(),
-                        config.clientId(),
-                        code,
-                        config.redirectUri()));
+                        new ClientId(clientId),
+                        new Code(code),
+                        new RedirectUri(redirectUri)));
+    }
+
+    public static MultipartInserter forUserCredentials(final String clientId, final TWUser twUser) {
+        return fromMultipartData(
+                multiMap(new GrantTypeRegistrationCode(),
+                        new Email(twUser.getEmail()),
+                        new ClientId(clientId),
+                        new RegistrationCode(twUser.getRegistrationCode())));
     }
 
     public static BodyInserter<Map<String, String>, ReactiveHttpOutputMessage> forQuoteUpdate(final ProfileId profileId, final TargetAccount targetAccount) {

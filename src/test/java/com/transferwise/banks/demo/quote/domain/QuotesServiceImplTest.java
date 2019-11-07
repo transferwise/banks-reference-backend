@@ -31,7 +31,7 @@ public class QuotesServiceImplTest extends ServerTest {
     @Test
     public void createQuote() throws IOException {
         //given
-        CreateQuote createQuote = new CreateQuote(123L, "GBP", "EUR", BigDecimal.valueOf(200L), null);
+        CreateQuote createQuote = new CreateQuote("GBP", "EUR", BigDecimal.valueOf(200L), null);
         mockWebServer.enqueue(response("user-credentials.json"));
         mockWebServer.enqueue(response("quote.json"));
 

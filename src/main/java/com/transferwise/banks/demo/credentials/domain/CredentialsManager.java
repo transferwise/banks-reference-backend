@@ -49,7 +49,7 @@ public class CredentialsManager {
                             .map(twUserTokens -> {
                                 TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
                                 credentialsTWClient.createPersonalProfile(savedTwUserTokens, buildCreatePersonalProfile(customer))
-                                        .doOnSuccess(twProfilePersistence::save);
+                                        .subscribe(twProfilePersistence::save);
                                 return savedTwUserTokens;
                             });
 

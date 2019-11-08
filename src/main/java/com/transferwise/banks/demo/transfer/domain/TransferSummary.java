@@ -1,42 +1,64 @@
 package com.transferwise.banks.demo.transfer.domain;
 
-import com.transferwise.banks.demo.quote.domain.Quote;
-import com.transferwise.banks.demo.recipient.domain.Recipient;
-
 import java.math.BigDecimal;
 
 public class TransferSummary {
 
-    private final Quote quote;
-    private final Recipient recipient;
+    private String sourceCurrency;
+    private String targetCurrency;
+    private BigDecimal sourceAmount;
+    private BigDecimal targetAmount;
+    private BigDecimal rate;
+    private BigDecimal fee;
+    private String recipientName;
+    private String accountSummary;
+    private String formattedEstimatedDelivery;
 
-    public TransferSummary(final Quote quote, final Recipient recipient) {
-        this.quote = quote;
-        this.recipient = recipient;
+    public TransferSummary(String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, BigDecimal rate, BigDecimal fee, String recipientName, String accountSummary, String formattedEstimatedDelivery) {
+        this.sourceCurrency = sourceCurrency;
+        this.targetCurrency = targetCurrency;
+        this.sourceAmount = sourceAmount;
+        this.targetAmount = targetAmount;
+        this.rate = rate;
+        this.fee = fee;
+        this.recipientName = recipientName;
+        this.accountSummary = accountSummary;
+        this.formattedEstimatedDelivery = formattedEstimatedDelivery;
     }
 
     public String getSourceCurrency() {
-        return quote.getSourceCurrency();
+        return sourceCurrency;
     }
 
     public String getTargetCurrency() {
-        return quote.getTargetCurrency();
+        return targetCurrency;
+    }
+
+    public BigDecimal getSourceAmount() {
+        return sourceAmount;
+    }
+
+    public BigDecimal getTargetAmount() {
+        return targetAmount;
     }
 
     public BigDecimal getRate() {
-        return quote.getRate();
+        return rate;
     }
 
-    public String recipientName() {
-        return recipient.getName().getFullName();
+    public BigDecimal getFee() {
+        return fee;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
     }
 
     public String getAccountSummary() {
-        return recipient.getAccountSummary();
+        return accountSummary;
     }
 
-    public String getPayOut() {
-        return quote.getPayOut();
+    public String getFormattedEstimatedDelivery() {
+        return formattedEstimatedDelivery;
     }
-
 }

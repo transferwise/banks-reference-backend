@@ -1,8 +1,11 @@
 package com.transferwise.banks.demo.transfer.domain;
 
+import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
+import com.transferwise.banks.demo.quote.domain.PaymentOption;
 import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
+import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.recipient.domain.RecipientsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 class TransferServiceImpl implements TransferService {
@@ -42,7 +47,10 @@ class TransferServiceImpl implements TransferService {
                         .subscribe(quoteRecipientTuple2 -> {
                             log.info("Saving transfer response {}", transferWiseTransfer);
                             Quote quote = quoteRecipientTuple2.getT1();
-                            BigDecimal fee = extractFee(quote);
+                            BigDecimal fee = extractBestPayOut(quote)
+                                    .map(paymentOption -> paymentOption.getFee().getTotal())
+                                    .orElse(quote.getFee());
+
                             customerTransferPersistence.saveCustomerTransfer(customerId, transferWiseTransfer, quoteRecipientTuple2.getT2(), fee);
                         }));
     }
@@ -53,14 +61,52 @@ class TransferServiceImpl implements TransferService {
                 .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, requestBody));
     }
 
-    //TODO - confirm if this makes sense
-    private BigDecimal extractFee(final Quote quote) {
-        return quote.getPaymentOptions()
-                .stream()
-                .filter(paymentOption -> BANK_TRANSFER.equalsIgnoreCase(paymentOption.getPayIn()))
-                .findFirst()
+    @Override
+    public Mono<TransferSummary> createTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount) {
+        return quotesService.updateQuote(customerId, quoteId, targetAccount)
+                .zipWith(recipientsService.getRecipient(customerId, Long.parseLong(targetAccount.value())))
+                .map(quoteRecipientTuple2 -> buildTransferSummary(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2()));
+    }
+
+    private TransferSummary buildTransferSummary(final Quote quote, final Recipient recipient) {
+        Optional<PaymentOption> paymentOptionOptional = extractBestPayOut(quote);
+
+        BigDecimal fee = paymentOptionOptional
                 .map(paymentOption -> paymentOption.getFee().getTotal())
+                .orElse(quote.getFee());
+
+        BigDecimal sourceAmount = paymentOptionOptional
+                .map(PaymentOption::getSourceAmount)
+                .orElse(quote.getSourceAmount());
+
+        BigDecimal targetAmount = paymentOptionOptional
+                .map(PaymentOption::getTargetAmount)
+                .orElse(quote.getTargetAmount());
+
+        String formattedEstimatedDelivery = paymentOptionOptional
+                .map(PaymentOption::getFormattedEstimatedDelivery)
                 .orElse(null);
 
+
+
+        return new TransferSummary(quote.getSourceCurrency(),
+                quote.getTargetCurrency(),
+                sourceAmount,
+                targetAmount,
+                quote.getRate(),
+                fee,
+                recipient.getName().getFullName(),
+                recipient.getAccountSummary(),
+                formattedEstimatedDelivery);
+
+    }
+
+    private Optional<PaymentOption> extractBestPayOut(final Quote quote) {
+        return quote.getPaymentOptions()
+                .stream()
+                .filter(paymentOption ->
+                        BANK_TRANSFER.equalsIgnoreCase(paymentOption.getPayIn())
+                                && quote.getPayOut().equalsIgnoreCase(paymentOption.getPayOut()))
+                .findFirst();
     }
 }

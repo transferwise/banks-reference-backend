@@ -47,7 +47,7 @@ class TransferServiceImpl implements TransferService {
                         .subscribe(quoteRecipientTuple2 -> {
                             log.info("Saving transfer response {}", transferWiseTransfer);
                             Quote quote = quoteRecipientTuple2.getT1();
-                            BigDecimal fee = extractBestPayOut(quote)
+                            BigDecimal fee = extractBestPaymentOption(quote)
                                     .map(paymentOption -> paymentOption.getFee().getTotal())
                                     .orElse(quote.getFee());
 
@@ -69,21 +69,21 @@ class TransferServiceImpl implements TransferService {
     }
 
     private TransferSummary buildTransferSummary(final Quote quote, final Recipient recipient) {
-        Optional<PaymentOption> paymentOptionOptional = extractBestPayOut(quote);
+        Optional<PaymentOption> bestPaymentOption = extractBestPaymentOption(quote);
 
-        BigDecimal fee = paymentOptionOptional
+        BigDecimal fee = bestPaymentOption
                 .map(paymentOption -> paymentOption.getFee().getTotal())
                 .orElse(quote.getFee());
 
-        BigDecimal sourceAmount = paymentOptionOptional
+        BigDecimal sourceAmount = bestPaymentOption
                 .map(PaymentOption::getSourceAmount)
                 .orElse(quote.getSourceAmount());
 
-        BigDecimal targetAmount = paymentOptionOptional
+        BigDecimal targetAmount = bestPaymentOption
                 .map(PaymentOption::getTargetAmount)
                 .orElse(quote.getTargetAmount());
 
-        String formattedEstimatedDelivery = paymentOptionOptional
+        String formattedEstimatedDelivery = bestPaymentOption
                 .map(PaymentOption::getFormattedEstimatedDelivery)
                 .orElse(null);
 
@@ -101,7 +101,7 @@ class TransferServiceImpl implements TransferService {
 
     }
 
-    private Optional<PaymentOption> extractBestPayOut(final Quote quote) {
+    private Optional<PaymentOption> extractBestPaymentOption(final Quote quote) {
         return quote.getPaymentOptions()
                 .stream()
                 .filter(paymentOption ->

@@ -47,7 +47,7 @@ class TransferServiceImpl implements TransferService {
                         .subscribe(quoteRecipientTuple2 -> {
                             log.info("Saving transfer response {}", transferWiseTransfer);
                             Quote quote = quoteRecipientTuple2.getT1();
-                            BigDecimal fee = extractBestPaymentOption(quote)
+                            BigDecimal fee = extractCorrectPaymentOption(quote)
                                     .map(paymentOption -> paymentOption.getFee().getTotal())
                                     .orElse(quote.getFee());
 
@@ -62,28 +62,28 @@ class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public Mono<TransferSummary> createTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount) {
+    public Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount) {
         return quotesService.updateQuote(customerId, quoteId, targetAccount)
                 .zipWith(recipientsService.getRecipient(customerId, Long.parseLong(targetAccount.value())))
                 .map(quoteRecipientTuple2 -> buildTransferSummary(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2()));
     }
 
     private TransferSummary buildTransferSummary(final Quote quote, final Recipient recipient) {
-        Optional<PaymentOption> bestPaymentOption = extractBestPaymentOption(quote);
+        Optional<PaymentOption> correctPaymentOption = extractCorrectPaymentOption(quote);
 
-        BigDecimal fee = bestPaymentOption
+        BigDecimal fee = correctPaymentOption
                 .map(paymentOption -> paymentOption.getFee().getTotal())
                 .orElse(quote.getFee());
 
-        BigDecimal sourceAmount = bestPaymentOption
+        BigDecimal sourceAmount = correctPaymentOption
                 .map(PaymentOption::getSourceAmount)
                 .orElse(quote.getSourceAmount());
 
-        BigDecimal targetAmount = bestPaymentOption
+        BigDecimal targetAmount = correctPaymentOption
                 .map(PaymentOption::getTargetAmount)
                 .orElse(quote.getTargetAmount());
 
-        String formattedEstimatedDelivery = bestPaymentOption
+        String formattedEstimatedDelivery = correctPaymentOption
                 .map(PaymentOption::getFormattedEstimatedDelivery)
                 .orElse(null);
 
@@ -101,7 +101,7 @@ class TransferServiceImpl implements TransferService {
 
     }
 
-    private Optional<PaymentOption> extractBestPaymentOption(final Quote quote) {
+    private Optional<PaymentOption> extractCorrectPaymentOption(final Quote quote) {
         return quote.getPaymentOptions()
                 .stream()
                 .filter(paymentOption ->

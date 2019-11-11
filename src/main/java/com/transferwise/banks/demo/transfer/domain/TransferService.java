@@ -12,5 +12,5 @@ public interface TransferService {
 
     Flux<String> requirements(Long customerId, String requestBody);
 
-    Mono<TransferSummary> createTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount);
+    Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount);
 }

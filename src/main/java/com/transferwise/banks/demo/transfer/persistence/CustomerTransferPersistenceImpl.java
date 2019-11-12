@@ -57,6 +57,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
                 transferWiseTransfer.getCustomerTransactionId(),
                 recipient.getName().getFullName(),
                 fee,
+                recipient.getAccountSummary(),
                 emptyList());
 
     }
@@ -81,6 +82,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
                 customerTransferEntity.getCustomerTransactionId(),
                 customerTransferEntity.getRecipientName(),
                 customerTransferEntity.getFee(),
+                customerTransferEntity.getAccountSummary(),
                 customerTransferStatuses);
 
     }

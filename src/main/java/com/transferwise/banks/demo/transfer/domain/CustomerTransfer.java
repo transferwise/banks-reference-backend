@@ -29,10 +29,11 @@ public class CustomerTransfer {
     private UUID customerTransactionId;
     private String recipientName;
     private BigDecimal fee;
+    private String accountSummary;
 
     private List<CustomerTransferStatus> transferStatuses = new ArrayList<>();
 
-    public CustomerTransfer(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, List<CustomerTransferStatus> transferStatuses) {
+    public CustomerTransfer(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatus> transferStatuses) {
         this.id = id;
         this.customerId = customerId;
         this.targetAccount = targetAccount;
@@ -47,6 +48,7 @@ public class CustomerTransfer {
         this.customerTransactionId = customerTransactionId;
         this.recipientName = recipientName;
         this.fee = fee;
+        this.accountSummary = accountSummary;
         this.transferStatuses = transferStatuses;
     }
 
@@ -104,6 +106,10 @@ public class CustomerTransfer {
 
     public BigDecimal getFee() {
         return fee;
+    }
+
+    public String getAccountSummary() {
+        return accountSummary;
     }
 
     public List<CustomerTransferStatus> getTransferStatuses() {

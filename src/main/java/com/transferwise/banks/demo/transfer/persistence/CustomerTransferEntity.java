@@ -36,6 +36,7 @@ class CustomerTransferEntity {
     private UUID customerTransactionId;
     private String recipientName;
     private BigDecimal fee;
+    private String accountSummary;
 
     @OneToMany(cascade = ALL, mappedBy = "customerTransferId")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -44,7 +45,7 @@ class CustomerTransferEntity {
     public CustomerTransferEntity() {
     }
 
-    public CustomerTransferEntity(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, List<CustomerTransferStatusEntity> transferStatuses) {
+    public CustomerTransferEntity(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatusEntity> transferStatuses) {
         this.id = id;
         this.customerId = customerId;
         this.targetAccount = targetAccount;
@@ -59,6 +60,7 @@ class CustomerTransferEntity {
         this.customerTransactionId = customerTransactionId;
         this.recipientName = recipientName;
         this.fee = fee;
+        this.accountSummary = accountSummary;
         this.transferStatuses = transferStatuses;
     }
 
@@ -117,6 +119,10 @@ class CustomerTransferEntity {
 
     public BigDecimal getFee() {
         return fee;
+    }
+
+    public String getAccountSummary() {
+        return accountSummary;
     }
 
     public List<CustomerTransferStatusEntity> getTransferStatuses() {

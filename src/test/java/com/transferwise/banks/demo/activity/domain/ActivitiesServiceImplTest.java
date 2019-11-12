@@ -37,10 +37,10 @@ public class ActivitiesServiceImplTest {
         CustomerTransfer customerTransferAfter = createCustomerTransfer(now.plusDays(1));
 
         given(customerTransferPersistence.getCustomerTransfers(customerId)).willReturn(Arrays.asList(customerTransferNow, customerTransferBefore, customerTransferAfter));
-        
+
         //when
         List<CustomerTransfer> customerTransfers = activitiesService.getCustomerTransfers(customerId);
-        
+
         //then
         assertThat(customerTransfers)
                 .containsExactly(customerTransferBefore, customerTransferNow, customerTransferAfter);
@@ -71,6 +71,7 @@ public class ActivitiesServiceImplTest {
                 UUID.randomUUID(),
                 "recipient",
                 BigDecimal.ZERO,
+                "summary",
                 Arrays.asList(transferStatusNow, transferStatusBefore, transferStatusAfter));
     }
 

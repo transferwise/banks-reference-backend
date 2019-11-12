@@ -29,4 +29,12 @@ public interface TransferWisePaths {
     static String quotesPathV2(final UUID quoteId) {
         return QUOTES_PATH_V2 + quoteId;
     }
+
+    static String getProfilePath(final Long profileId) {
+        return PROFILES_PATH_V1 + "/" + profileId;
+    }
+
+    static String updateWindowPath(final Long profileId) {
+        return PROFILES_PATH_V1 + "/" + profileId + "/update-window";
+    }
 }

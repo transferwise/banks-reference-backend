@@ -1,6 +1,6 @@
 package com.transferwise.banks.demo.credentials.persistence.twprofile;
 
-import com.transferwise.banks.demo.credentials.domain.TWProfile;
+import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 
 import java.util.Optional;
 

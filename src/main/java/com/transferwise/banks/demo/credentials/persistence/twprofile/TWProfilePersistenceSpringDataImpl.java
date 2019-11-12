@@ -1,6 +1,6 @@
 package com.transferwise.banks.demo.credentials.persistence.twprofile;
 
-import com.transferwise.banks.demo.credentials.domain.TWProfile;
+import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -29,12 +29,14 @@ class TWProfilePersistenceSpringDataImpl implements TWProfilePersistence {
     private TWProfileEntity mapToEntity(final TWProfile twProfile) {
         return new TWProfileEntity(twProfile.getTwProfileId(),
                 twProfile.getCustomerId(),
-                twProfile.getType());
+                twProfile.getType(),
+                twProfile.getUpdatedAt());
     }
 
     private TWProfile mapToTWProfile(final TWProfileEntity twProfileEntity) {
         return new TWProfile(twProfileEntity.getTwProfileId(),
                 twProfileEntity.getCustomerId(),
-                twProfileEntity.getType());
+                twProfileEntity.getType(),
+                twProfileEntity.getUpdatedAt());
     }
 }

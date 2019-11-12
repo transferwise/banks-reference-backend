@@ -1,14 +1,14 @@
-package com.transferwise.banks.demo.credentials.domain;
+package com.transferwise.banks.demo.credentials.domain.twprofile;
 
 public class CreatePersonalProfile {
 
     private String type;
-    private CreatePersonalProfileDetails details;
+    private ProfileDetails details;
 
     public CreatePersonalProfile() {
     }
 
-    public CreatePersonalProfile(String type, CreatePersonalProfileDetails details) {
+    public CreatePersonalProfile(String type, ProfileDetails details) {
         this.type = type;
         this.details = details;
     }
@@ -17,7 +17,7 @@ public class CreatePersonalProfile {
         return type;
     }
 
-    public CreatePersonalProfileDetails getDetails() {
+    public ProfileDetails getDetails() {
         return details;
     }
 }

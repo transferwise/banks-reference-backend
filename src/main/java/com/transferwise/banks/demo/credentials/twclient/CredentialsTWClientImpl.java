@@ -1,9 +1,7 @@
 package com.transferwise.banks.demo.credentials.twclient;
 
 import com.transferwise.banks.demo.client.params.RefreshToken;
-import com.transferwise.banks.demo.credentials.domain.CreatePersonalProfile;
 import com.transferwise.banks.demo.credentials.domain.CredentialsTWClient;
-import com.transferwise.banks.demo.credentials.domain.TWProfile;
 import com.transferwise.banks.demo.credentials.domain.TWUser;
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +14,6 @@ import static com.transferwise.banks.demo.client.BodyRequests.forAuthorizationCo
 import static com.transferwise.banks.demo.client.BodyRequests.forRefreshToken;
 import static com.transferwise.banks.demo.client.BodyRequests.forUserCredentials;
 import static com.transferwise.banks.demo.client.TransferWisePaths.OAUTH_TOKEN_PATH;
-import static com.transferwise.banks.demo.client.TransferWisePaths.PROFILES_PATH_V1;
 import static com.transferwise.banks.demo.client.TransferWisePaths.SIGNUP_PATH;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.ZonedDateTime.now;
@@ -85,21 +82,6 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
     }
 
     @Override
-    public Mono<TWProfile> createPersonalProfile(final TWUserTokens twUserTokens, final CreatePersonalProfile createPersonalProfile) {
-        return client.post()
-                .uri(PROFILES_PATH_V1)
-                .contentType(APPLICATION_JSON)
-                .header(AUTHORIZATION, twUserTokens.bearer())
-                .body(fromObject(createPersonalProfile))
-                .retrieve()
-                .bodyToMono(TWProfileResponse.class)
-                .map(twProfileResponse -> new TWProfile(twProfileResponse.getId(),
-                        twUserTokens.getCustomerId(),
-                        twProfileResponse.getType()));
-    }
-
-
-    @Override
     public Mono<TWUserTokens> refresh(final TWUserTokens twUserTokens) {
         return client.post()
                 .uri(OAUTH_TOKEN_PATH)
@@ -133,8 +115,6 @@ class CredentialsTWClientImpl implements CredentialsTWClient {
                 .retrieve()
                 .bodyToMono(TWUserResponse.class)
                 .map(twUserResponse -> new TWUser(twUserResponse.getId(),
-                        null,
-                        null,
                         twUserResponse.getEmail(),
                         twUserResponse.getActive()));
     }

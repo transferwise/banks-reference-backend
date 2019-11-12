@@ -10,7 +10,5 @@ public interface CredentialsTWClient {
 
     Mono<TWUserTokens> getUserTokens(TWUser twUser);
 
-    Mono<TWProfile> createPersonalProfile(TWUserTokens twUserTokens, CreatePersonalProfile createPersonalProfile);
-
     Mono<TWUserTokens> refresh(TWUserTokens twUserTokens);
 }

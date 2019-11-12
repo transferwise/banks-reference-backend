@@ -1,16 +1,16 @@
-package com.transferwise.banks.demo.credentials.domain;
+package com.transferwise.banks.demo.credentials.domain.twprofile;
 
-public final class CreatePersonalProfileDetails {
+public final class ProfileDetails {
 
     private String firstName;
     private String lastName;
     private String dateOfBirth;
     private String phoneNumber;
 
-    public CreatePersonalProfileDetails() {
+    public ProfileDetails() {
     }
 
-    public CreatePersonalProfileDetails(String firstName, String lastName, String dateOfBirth, String phoneNumber) {
+    public ProfileDetails(String firstName, String lastName, String dateOfBirth, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;

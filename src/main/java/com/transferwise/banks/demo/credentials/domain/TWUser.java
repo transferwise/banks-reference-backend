@@ -11,6 +11,12 @@ public class TWUser {
     public TWUser() {
     }
 
+    public TWUser(Long twUserId, String email, Boolean active) {
+        this.twUserId = twUserId;
+        this.email = email;
+        this.active = active;
+    }
+
     public TWUser(Long twUserId, String registrationCode, Long customerId, String email, Boolean active) {
         this.twUserId = twUserId;
         this.registrationCode = registrationCode;

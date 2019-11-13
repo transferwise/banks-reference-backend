@@ -89,7 +89,9 @@ class TransferServiceImpl implements TransferService {
 
 
 
-        return new TransferSummary(quote.getSourceCurrency(),
+        return new TransferSummary(quote.getId(),
+                recipient.getId(),
+                quote.getSourceCurrency(),
                 quote.getTargetCurrency(),
                 sourceAmount,
                 targetAmount,

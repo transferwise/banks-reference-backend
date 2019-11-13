@@ -40,29 +40,20 @@ public class CredentialsManager {
         Customer customer = customersPersistence.findById(customerId);
 
         return credentialsTWClient.signUp(customer.getEmail(), registrationCode)
-                .flatMap(twUser -> {
-                    TWUser savedTwUser = twUserPersistence.save(twUser
-                            .withCustomerId(customerId)
-                            .withRegistrationCode(registrationCode));
-                    return credentialsTWClient.getUserTokens(savedTwUser)
-                            .map(twUserTokens -> {
-                                TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
-                                profileService.createPersonalProfile(savedTwUserTokens, customer);
-                                return savedTwUserTokens;
-                            });
-
-                });
+                .map(twUser -> twUserPersistence.save(twUser
+                        .withCustomerId(customerId)
+                        .withRegistrationCode(registrationCode)))
+                .flatMap(credentialsTWClient::getUserTokens)
+                .map(twUserTokensPersistence::save)
+                .map(savedTwUserTokens -> createPersonalProfileAndReturnTokens(customer, savedTwUserTokens));
     }
 
     public Mono<TWUserTokens> existing(final Long customerId, final String code) {
         Customer customer = customersPersistence.findById(customerId);
 
         return credentialsTWClient.getUserTokensForCode(code, customerId)
-                .map(twUserTokens -> {
-                    TWUserTokens savedTwUserTokens = twUserTokensPersistence.save(twUserTokens);
-                    profileService.createPersonalProfile(savedTwUserTokens, customer);
-                    return savedTwUserTokens;
-                });
+                .map(twUserTokensPersistence::save)
+                .map(savedTwUserTokens -> createPersonalProfileAndReturnTokens(customer, savedTwUserTokens));
     }
 
     public Mono<TWUserTokens> refreshTokens(final Long customerId) {
@@ -70,6 +61,11 @@ public class CredentialsManager {
                 .map(this::performRefreshTokens)
                 .orElseThrow(ResourceNotFoundException::new)
                 .doOnSuccess(twUserTokens -> profileService.performRefreshCycle(twUserTokens, customerId));
+    }
+
+    private TWUserTokens createPersonalProfileAndReturnTokens(final Customer customer, final TWUserTokens savedTwUserTokens) {
+        profileService.createPersonalProfile(savedTwUserTokens, customer);
+        return savedTwUserTokens;
     }
 
     private Mono<TWUserTokens> performRefreshTokens(final TWUserTokens twUserTokens) {

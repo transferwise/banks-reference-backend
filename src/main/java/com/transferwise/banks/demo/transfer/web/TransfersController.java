@@ -34,7 +34,13 @@ public class TransfersController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final TransferRequest transferRequest) {
-        return transferService.create(customerId, transferRequest);
+    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final CreateTransferRequest transferRequest) {
+        return transferService.create(customerId, mapToTransferRequest(transferRequest));
+    }
+
+    private TransferRequest mapToTransferRequest(CreateTransferRequest createTransferRequest) {
+        return new TransferRequest(createTransferRequest.getTargetAccount(),
+                createTransferRequest.getQuoteUuid(),
+                createTransferRequest.getDetails());
     }
 }

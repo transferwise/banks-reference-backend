@@ -12,10 +12,9 @@ public class TransferRequest {
     public TransferRequest() {
     }
 
-    public TransferRequest(Long targetAccount, UUID quoteUuid, UUID customerTransactionId, TransferRequestDetails details) {
+    public TransferRequest(Long targetAccount, UUID quoteUuid, TransferRequestDetails details) {
         this.targetAccount = targetAccount;
         this.quoteUuid = quoteUuid;
-        this.customerTransactionId = customerTransactionId;
         this.details = details;
     }
 
@@ -33,5 +32,10 @@ public class TransferRequest {
 
     public TransferRequestDetails getDetails() {
         return details;
+    }
+
+    public TransferRequest withCustomerTransactionId(final UUID customerTransactionId) {
+        this.customerTransactionId = customerTransactionId;
+        return this;
     }
 }

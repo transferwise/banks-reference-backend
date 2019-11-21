@@ -14,6 +14,7 @@ public class Customer {
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String email;
+    private boolean transferWiseAccountLinked;
 
     public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
         this.id = id;
@@ -54,5 +55,14 @@ public class Customer {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isTransferWiseAccountLinked() {
+        return transferWiseAccountLinked;
+    }
+
+    public Customer withTransferWiseAccountLinked(final boolean transferWiseAccountLinked) {
+        this.transferWiseAccountLinked = transferWiseAccountLinked;
+        return this;
     }
 }

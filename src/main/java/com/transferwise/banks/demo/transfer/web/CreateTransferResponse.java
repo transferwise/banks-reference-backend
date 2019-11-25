@@ -1,4 +1,4 @@
-package com.transferwise.banks.demo.transfer.domain;
+package com.transferwise.banks.demo.transfer.web;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class TransferWiseTransfer {
+class CreateTransferResponse {
 
     private Long id;
-    private Long targetAccount;
-    private UUID quote;
+    private Long recipientId;
+    private UUID quoteId;
     private String reference;
     private BigDecimal rate;
 
@@ -22,16 +22,33 @@ public class TransferWiseTransfer {
     private BigDecimal targetValue;
     private UUID customerTransactionId;
 
+    public CreateTransferResponse() {
+    }
+
+    public CreateTransferResponse(Long id, Long recipientId, UUID quoteId, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId) {
+        this.id = id;
+        this.recipientId = recipientId;
+        this.quoteId = quoteId;
+        this.reference = reference;
+        this.rate = rate;
+        this.created = created;
+        this.sourceCurrency = sourceCurrency;
+        this.sourceValue = sourceValue;
+        this.targetCurrency = targetCurrency;
+        this.targetValue = targetValue;
+        this.customerTransactionId = customerTransactionId;
+    }
+
     public Long getId() {
         return id;
     }
 
-    public Long getTargetAccount() {
-        return targetAccount;
+    public Long getRecipientId() {
+        return recipientId;
     }
 
-    public UUID getQuote() {
-        return quote;
+    public UUID getQuoteId() {
+        return quoteId;
     }
 
     public String getReference() {

@@ -1,0 +1,29 @@
+{
+  "id": 1234,
+  "creatorId": 6543,
+  "profileId": 9911,
+  "name": {
+    "fullName": "Fulano De Tal",
+    "givenName": null,
+    "familyName": null,
+    "middleNames": [],
+    "patronymicName": null
+  },
+  "currency": "GBP",
+  "country": "GB",
+  "type": "SortCode",
+  "legalEntityType": "PERSON",
+  "email": "fulano@transferwise.com",
+  "active": true,
+  "details": {
+    "accountNumber": "12345678",
+    "sortCode": "040004"
+  },
+  "commonFieldMap": {
+    "accountNumberField": "accountNumber",
+    "bankCodeField": "sortCode"
+  },
+  "hash": "211d353d86193f8e0c6101a78cbb7efc747da778ccbb023d45e14936e054d844",
+  "accountSummary": "(04-00-04) 12345678",
+  "ownedByCustomer": false
+}

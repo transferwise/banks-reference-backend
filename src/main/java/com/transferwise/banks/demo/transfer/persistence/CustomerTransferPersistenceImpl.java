@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
@@ -46,7 +47,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
         return new CustomerTransferEntity(transferWiseTransfer.getId(),
                 customerId,
                 transferWiseTransfer.getTargetAccount(),
-                transferWiseTransfer.getQuoteUuid(),
+                transferWiseTransfer.getQuote().toString(),
                 transferWiseTransfer.getReference(),
                 transferWiseTransfer.getRate(),
                 transferWiseTransfer.getCreated(),
@@ -54,7 +55,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
                 transferWiseTransfer.getSourceValue(),
                 transferWiseTransfer.getTargetCurrency(),
                 transferWiseTransfer.getTargetValue(),
-                transferWiseTransfer.getCustomerTransactionId(),
+                transferWiseTransfer.getCustomerTransactionId().toString(),
                 recipient.getName().getFullName(),
                 fee,
                 recipient.getAccountSummary(),
@@ -71,7 +72,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
         return new CustomerTransfer(customerTransferEntity.getId(),
                 customerTransferEntity.getCustomerId(),
                 customerTransferEntity.getTargetAccount(),
-                customerTransferEntity.getQuoteUuid(),
+                UUID.fromString(customerTransferEntity.getQuoteUuid()),
                 customerTransferEntity.getReference(),
                 customerTransferEntity.getRate(),
                 customerTransferEntity.getCreated(),
@@ -79,7 +80,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
                 customerTransferEntity.getSourceValue(),
                 customerTransferEntity.getTargetCurrency(),
                 customerTransferEntity.getTargetValue(),
-                customerTransferEntity.getCustomerTransactionId(),
+                UUID.fromString(customerTransferEntity.getCustomerTransactionId()),
                 customerTransferEntity.getRecipientName(),
                 customerTransferEntity.getFee(),
                 customerTransferEntity.getAccountSummary(),

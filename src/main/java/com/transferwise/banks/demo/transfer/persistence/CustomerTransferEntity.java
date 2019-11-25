@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Comparator.comparing;
 import static javax.persistence.CascadeType.ALL;
@@ -25,7 +24,7 @@ class CustomerTransferEntity {
     private Long id;
     private Long customerId;
     private Long targetAccount;
-    private UUID quoteUuid;
+    private String quoteUuid;
     private String reference;
     private BigDecimal rate;
     private LocalDateTime created;
@@ -33,7 +32,7 @@ class CustomerTransferEntity {
     private BigDecimal sourceValue;
     private String targetCurrency;
     private BigDecimal targetValue;
-    private UUID customerTransactionId;
+    private String customerTransactionId;
     private String recipientName;
     private BigDecimal fee;
     private String accountSummary;
@@ -45,7 +44,7 @@ class CustomerTransferEntity {
     public CustomerTransferEntity() {
     }
 
-    public CustomerTransferEntity(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatusEntity> transferStatuses) {
+    public CustomerTransferEntity(Long id, Long customerId, Long targetAccount, String quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, String customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatusEntity> transferStatuses) {
         this.id = id;
         this.customerId = customerId;
         this.targetAccount = targetAccount;
@@ -76,7 +75,7 @@ class CustomerTransferEntity {
         return targetAccount;
     }
 
-    public UUID getQuoteUuid() {
+    public String getQuoteUuid() {
         return quoteUuid;
     }
 
@@ -109,7 +108,7 @@ class CustomerTransferEntity {
         return targetValue;
     }
 
-    public UUID getCustomerTransactionId() {
+    public String getCustomerTransactionId() {
         return customerTransactionId;
     }
 

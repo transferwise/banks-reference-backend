@@ -17,7 +17,7 @@ public class RecipientsServiceImplTest extends ServerTest {
     @Test
     public void findRecipientsForCustomer() throws IOException {
         //given
-        final Long customerId = 1L;
+        final Long customerId = 777L;
         mockWebServer.enqueue(response("user-credentials.json"));
         mockWebServer.enqueue(response("recipients.json"));
 

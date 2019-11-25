@@ -28,19 +28,34 @@ public class TransfersController {
 
     @PostMapping(value = "/summary", produces = APPLICATION_JSON_VALUE)
     public Publisher<TransferSummary> createTransferSummary(@RequestParam Long customerId,
-                                                         @RequestParam final UUID quoteId,
-                                                         @RequestParam final TargetAccount targetAccount) {
+                                                            @RequestParam final UUID quoteId,
+                                                            @RequestParam final TargetAccount targetAccount) {
         return transferService.getTransferSummary(customerId, quoteId, targetAccount);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<TransferWiseTransfer> create(@RequestParam final Long customerId, @RequestBody final CreateTransferRequest transferRequest) {
-        return transferService.create(customerId, mapToTransferRequest(transferRequest));
+    public Publisher<CreateTransferResponse> create(@RequestParam final Long customerId, @RequestBody final CreateTransferRequest transferRequest) {
+        return transferService.create(customerId, mapToTransferRequest(transferRequest))
+                .map(this::mapToTransferResponse);
     }
 
     private TransferRequest mapToTransferRequest(CreateTransferRequest createTransferRequest) {
         return new TransferRequest(createTransferRequest.getTargetAccount(),
                 createTransferRequest.getQuoteUuid(),
                 createTransferRequest.getDetails());
+    }
+
+    private CreateTransferResponse mapToTransferResponse(TransferWiseTransfer transferWiseTransfer) {
+        return new CreateTransferResponse(transferWiseTransfer.getId(),
+                transferWiseTransfer.getTargetAccount(),
+                transferWiseTransfer.getQuote(),
+                transferWiseTransfer.getReference(),
+                transferWiseTransfer.getRate(),
+                transferWiseTransfer.getCreated(),
+                transferWiseTransfer.getSourceCurrency(),
+                transferWiseTransfer.getSourceValue(),
+                transferWiseTransfer.getTargetCurrency(),
+                transferWiseTransfer.getTargetValue(),
+                transferWiseTransfer.getCustomerTransactionId());
     }
 }

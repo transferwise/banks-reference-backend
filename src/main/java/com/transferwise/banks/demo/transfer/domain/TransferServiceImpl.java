@@ -43,7 +43,7 @@ class TransferServiceImpl implements TransferService {
         final var customerTransactionId = UUID.randomUUID();
         return credentialsManager.refreshTokens(customerId).flatMap(twUserTokens ->
                 transfersTWClient.createTransfer(twUserTokens, transferRequest.withCustomerTransactionId(customerTransactionId)))
-                .doOnSuccess(transferWiseTransfer -> quotesService.getQuote(customerId, transferWiseTransfer.getQuoteUuid())
+                .doOnSuccess(transferWiseTransfer -> quotesService.getQuote(customerId, transferWiseTransfer.getQuote())
                         .zipWith(recipientsService.getRecipient(customerId, transferRequest.getTargetAccount()))
                         .subscribe(quoteRecipientTuple2 -> {
                             log.info("Saving transfer response {}", transferWiseTransfer);
@@ -87,7 +87,6 @@ class TransferServiceImpl implements TransferService {
         String formattedEstimatedDelivery = correctPaymentOption
                 .map(PaymentOption::getFormattedEstimatedDelivery)
                 .orElse(null);
-
 
 
         return new TransferSummary(quote.getId(),

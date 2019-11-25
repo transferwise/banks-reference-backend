@@ -23,7 +23,7 @@ public abstract class ServerTest {
     @Autowired
     protected MockWebServer mockWebServer;
 
-    protected MockResponse response(final String filename) throws IOException {
+    public static MockResponse response(final String filename) throws IOException {
         return new MockResponse()
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .setBody(read(filename));

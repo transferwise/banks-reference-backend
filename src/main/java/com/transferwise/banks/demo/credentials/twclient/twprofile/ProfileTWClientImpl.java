@@ -89,9 +89,12 @@ class ProfileTWClientImpl implements ProfileTWClient {
     }
 
     private ProfileDetails mapToProfileDetails(TWProfileDetails twProfileDetails) {
-        return new ProfileDetails(twProfileDetails.getFirstName(),
-                twProfileDetails.getLastName(),
-                twProfileDetails.getDateOfBirth(),
-                twProfileDetails.getPhoneNumber());
+        if (twProfileDetails != null) {
+            return new ProfileDetails(twProfileDetails.getFirstName(),
+                    twProfileDetails.getLastName(),
+                    twProfileDetails.getDateOfBirth(),
+                    twProfileDetails.getPhoneNumber());
+        }
+        return null;
     }
 }

@@ -36,7 +36,7 @@ public class QuotesServiceImplTest extends ServerTest {
         mockWebServer.enqueue(response("quote.json"));
 
         //when
-        final var quote = quotesService.createQuote(1L, createQuote).block();
+        final var quote = quotesService.createQuote(777L, createQuote).block();
 
         //then
         assertFalse(quote.getPaymentOptions().isEmpty());

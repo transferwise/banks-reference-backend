@@ -47,7 +47,7 @@ public class TransfersController {
     private CreateTransferResponse mapToTransferResponse(TransferWiseTransfer transferWiseTransfer) {
         return new CreateTransferResponse(transferWiseTransfer.getId(),
                 transferWiseTransfer.getTargetAccount(),
-                transferWiseTransfer.getQuote(),
+                transferWiseTransfer.getQuoteUuid(),
                 transferWiseTransfer.getReference(),
                 transferWiseTransfer.getRate(),
                 transferWiseTransfer.getCreated(),

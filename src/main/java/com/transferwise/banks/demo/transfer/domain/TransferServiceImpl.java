@@ -42,7 +42,7 @@ class TransferServiceImpl implements TransferService {
         final var customerTransactionId = UUID.randomUUID();
         return credentialsManager.refreshTokens(customerId).flatMap(twUserTokens ->
                 transfersTWClient.createTransfer(twUserTokens, transferRequest.withCustomerTransactionId(customerTransactionId)))
-                .doOnSuccess(transferWiseTransfer -> quotesService.getQuote(customerId, transferWiseTransfer.getQuote())
+                .doOnSuccess(transferWiseTransfer -> quotesService.getQuote(customerId, transferWiseTransfer.getQuoteUuid())
                         .zipWith(recipientsService.getRecipient(customerId, transferRequest.getTargetAccount()))
                         .subscribe(quoteRecipientTuple2 -> {
                             log.info("Saving transfer response {}", transferWiseTransfer);

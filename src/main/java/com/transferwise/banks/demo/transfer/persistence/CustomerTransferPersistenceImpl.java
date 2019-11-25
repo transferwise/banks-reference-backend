@@ -47,7 +47,7 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
         return new CustomerTransferEntity(transferWiseTransfer.getId(),
                 customerId,
                 transferWiseTransfer.getTargetAccount(),
-                transferWiseTransfer.getQuote().toString(),
+                transferWiseTransfer.getQuoteUuid().toString(),
                 transferWiseTransfer.getReference(),
                 transferWiseTransfer.getRate(),
                 transferWiseTransfer.getCreated(),

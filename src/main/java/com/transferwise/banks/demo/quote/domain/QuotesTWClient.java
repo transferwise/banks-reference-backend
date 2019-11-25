@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.quote.domain;
 
-import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +11,7 @@ public interface QuotesTWClient {
 
     Mono<Quote> createQuote(TWUserTokens twUserTokens, CreateQuote createQuote);
 
-    Mono<Quote> updateQuote(TWUserTokens twUserTokens, UUID quoteId, Long profileId, TargetAccount targetAccount);
+    Mono<Quote> updateQuote(TWUserTokens twUserTokens, UUID quoteId, Long profileId, Long recipientId);
 
-    Mono<Quote> getQuote(TWUserTokens twUserTokens, UUID quoteUuid);
+    Mono<Quote> getQuote(TWUserTokens twUserTokens, UUID quoteId);
 }

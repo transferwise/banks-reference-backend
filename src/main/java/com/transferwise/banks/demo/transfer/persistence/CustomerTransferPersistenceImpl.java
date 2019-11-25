@@ -71,8 +71,8 @@ class CustomerTransferPersistenceImpl implements CustomerTransferPersistence {
 
         return new CustomerTransfer(customerTransferEntity.getId(),
                 customerTransferEntity.getCustomerId(),
-                customerTransferEntity.getTargetAccount(),
-                UUID.fromString(customerTransferEntity.getQuoteUuid()),
+                customerTransferEntity.getRecipientId(),
+                UUID.fromString(customerTransferEntity.getQuoteId()),
                 customerTransferEntity.getReference(),
                 customerTransferEntity.getRate(),
                 customerTransferEntity.getCreated(),

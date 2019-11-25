@@ -1,7 +1,5 @@
 package com.transferwise.banks.demo.recipient.domain;
 
-import com.transferwise.banks.demo.client.params.TargetAccount;
-
 public class Recipient {
 
     private Long id;
@@ -34,10 +32,6 @@ public class Recipient {
 
     public Name getName() {
         return name;
-    }
-
-    public TargetAccount targetAccount() {
-        return new TargetAccount(id);
     }
 
     public String getAccountSummary() {

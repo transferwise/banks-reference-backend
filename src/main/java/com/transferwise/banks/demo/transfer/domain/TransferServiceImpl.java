@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.transfer.domain;
 
-import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
 import com.transferwise.banks.demo.quote.domain.PaymentOption;
 import com.transferwise.banks.demo.quote.domain.Quote;
@@ -63,9 +62,9 @@ class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount) {
-        return quotesService.updateQuote(customerId, quoteId, targetAccount)
-                .zipWith(recipientsService.getRecipient(customerId, Long.parseLong(targetAccount.value())))
+    public Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, Long recipientId) {
+        return quotesService.updateQuote(customerId, quoteId, recipientId)
+                .zipWith(recipientsService.getRecipient(customerId, recipientId))
                 .map(quoteRecipientTuple2 -> buildTransferSummary(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2()));
     }
 

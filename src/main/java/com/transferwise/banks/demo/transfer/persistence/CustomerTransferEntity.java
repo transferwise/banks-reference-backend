@@ -23,8 +23,8 @@ class CustomerTransferEntity {
     @Id
     private Long id;
     private Long customerId;
-    private Long targetAccount;
-    private String quoteUuid;
+    private Long recipientId;
+    private String quoteId;
     private String reference;
     private BigDecimal rate;
     private LocalDateTime created;
@@ -44,11 +44,11 @@ class CustomerTransferEntity {
     public CustomerTransferEntity() {
     }
 
-    public CustomerTransferEntity(Long id, Long customerId, Long targetAccount, String quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, String customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatusEntity> transferStatuses) {
+    public CustomerTransferEntity(Long id, Long customerId, Long recipientId, String quoteId, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, String customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatusEntity> transferStatuses) {
         this.id = id;
         this.customerId = customerId;
-        this.targetAccount = targetAccount;
-        this.quoteUuid = quoteUuid;
+        this.recipientId = recipientId;
+        this.quoteId = quoteId;
         this.reference = reference;
         this.rate = rate;
         this.created = created;
@@ -71,12 +71,12 @@ class CustomerTransferEntity {
         return customerId;
     }
 
-    public Long getTargetAccount() {
-        return targetAccount;
+    public Long getRecipientId() {
+        return recipientId;
     }
 
-    public String getQuoteUuid() {
-        return quoteUuid;
+    public String getQuoteId() {
+        return quoteId;
     }
 
     public String getReference() {

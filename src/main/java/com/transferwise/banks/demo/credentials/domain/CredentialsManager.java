@@ -1,6 +1,8 @@
 package com.transferwise.banks.demo.credentials.domain;
 
 import com.transferwise.banks.demo.credentials.domain.twprofile.ProfileService;
+import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
+import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
 import com.transferwise.banks.demo.credentials.persistence.twuser.TWUserPersistence;
 import com.transferwise.banks.demo.credentials.persistence.twusertokens.TWUserTokensPersistence;
 import com.transferwise.banks.demo.customer.domain.Customer;
@@ -9,6 +11,7 @@ import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.time.ZonedDateTime.now;
@@ -21,20 +24,24 @@ public class CredentialsManager {
     private final TWUserPersistence twUserPersistence;
     private final TWUserTokensPersistence twUserTokensPersistence;
     private final ProfileService profileService;
+    private final TWProfilePersistence twProfilePersistence;
+
 
     public CredentialsManager(final CredentialsTWClient credentialsTWClient,
                               final CustomersPersistence customersPersistence,
                               final TWUserPersistence twUserPersistence,
                               final TWUserTokensPersistence twUserTokensPersistence,
-                              final ProfileService profileService) {
+                              final ProfileService profileService,
+                              final TWProfilePersistence twProfilePersistence) {
         this.credentialsTWClient = credentialsTWClient;
         this.customersPersistence = customersPersistence;
         this.twUserPersistence = twUserPersistence;
         this.twUserTokensPersistence = twUserTokensPersistence;
         this.profileService = profileService;
+        this.twProfilePersistence = twProfilePersistence;
     }
 
-    public Mono<TWUserTokens> signUp(final Long customerId) {
+    public Mono<TWProfile> signUp(final Long customerId) {
         String registrationCode = UUID.randomUUID().toString();
 
         Customer customer = customersPersistence.findById(customerId);
@@ -45,15 +52,20 @@ public class CredentialsManager {
                         .withRegistrationCode(registrationCode)))
                 .flatMap(credentialsTWClient::getUserTokens)
                 .map(twUserTokensPersistence::save)
-                .map(savedTwUserTokens -> createPersonalProfileAndReturnTokens(customer, savedTwUserTokens));
+                .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer))
+                .map(twProfilePersistence::save);
     }
 
-    public Mono<TWUserTokens> existing(final Long customerId, final String code) {
+    public Mono<TWProfile> existing(final Long customerId, final String code) {
         Customer customer = customersPersistence.findById(customerId);
 
-        return credentialsTWClient.getUserTokensForCode(code, customerId)
-                .map(twUserTokensPersistence::save)
-                .map(savedTwUserTokens -> createPersonalProfileAndReturnTokens(customer, savedTwUserTokens));
+
+        Mono<TWUserTokens> savedTwUserTokens = credentialsTWClient.getUserTokensForCode(code, customerId)
+                .map(twUserTokensPersistence::save);
+
+        return savedTwUserTokens.flatMap(profileService::getPersonalProfile)
+                .switchIfEmpty(savedTwUserTokens.flatMap(tokens -> profileService.createPersonalProfile(tokens, customer)))
+                .map(twProfilePersistence::save);
     }
 
     public Mono<TWUserTokens> refreshTokens(final Long customerId) {
@@ -61,11 +73,6 @@ public class CredentialsManager {
                 .map(this::performRefreshTokens)
                 .orElseThrow(ResourceNotFoundException::new)
                 .doOnSuccess(twUserTokens -> profileService.performRefreshCycle(twUserTokens, customerId));
-    }
-
-    private TWUserTokens createPersonalProfileAndReturnTokens(final Customer customer, final TWUserTokens savedTwUserTokens) {
-        profileService.createPersonalProfile(savedTwUserTokens, customer);
-        return savedTwUserTokens;
     }
 
     private Mono<TWUserTokens> performRefreshTokens(final TWUserTokens twUserTokens) {

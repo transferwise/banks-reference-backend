@@ -19,19 +19,24 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class QuotesController {
 
     private final QuotesService quotesService;
-    private final QuotesMapperWeb quotesMapperWeb;
 
-    public QuotesController(QuotesService quotesService, QuotesMapperWeb quotesMapperWeb) {
+    public QuotesController(QuotesService quotesService) {
         this.quotesService = quotesService;
-        this.quotesMapperWeb = quotesMapperWeb;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest,
                                    @RequestParam final Long customerId) {
 
-        CreateQuote createQuote = quotesMapperWeb.mapToCreateQuote(quoteRequest);
+        CreateQuote createQuote = mapToCreateQuote(quoteRequest);
         return quotesService.createQuote(customerId, createQuote);
+    }
+
+    private CreateQuote mapToCreateQuote(QuoteRequest quoteRequest) {
+        return new CreateQuote(quoteRequest.getSourceCurrency().get(),
+                quoteRequest.getTargetCurrency().get(),
+                quoteRequest.getSourceAmount(),
+                quoteRequest.getTargetAmount());
     }
 
 }

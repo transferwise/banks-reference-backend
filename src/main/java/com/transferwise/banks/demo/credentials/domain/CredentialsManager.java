@@ -53,7 +53,7 @@ public class CredentialsManager {
                 .flatMap(credentialsTWClient::getUserTokens)
                 .map(twUserTokensPersistence::save)
                 .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer))
-                .map(twProfilePersistence::save);
+                .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())));
     }
 
     public Mono<TWProfile> existing(final Long customerId, final String code) {
@@ -65,7 +65,7 @@ public class CredentialsManager {
 
         return savedTwUserTokens.flatMap(profileService::getPersonalProfile)
                 .switchIfEmpty(savedTwUserTokens.flatMap(tokens -> profileService.createPersonalProfile(tokens, customer)))
-                .map(twProfilePersistence::save);
+                .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())));
     }
 
     public Mono<TWUserTokens> refreshTokens(final Long customerId) {

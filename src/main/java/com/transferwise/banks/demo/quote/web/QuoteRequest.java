@@ -31,7 +31,7 @@ class QuoteRequest {
         this.targetAmount = targetAmount;
     }
 
-    public boolean isAmountPresent() {
+    boolean isAmountPresent() {
         return nonNull(sourceAmount) || nonNull(targetAmount);
     }
 

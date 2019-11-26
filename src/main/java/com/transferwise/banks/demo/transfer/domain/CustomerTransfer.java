@@ -15,8 +15,8 @@ public class CustomerTransfer {
 
     private Long id;
     private Long customerId;
-    private Long targetAccount;
-    private UUID quoteUuid;
+    private Long recipientId;
+    private UUID quoteId;
     private String reference;
     private BigDecimal rate;
 
@@ -33,11 +33,11 @@ public class CustomerTransfer {
 
     private List<CustomerTransferStatus> transferStatuses = new ArrayList<>();
 
-    public CustomerTransfer(Long id, Long customerId, Long targetAccount, UUID quoteUuid, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatus> transferStatuses) {
+    public CustomerTransfer(Long id, Long customerId, Long recipientId, UUID quoteId, String reference, BigDecimal rate, LocalDateTime created, String sourceCurrency, BigDecimal sourceValue, String targetCurrency, BigDecimal targetValue, UUID customerTransactionId, String recipientName, BigDecimal fee, String accountSummary, List<CustomerTransferStatus> transferStatuses) {
         this.id = id;
         this.customerId = customerId;
-        this.targetAccount = targetAccount;
-        this.quoteUuid = quoteUuid;
+        this.recipientId = recipientId;
+        this.quoteId = quoteId;
         this.reference = reference;
         this.rate = rate;
         this.created = created;
@@ -60,12 +60,12 @@ public class CustomerTransfer {
         return customerId;
     }
 
-    public Long getTargetAccount() {
-        return targetAccount;
+    public Long getRecipientId() {
+        return recipientId;
     }
 
-    public UUID getQuoteUuid() {
-        return quoteUuid;
+    public UUID getQuoteId() {
+        return quoteId;
     }
 
     public String getReference() {

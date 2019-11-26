@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.transfer.domain;
 
-import com.transferwise.banks.demo.client.params.TargetAccount;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,5 +11,5 @@ public interface TransferService {
 
     Flux<String> requirements(Long customerId, String requestBody);
 
-    Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, TargetAccount targetAccount);
+    Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, Long recipientId);
 }

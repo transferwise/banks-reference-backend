@@ -1,6 +1,5 @@
 package com.transferwise.banks.demo.quote.domain;
 
-import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
@@ -36,17 +35,17 @@ class QuotesServiceImpl implements QuotesService {
     }
 
     @Override
-    public Mono<Quote> updateQuote(Long customerId, UUID quoteId, TargetAccount targetAccount) {
+    public Mono<Quote> updateQuote(Long customerId, UUID quoteId, Long recipientId) {
         return twProfilePersistence.findByCustomerId(customerId)
                 .map(twProfile -> credentialsManager.refreshTokens(customerId)
-                        .flatMap(twUserTokens -> quotesTWClient.updateQuote(twUserTokens, quoteId, twProfile.getTwProfileId(), targetAccount)))
+                        .flatMap(twUserTokens -> quotesTWClient.updateQuote(twUserTokens, quoteId, twProfile.getTwProfileId(), recipientId)))
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
-    public Mono<Quote> getQuote(Long customerId, UUID quoteUuid) {
+    public Mono<Quote> getQuote(Long customerId, UUID quoteId) {
         return credentialsManager.refreshTokens(customerId)
-                .flatMap(twUserTokens -> quotesTWClient.getQuote(twUserTokens, quoteUuid));
+                .flatMap(twUserTokens -> quotesTWClient.getQuote(twUserTokens, quoteId));
     }
 
 

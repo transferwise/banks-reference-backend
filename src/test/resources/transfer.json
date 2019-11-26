@@ -3,7 +3,7 @@
   "user": 123456,
   "targetAccount": 1234,
   "sourceAccount": null,
-  "quote": "459b1da2-9acd-4d14-a3e7-c6e8483d1c2a",
+  "quoteUuid": "459b1da2-9acd-4d14-a3e7-c6e8483d1c2a",
   "status": "outgoing_payment_sent",
   "reference": "my reference",
   "rate": 0.9065,

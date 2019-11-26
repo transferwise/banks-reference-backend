@@ -10,7 +10,7 @@ public class TransferWiseTransfer {
 
     private Long id;
     private Long targetAccount;
-    private UUID quote;
+    private UUID quoteUuid;
     private String reference;
     private BigDecimal rate;
 
@@ -30,8 +30,8 @@ public class TransferWiseTransfer {
         return targetAccount;
     }
 
-    public UUID getQuote() {
-        return quote;
+    public UUID getQuoteUuid() {
+        return quoteUuid;
     }
 
     public String getReference() {

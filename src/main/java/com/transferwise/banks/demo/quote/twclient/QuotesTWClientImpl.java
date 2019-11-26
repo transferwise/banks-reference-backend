@@ -56,21 +56,21 @@ class QuotesTWClientImpl implements QuotesTWClient {
     }
 
     @Override
-    public Mono<Quote> updateQuote(final TWUserTokens twUserTokens, final UUID quoteId, final Long profileId, final TargetAccount targetAccount) {
+    public Mono<Quote> updateQuote(final TWUserTokens twUserTokens, final UUID quoteId, final Long profileId, final Long recipientId) {
         return client.patch()
                 .uri(quotesPathV2(quoteId))
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .contentType(MERGE_PATCH_JSON)
-                .body(forQuoteUpdate(new ProfileId(profileId), targetAccount))
+                .body(forQuoteUpdate(new ProfileId(profileId), new TargetAccount(recipientId)))
                 .retrieve()
                 .bodyToMono(Quote.class);
 
     }
 
     @Override
-    public Mono<Quote> getQuote(TWUserTokens twUserTokens, UUID quoteUuid) {
+    public Mono<Quote> getQuote(TWUserTokens twUserTokens, UUID quoteId) {
         return client.get()
-                .uri(quotesPathV2(quoteUuid))
+                .uri(quotesPathV2(quoteId))
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .retrieve()
                 .bodyToMono(Quote.class);

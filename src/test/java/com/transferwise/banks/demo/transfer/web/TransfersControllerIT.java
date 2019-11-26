@@ -25,7 +25,7 @@ public class TransfersControllerIT extends ServerTest {
 
     private static final long CUSTOMER_ID = 777L;
     private static final String QUOTE_ID = "459b1da2-9acd-4d14-a3e7-c6e8483d1c2a";
-    private static final long TARGET_ACCOUNT = 1234L;
+    private static final long RECIPIENT_ID = 1234L;
 
     @Autowired
     private WebTestClient webTestClient;
@@ -40,7 +40,7 @@ public class TransfersControllerIT extends ServerTest {
                 .uri(uriBuilder -> uriBuilder
                         .path("/transfers/summary")
                         .queryParam("quoteId", QUOTE_ID)
-                        .queryParam("targetAccount", TARGET_ACCOUNT)
+                        .queryParam("recipientId", RECIPIENT_ID)
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
                 .exchange()
@@ -53,7 +53,7 @@ public class TransfersControllerIT extends ServerTest {
                 .uri(uriBuilder -> uriBuilder
                         .path("/transfers/summary")
                         .queryParam("customerId", CUSTOMER_ID)
-                        .queryParam("targetAccount", TARGET_ACCOUNT)
+                        .queryParam("recipientId", RECIPIENT_ID)
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
                 .exchange()
@@ -61,7 +61,7 @@ public class TransfersControllerIT extends ServerTest {
     }
 
     @Test
-    public void shouldReturnBadRequestWhenTransferSummaryWithNoTargetAccount() {
+    public void shouldReturnBadRequestWhenTransferSummaryWithNoRecipientId() {
         webTestClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .path("/transfers/summary")
@@ -85,14 +85,14 @@ public class TransfersControllerIT extends ServerTest {
                         .path("/transfers/summary")
                         .queryParam("customerId", CUSTOMER_ID)
                         .queryParam("quoteId", QUOTE_ID)
-                        .queryParam("targetAccount", TARGET_ACCOUNT)
+                        .queryParam("recipientId", RECIPIENT_ID)
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.quoteId").isEqualTo(QUOTE_ID)
-                .jsonPath("$.recipientId").isEqualTo(TARGET_ACCOUNT);
+                .jsonPath("$.recipientId").isEqualTo(RECIPIENT_ID);
     }
 
     @Test
@@ -122,8 +122,8 @@ public class TransfersControllerIT extends ServerTest {
         var reference = "my reference";
 
         var createTransferJson = "{\n" +
-                "  \"targetAccount\": 1234,\n" +
-                "  \"quoteUuid\": \"" + QUOTE_ID + "\",\n" +
+                "  \"recipientId\": 1234,\n" +
+                "  \"quoteId\": \"" + QUOTE_ID + "\",\n" +
                 "  \"details\": {\n" +
                 "    \"reference\": \"" + reference + "\"\n" +
                 "  }\n" +
@@ -147,7 +147,7 @@ public class TransfersControllerIT extends ServerTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(transferId)
-                .jsonPath("$.recipientId").isEqualTo(TARGET_ACCOUNT)
+                .jsonPath("$.recipientId").isEqualTo(RECIPIENT_ID)
                 .jsonPath("$.quoteId").isEqualTo(QUOTE_ID)
                 .jsonPath("$.reference").isEqualTo(reference);
 
@@ -161,7 +161,7 @@ public class TransfersControllerIT extends ServerTest {
         while (customerTransfersResult.next()) {
             numberOfCustomerTransfers++;
             assertThat(customerTransfersResult.getLong("customer_id")).isEqualTo(CUSTOMER_ID);
-            assertThat(customerTransfersResult.getString("quote_uuid")).isEqualTo(QUOTE_ID);
+            assertThat(customerTransfersResult.getString("quote_id")).isEqualTo(QUOTE_ID);
             assertThat(customerTransfersResult.getString("reference")).isEqualTo(reference);
 
         }

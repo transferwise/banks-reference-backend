@@ -59,7 +59,6 @@ public class CredentialsManager {
     public Mono<TWProfile> existing(final Long customerId, final String code) {
         Customer customer = customersPersistence.findById(customerId);
 
-
         Mono<TWUserTokens> savedTwUserTokens = credentialsTWClient.getUserTokensForCode(code, customerId)
                 .map(twUserTokensPersistence::save);
 

@@ -1,5 +1,6 @@
 package com.transferwise.banks.demo.quote.web;
 
+import com.transferwise.banks.demo.quote.domain.CreateAnonymousQuote;
 import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import org.reactivestreams.Publisher;
@@ -17,15 +18,21 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AnonymousQuotesController {
 
     private final QuotesService quotesService;
-    private final QuotesMapperWeb quotesMapperWeb;
 
-    public AnonymousQuotesController(final QuotesService quotesService, final QuotesMapperWeb quotesMapperWeb) {
+    public AnonymousQuotesController(final QuotesService quotesService) {
         this.quotesService = quotesService;
-        this.quotesMapperWeb = quotesMapperWeb;
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
-        return quotesService.createAnonymousQuote(quotesMapperWeb.mapToCreateAnonymousQuote(quoteRequest));
+        return quotesService.createAnonymousQuote(mapToCreateAnonymousQuote(quoteRequest));
     }
+
+    private CreateAnonymousQuote mapToCreateAnonymousQuote(QuoteRequest quoteRequest) {
+        return new CreateAnonymousQuote(quoteRequest.getSourceCurrency().get(),
+                quoteRequest.getTargetCurrency().get(),
+                quoteRequest.getSourceAmount(),
+                quoteRequest.getTargetAmount());
+    }
+
 }

@@ -20,7 +20,7 @@ public class QuotesControllerIT extends ServerTest {
 
     @Test
     public void shouldReturnBadRequestWhenNoCustomerId() {
-        var sourceAmount = 2200L;
+        var sourceAmount = "2200.5";
         var quoteJson = "{\n" +
                 "  \"sourceAmount\": " + sourceAmount + ",\n" +
                 "  \"sourceCurrency\": \"GBP\",\n" +
@@ -96,7 +96,7 @@ public class QuotesControllerIT extends ServerTest {
         var customerId = 777L;
         var sourceCurrency = "EUR";
         var targetCurrency = "BRL";
-        var sourceAmount = 2200L;
+        var sourceAmount = "2200.5";
         var quoteId = "459b1da2-9acd-4d14-a3e7-c6e8483d1c2a";
 
         var quoteJson = "{\n" +

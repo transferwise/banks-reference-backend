@@ -1,11 +1,10 @@
 package com.transferwise.banks.demo.quote.web;
 
-import com.transferwise.banks.demo.values.SourceAmount;
 import com.transferwise.banks.demo.values.SourceCurrency;
-import com.transferwise.banks.demo.values.TargetAmount;
 import com.transferwise.banks.demo.values.TargetCurrency;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 import static java.util.Objects.nonNull;
 
@@ -16,14 +15,14 @@ class QuoteRequest {
     private SourceCurrency sourceCurrency;
     @NotNull
     private TargetCurrency targetCurrency;
-    private SourceAmount sourceAmount;
-    private TargetAmount targetAmount;
+    private BigDecimal sourceAmount;
+    private BigDecimal targetAmount;
 
     public QuoteRequest() {
     }
 
     public QuoteRequest(final SourceCurrency sourceCurrency, final TargetCurrency targetCurrency,
-                        final SourceAmount sourceAmount, final TargetAmount targetAmount) {
+                        final BigDecimal sourceAmount, final BigDecimal targetAmount) {
         this();
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
@@ -43,11 +42,11 @@ class QuoteRequest {
         return targetCurrency;
     }
 
-    public SourceAmount getSourceAmount() {
+    public BigDecimal getSourceAmount() {
         return sourceAmount;
     }
 
-    public TargetAmount getTargetAmount() {
+    public BigDecimal getTargetAmount() {
         return targetAmount;
     }
 }

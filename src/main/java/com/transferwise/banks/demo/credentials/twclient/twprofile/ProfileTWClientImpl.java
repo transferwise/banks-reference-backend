@@ -8,6 +8,7 @@ import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 import com.transferwise.banks.demo.credentials.domain.twprofile.UpdatePersonalProfile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.transferwise.banks.demo.client.TransferWisePaths.PROFILES_PATH_V1;
@@ -64,6 +65,19 @@ class ProfileTWClientImpl implements ProfileTWClient {
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .retrieve()
                 .bodyToMono(TWProfileResponse.class)
+                .map(twProfileResponse -> new TWProfile(twProfileResponse.getId(),
+                        twUserTokens.getCustomerId(),
+                        twProfileResponse.getType(),
+                        mapToProfileDetails(twProfileResponse.getDetails())));
+    }
+
+    @Override
+    public Flux<TWProfile> getProfiles(final TWUserTokens twUserTokens) {
+        return client.get()
+                .uri(PROFILES_PATH_V1)
+                .header(AUTHORIZATION, twUserTokens.bearer())
+                .retrieve()
+                .bodyToFlux(TWProfileResponse.class)
                 .map(twProfileResponse -> new TWProfile(twProfileResponse.getId(),
                         twUserTokens.getCustomerId(),
                         twProfileResponse.getType(),

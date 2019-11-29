@@ -18,6 +18,8 @@ class ProfileServiceImpl implements ProfileService {
 
     private static final Logger log = LoggerFactory.getLogger(ProfileServiceImpl.class);
 
+    private static final String PERSONAL = "personal";
+
     private final TWProfilePersistence twProfilePersistence;
     private final CustomersPersistence customersPersistence;
     private final ProfileTWClient profileTWClient;
@@ -32,9 +34,15 @@ class ProfileServiceImpl implements ProfileService {
 
 
     @Override
-    public void createPersonalProfile(final TWUserTokens twUserTokens, final Customer customer) {
-        profileTWClient.createPersonalProfile(twUserTokens, buildCreatePersonalProfile(customer))
-                .subscribe(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(now())));
+    public Mono<TWProfile> getPersonalProfile(TWUserTokens twUserTokens) {
+        return profileTWClient.getProfiles(twUserTokens)
+                .filter(twProfile -> PERSONAL.equalsIgnoreCase(twProfile.getType()))
+                .next();
+    }
+
+    @Override
+    public Mono<TWProfile> createPersonalProfile(final TWUserTokens twUserTokens, final Customer customer) {
+        return profileTWClient.createPersonalProfile(twUserTokens, buildCreatePersonalProfile(customer));
     }
 
     @Override

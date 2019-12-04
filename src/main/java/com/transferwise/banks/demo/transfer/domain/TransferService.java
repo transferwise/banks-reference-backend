@@ -9,7 +9,7 @@ public interface TransferService {
 
     Mono<TransferWiseTransfer> create(Long customerId, TransferRequest transferRequest);
 
-    Flux<String> requirements(Long customerId, String requestBody);
+    Flux<String> requirements(Long customerId, TransferRequest transferRequest);
 
     Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, Long recipientId);
 }

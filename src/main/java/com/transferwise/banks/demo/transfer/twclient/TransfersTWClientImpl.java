@@ -36,12 +36,12 @@ class TransfersTWClientImpl implements TransfersTWClient {
     }
 
     @Override
-    public Flux<String> requirements(TWUserTokens twUserTokens, String requestBody) {
+    public Flux<String> requirements(TWUserTokens twUserTokens, TransferRequest transferRequest) {
         return client.post()
                 .uri(TRANSFER_REQUIREMENTS_PATH)
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .contentType(APPLICATION_JSON_UTF8)
-                .body(fromObject(requestBody))
+                .body(fromObject(transferRequest))
                 .retrieve()
                 .bodyToFlux(String.class);
     }

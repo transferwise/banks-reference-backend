@@ -8,5 +8,5 @@ public interface TransfersTWClient {
 
     Mono<TransferWiseTransfer> createTransfer(TWUserTokens twUserTokens, TransferRequest transferRequest);
 
-    Flux<String> requirements(TWUserTokens twUserTokens, String requestBody);
+    Flux<String> requirements(TWUserTokens twUserTokens, TransferRequest transferRequest);
 }

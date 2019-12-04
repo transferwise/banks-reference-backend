@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class CreateQuote {
 
-    private Long profileId;
+    private Long profile;
     private String sourceCurrency;
     private String targetCurrency;
     private BigDecimal sourceAmount;
@@ -17,8 +17,8 @@ public class CreateQuote {
         this.targetAmount = targetAmount;
     }
 
-    public Long getProfileId() {
-        return profileId;
+    public Long getProfile() {
+        return profile;
     }
 
     public String getSourceCurrency() {
@@ -37,8 +37,8 @@ public class CreateQuote {
         return targetAmount;
     }
 
-    public CreateQuote withProfileId(final Long profileId) {
-        this.profileId = profileId;
+    public CreateQuote withProfile(final Long profile) {
+        this.profile = profile;
         return this;
     }
 }

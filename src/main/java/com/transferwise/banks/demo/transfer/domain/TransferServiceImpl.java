@@ -56,9 +56,9 @@ class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public Flux<String> requirements(Long customerId, String requestBody) {
+    public Flux<String> requirements(Long customerId, TransferRequest transferRequest) {
         return credentialsManager.refreshTokens(customerId)
-                .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, requestBody));
+                .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, transferRequest));
     }
 
     @Override

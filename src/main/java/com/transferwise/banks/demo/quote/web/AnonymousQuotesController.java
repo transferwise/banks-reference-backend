@@ -24,8 +24,9 @@ public class AnonymousQuotesController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
-        return quotesService.createAnonymousQuote(mapToCreateAnonymousQuote(quoteRequest));
+    public Publisher<QuoteResponse> create(@Valid @RequestBody final QuoteRequest quoteRequest) {
+        return quotesService.createAnonymousQuote(mapToCreateAnonymousQuote(quoteRequest))
+                .map(this::mapToQuoteResponse);
     }
 
     private CreateAnonymousQuote mapToCreateAnonymousQuote(QuoteRequest quoteRequest) {
@@ -35,4 +36,14 @@ public class AnonymousQuotesController {
                 quoteRequest.getTargetAmount());
     }
 
+    private QuoteResponse mapToQuoteResponse(Quote quote) {
+        return new QuoteResponse(quote.getId(),
+                quote.getSourceCurrency(),
+                quote.getTargetCurrency(),
+                quote.getSourceAmount(),
+                quote.getTargetAmount(),
+                quote.getRate(),
+                quote.getFee(),
+                quote.getFormattedEstimatedDelivery());
+    }
 }

@@ -25,11 +25,12 @@ public class QuotesController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public Publisher<Quote> create(@Valid @RequestBody final QuoteRequest quoteRequest,
-                                   @RequestParam final Long customerId) {
-
+    public Publisher<QuoteResponse> create(@Valid @RequestBody final QuoteRequest quoteRequest,
+                                           @RequestParam final Long customerId) {
         CreateQuote createQuote = mapToCreateQuote(quoteRequest);
-        return quotesService.createQuote(customerId, createQuote);
+
+        return quotesService.createQuote(customerId, createQuote)
+                .map(this::mapToQuoteResponse);
     }
 
     private CreateQuote mapToCreateQuote(QuoteRequest quoteRequest) {
@@ -37,6 +38,17 @@ public class QuotesController {
                 quoteRequest.getTargetCurrency().get(),
                 quoteRequest.getSourceAmount(),
                 quoteRequest.getTargetAmount());
+    }
+
+    private QuoteResponse mapToQuoteResponse(Quote quote) {
+        return new QuoteResponse(quote.getId(),
+                quote.getSourceCurrency(),
+                quote.getTargetCurrency(),
+                quote.getSourceAmount(),
+                quote.getTargetAmount(),
+                quote.getRate(),
+                quote.getFee(),
+                quote.getFormattedEstimatedDelivery());
     }
 
 }

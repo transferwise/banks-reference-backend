@@ -1,16 +1,17 @@
 package com.transferwise.banks.demo.quote.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Collections.unmodifiableList;
 
 public class Quote {
+
+    private static final String BANK_TRANSFER = "BANK_TRANSFER";
 
     private UUID id;
     private String sourceCurrency;
@@ -20,22 +21,39 @@ public class Quote {
     private String payOut;
     private BigDecimal rate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime createdTime;
     private BigDecimal fee;
     private Integer user;
     private Integer profile;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime rateExpirationTime;
     private String providedAmountType;
     private String status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime expirationTime;
 
     private final List<QuoteNotice> notices = new ArrayList<>();
     private final List<PaymentOption> paymentOptions;
+    private String formattedEstimatedDelivery;
+
+    public Quote(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, String payOut, BigDecimal rate, LocalDateTime createdTime, BigDecimal fee, Integer user, Integer profile, LocalDateTime rateExpirationTime, String providedAmountType, String status, LocalDateTime expirationTime, List<PaymentOption> paymentOptions) {
+        this.id = id;
+        this.sourceCurrency = sourceCurrency;
+        this.targetCurrency = targetCurrency;
+        this.sourceAmount = sourceAmount;
+        this.targetAmount = targetAmount;
+        this.payOut = payOut;
+        this.rate = rate;
+        this.createdTime = createdTime;
+        this.fee = fee;
+        this.user = user;
+        this.profile = profile;
+        this.rateExpirationTime = rateExpirationTime;
+        this.providedAmountType = providedAmountType;
+        this.status = status;
+        this.expirationTime = expirationTime;
+        this.paymentOptions = paymentOptions;
+    }
 
     public Quote() {
         this(new ArrayList<>());
@@ -111,5 +129,38 @@ public class Quote {
 
     public List<PaymentOption> getPaymentOptions() {
         return unmodifiableList(paymentOptions);
+    }
+
+    public String getFormattedEstimatedDelivery() {
+        return formattedEstimatedDelivery;
+    }
+
+    public Quote withFee(BigDecimal fee) {
+        this.fee = fee;
+        return this;
+    }
+
+    public Quote withSourceAmount(BigDecimal sourceAmount) {
+        this.sourceAmount = sourceAmount;
+        return this;
+    }
+
+    public Quote withTargetAmount(BigDecimal targetAmount) {
+        this.targetAmount = targetAmount;
+        return this;
+    }
+
+    public Quote withFormattedEstimatedDelivery(String formattedEstimatedDelivery) {
+        this.formattedEstimatedDelivery = formattedEstimatedDelivery;
+        return this;
+    }
+
+    public Optional<PaymentOption> extractCorrectPaymentOption() {
+        return this.paymentOptions
+                .stream()
+                .filter(paymentOption ->
+                        BANK_TRANSFER.equalsIgnoreCase(paymentOption.getPayIn())
+                                && this.payOut.equalsIgnoreCase(paymentOption.getPayOut()))
+                .findFirst();
     }
 }

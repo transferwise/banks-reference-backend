@@ -97,6 +97,8 @@ public class QuotesControllerIT extends ServerTest {
         var sourceCurrency = "EUR";
         var targetCurrency = "BRL";
         var sourceAmount = "2200.5";
+        var fee = 25.41;
+        var formattedEstimatedDelivery = "by IX 12";
         var quoteId = "459b1da2-9acd-4d14-a3e7-c6e8483d1c2a";
 
         var quoteJson = "{\n" +
@@ -119,7 +121,9 @@ public class QuotesControllerIT extends ServerTest {
                 .jsonPath("$.id").isEqualTo(quoteId)
                 .jsonPath("$.sourceCurrency").isEqualTo(sourceCurrency)
                 .jsonPath("$.targetCurrency").isEqualTo(targetCurrency)
-                .jsonPath("$.sourceAmount").isEqualTo(sourceAmount);
+                .jsonPath("$.sourceAmount").isEqualTo(sourceAmount)
+                .jsonPath("$.fee").isEqualTo(fee)
+                .jsonPath("$.formattedEstimatedDelivery").isEqualTo(formattedEstimatedDelivery);
 
     }
 

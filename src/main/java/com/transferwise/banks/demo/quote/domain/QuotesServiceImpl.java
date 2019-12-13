@@ -13,6 +13,8 @@ import java.util.UUID;
 @Component
 class QuotesServiceImpl implements QuotesService {
 
+    private static final String IN_3_DAYS = "in 3 days";
+
     private final CredentialsManager credentialsManager;
     private final QuotesTWClient quotesTWClient;
     private final TWProfilePersistence twProfilePersistence;
@@ -74,7 +76,7 @@ class QuotesServiceImpl implements QuotesService {
 
         String formattedEstimatedDelivery = correctPaymentOption
                 .map(PaymentOption::getFormattedEstimatedDelivery)
-                .orElse(null);
+                .orElse(IN_3_DAYS);
 
         return quote
                 .withFee(fee)

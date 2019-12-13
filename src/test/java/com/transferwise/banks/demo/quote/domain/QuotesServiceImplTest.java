@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 
 public class QuotesServiceImplTest extends ServerTest {
@@ -40,6 +41,21 @@ public class QuotesServiceImplTest extends ServerTest {
 
         //then
         assertFalse(quote.getPaymentOptions().isEmpty());
+    }
+
+    @Test
+    public void shouldReturnIn3DaysWhenNoEstimatedDelivery() throws IOException {
+        //given
+        CreateQuote createQuote = new CreateQuote("GBP", "EUR", BigDecimal.valueOf(200L), null);
+        mockWebServer.enqueue(response("user-credentials.json"));
+        mockWebServer.enqueue(response("quote-without-estimated-delivery.json"));
+
+        //when
+        final var quote = quotesService.createQuote(777L, createQuote).block();
+
+        //then
+        assertThat(quote.getFormattedEstimatedDelivery()).isEqualTo("in 3 days");
+
     }
 
 }

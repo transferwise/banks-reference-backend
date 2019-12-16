@@ -22,7 +22,7 @@ public class RecipientsServiceImplTest extends ServerTest {
         mockWebServer.enqueue(response("recipients.json"));
 
         //when
-        final var recipient = recipientsService.getAllRecipients(customerId).blockFirst();
+        final var recipient = recipientsService.getAllRecipients(customerId, null).blockFirst();
 
         //then
         assertEquals("GBP", recipient.getCurrency());

@@ -25,8 +25,8 @@ public class RecipientsController {
 
 
     @GetMapping
-    public Publisher<Recipient> index(@RequestParam final Long customerId) {
-        return recipientsService.getAllRecipients(customerId);
+    public Publisher<Recipient> index(@RequestParam final Long customerId, @RequestParam(required = false) final String currencyCode) {
+        return recipientsService.getAllRecipients(customerId, currencyCode);
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

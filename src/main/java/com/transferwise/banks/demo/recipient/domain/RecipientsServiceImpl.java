@@ -46,10 +46,10 @@ class RecipientsServiceImpl implements RecipientsService {
     }
 
     @Override
-    public Flux<Recipient> getAllRecipients(Long customerId) {
+    public Flux<Recipient> getAllRecipients(final Long customerId, final String currencyCode) {
         return twProfilePersistence.findByCustomerId(customerId)
                 .map(twProfile -> credentialsManager.refreshTokens(customerId)
-                        .flatMapMany(twUserTokens -> recipientsTWClient.getAllRecipients(twUserTokens, twProfile.getTwProfileId())))
+                        .flatMapMany(twUserTokens -> recipientsTWClient.getAllRecipients(twUserTokens, twProfile.getTwProfileId(), currencyCode)))
                 .orElseThrow(ResourceNotFoundException::new);
     }
 

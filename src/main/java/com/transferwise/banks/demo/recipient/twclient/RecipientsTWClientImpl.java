@@ -1,7 +1,5 @@
 package com.transferwise.banks.demo.recipient.twclient;
 
-import com.transferwise.banks.demo.client.UriWithParams;
-import com.transferwise.banks.demo.client.params.ProfileId;
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.recipient.domain.RecipientsTWClient;
@@ -40,9 +38,20 @@ class RecipientsTWClientImpl implements RecipientsTWClient {
     }
 
     @Override
-    public Flux<Recipient> getAllRecipients(final TWUserTokens twUserTokens, final Long twProfileId) {
+    public Flux<Recipient> getAllRecipients(final TWUserTokens twUserTokens, final Long twProfileId, final String currencyCode) {
         return client.get()
-                .uri(new UriWithParams(RECIPIENTS_PATH_V2, new ProfileId(twProfileId)))
+                .uri(uriBuilder -> {
+                    uriBuilder = uriBuilder
+                            .path(RECIPIENTS_PATH_V2)
+                            .queryParam("profile", twProfileId);
+
+                    if (currencyCode != null) {
+                        uriBuilder = uriBuilder.queryParam("currency", currencyCode);
+                    }
+
+                    return uriBuilder.build();
+
+                })
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .retrieve()
                 .bodyToFlux(TWRecipientsContent.class)

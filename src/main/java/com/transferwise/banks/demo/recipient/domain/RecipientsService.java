@@ -11,7 +11,7 @@ public interface RecipientsService {
 
     Mono<Recipient> getRecipient(Long customerId, Long recipientId);
 
-    Flux<Recipient> getAllRecipients(Long customerId);
+    Flux<Recipient> getAllRecipients(Long customerId, String currencyCode);
 
     Mono<String> create(Long customerId, String requestBody);
 

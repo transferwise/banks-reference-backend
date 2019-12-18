@@ -10,7 +10,7 @@ public interface RecipientsTWClient {
 
     Mono<Recipient> getRecipient(TWUserTokens twUserTokens, Long recipientId);
 
-    Flux<Recipient> getAllRecipients(TWUserTokens twUserTokens, Long twProfileId);
+    Flux<Recipient> getAllRecipients(TWUserTokens twUserTokens, Long twProfileId, String currencyCode);
 
     Mono<String> create(TWUserTokens twUserTokens, String requestBody);
 

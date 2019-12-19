@@ -4,6 +4,7 @@ import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import com.transferwise.banks.demo.transfer.domain.TransferRequest;
 import com.transferwise.banks.demo.transfer.domain.TransferWiseTransfer;
 import com.transferwise.banks.demo.transfer.domain.TransfersTWClient;
+import com.transferwise.banks.demo.transfer.domain.requirements.TransferRequirements;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -36,13 +37,13 @@ class TransfersTWClientImpl implements TransfersTWClient {
     }
 
     @Override
-    public Flux<String> requirements(TWUserTokens twUserTokens, TransferRequest transferRequest) {
+    public Flux<TransferRequirements> requirements(TWUserTokens twUserTokens, TransferRequest transferRequest) {
         return client.post()
                 .uri(TRANSFER_REQUIREMENTS_PATH)
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .contentType(APPLICATION_JSON_UTF8)
                 .body(fromObject(transferRequest))
                 .retrieve()
-                .bodyToFlux(String.class);
+                .bodyToFlux(TransferRequirements.class);
     }
 }

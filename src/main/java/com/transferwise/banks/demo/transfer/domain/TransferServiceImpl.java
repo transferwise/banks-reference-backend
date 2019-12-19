@@ -5,18 +5,24 @@ import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import com.transferwise.banks.demo.recipient.domain.Recipient;
 import com.transferwise.banks.demo.recipient.domain.RecipientsService;
+import com.transferwise.banks.demo.transfer.domain.requirements.Field;
+import com.transferwise.banks.demo.transfer.domain.requirements.Group;
+import com.transferwise.banks.demo.transfer.domain.requirements.TransferRequirement;
+import com.transferwise.banks.demo.transfer.domain.requirements.TransferRequirements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 @Component
 class TransferServiceImpl implements TransferService {
 
     private static final Logger log = LoggerFactory.getLogger(TransferServiceImpl.class);
+    private static final String REFERENCE_KEY = "reference";
 
     private final CredentialsManager credentialsManager;
     private final TransfersTWClient transfersTWClient;
@@ -49,19 +55,43 @@ class TransferServiceImpl implements TransferService {
     }
 
     @Override
-    public Flux<String> requirements(Long customerId, TransferRequest transferRequest) {
+    public Flux<TransferRequirements> requirements(Long customerId, TransferRequest transferRequest) {
         return credentialsManager.refreshTokens(customerId)
                 .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, transferRequest));
     }
 
-    @Override
-    public Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, Long recipientId) {
-        return quotesService.updateQuote(customerId, quoteId, recipientId)
-                .zipWith(recipientsService.getRecipient(customerId, recipientId))
-                .map(quoteRecipientTuple2 -> buildTransferSummary(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2()));
+    //TODO Implement the real thing here & add test to it
+    private Flux<TransferRequirements> mockRequirements() {
+        Group mockGroup = new Group("reference", "Transfer reference", "text", false, false, null, null, null, 18, null, null, null, null);
+        Field mockField = new Field("Transfer reference", List.of(mockGroup), null);
+        TransferRequirement requirement = new TransferRequirement("transfer", List.of(mockField), null);
+        TransferRequirements requirements = new TransferRequirements(List.of(requirement));
+        return Flux.just(requirements);
     }
 
-    private TransferSummary buildTransferSummary(final Quote quote, final Recipient recipient) {
+    @Override
+    public Mono<TransferSummary> getTransferSummary(Long customerId, UUID quoteId, Long recipientId) {
+        return mockRequirements()
+                .map(requirements -> requirements.getFieldByKey(REFERENCE_KEY))
+                .map(this::transformIntoValidation)
+                .single()
+                .flatMap(validation -> quotesService.updateQuote(customerId, quoteId, recipientId)
+                        .zipWith(recipientsService.getRecipient(customerId, recipientId))
+                        .map(quoteRecipientTuple2 -> buildTransferSummary(quoteRecipientTuple2.getT1(), quoteRecipientTuple2.getT2(), validation)));
+    }
+
+    private TransferReferenceValidation transformIntoValidation (final Field field) {
+        TransferReferenceValidation validation = null;
+        if (field != null) {
+            Group group = field.getGroup().stream().filter(g -> REFERENCE_KEY.equals(g.getKey())).findFirst().orElse(null);
+            if (group != null) {
+                validation = new TransferReferenceValidation(group.getMaxLength(), group.getMinLength(), group.getValidationRegexp());
+            }
+        }
+        return validation;
+    }
+
+        private TransferSummary buildTransferSummary(final Quote quote, final Recipient recipient, final TransferReferenceValidation referenceValidation) {
         return new TransferSummary(quote.getId(),
                 recipient.getId(),
                 quote.getSourceCurrency(),
@@ -72,6 +102,7 @@ class TransferServiceImpl implements TransferService {
                 quote.getFee(),
                 recipient.getName().getFullName(),
                 recipient.getAccountSummary(),
-                quote.getFormattedEstimatedDelivery());
+                quote.getFormattedEstimatedDelivery(),
+                referenceValidation);
     }
 }

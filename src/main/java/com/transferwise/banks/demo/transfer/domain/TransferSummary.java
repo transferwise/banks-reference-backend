@@ -16,8 +16,9 @@ public class TransferSummary {
     private String recipientName;
     private String accountSummary;
     private String formattedEstimatedDelivery;
+    private TransferReferenceValidation transferReferenceValidation;
 
-    public TransferSummary(UUID quoteId, Long recipientId, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, BigDecimal rate, BigDecimal fee, String recipientName, String accountSummary, String formattedEstimatedDelivery) {
+    public TransferSummary(UUID quoteId, Long recipientId, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, BigDecimal rate, BigDecimal fee, String recipientName, String accountSummary, String formattedEstimatedDelivery, TransferReferenceValidation transferReferenceValidation) {
         this.quoteId = quoteId;
         this.recipientId = recipientId;
         this.sourceCurrency = sourceCurrency;
@@ -29,6 +30,7 @@ public class TransferSummary {
         this.recipientName = recipientName;
         this.accountSummary = accountSummary;
         this.formattedEstimatedDelivery = formattedEstimatedDelivery;
+        this.transferReferenceValidation = transferReferenceValidation;
     }
 
     public UUID getQuoteId() {
@@ -73,5 +75,9 @@ public class TransferSummary {
 
     public String getFormattedEstimatedDelivery() {
         return formattedEstimatedDelivery;
+    }
+
+    public TransferReferenceValidation getTransferReferenceValidation() {
+        return transferReferenceValidation;
     }
 }

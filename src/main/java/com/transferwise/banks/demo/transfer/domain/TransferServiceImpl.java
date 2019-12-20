@@ -70,7 +70,8 @@ class TransferServiceImpl implements TransferService {
 
         return quotesService.updateQuote(customerId, quoteId, recipientId)
                 .zipWith(recipientsService.getRecipient(customerId, recipientId))
-                .zipWith(extractTransferReferenceValidation(customerId, transferRequest))
+                .zipWith(requirements(customerId, transferRequest)
+                        .map(this::extractTransferReferenceValidation))
                 .map(zipped -> {
                     Quote quote = zipped.getT1().getT1();
                     Recipient recipient = zipped.getT1().getT2();
@@ -80,25 +81,22 @@ class TransferServiceImpl implements TransferService {
                 });
     }
 
-    private Mono<Optional<TransferReferenceValidation>> extractTransferReferenceValidation(final Long customerId, final TransferRequest transferRequest) {
-        return requirements(customerId, transferRequest)
-                .map(json -> {
-                    List<TransferRequirement> transferRequirements = new ArrayList<>();
-                    try {
-                        transferRequirements = objectMapper.readValue(json, new TypeReference<List<TransferRequirement>>() {
-                        });
+    private Optional<TransferReferenceValidation> extractTransferReferenceValidation(final String requirementsJson) {
+        List<TransferRequirement> transferRequirements = new ArrayList<>();
+        try {
+            transferRequirements = objectMapper.readValue(requirementsJson, new TypeReference<List<TransferRequirement>>() {
+            });
 
 
-                    } catch (IOException e) {
-                        log.error("Error while parsing transfer requirements json", e);
-                    }
+        } catch (IOException e) {
+            log.error("Error while parsing transfer requirements json", e);
+        }
 
-                    return transferRequirements.stream()
-                            .flatMap(transferRequirement -> transferRequirement.getFields().stream())
-                            .filter(field -> field.getGroup().stream().anyMatch(f -> REFERENCE_KEY.equals(f.getKey())))
-                            .findFirst()
-                            .map(this::transformIntoValidation);
-                });
+        return transferRequirements.stream()
+                .flatMap(transferRequirement -> transferRequirement.getFields().stream())
+                .filter(field -> field.getGroup().stream().anyMatch(f -> REFERENCE_KEY.equals(f.getKey())))
+                .findFirst()
+                .map(this::transformIntoValidation);
     }
 
     private TransferReferenceValidation transformIntoValidation(final Field field) {

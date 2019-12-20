@@ -3,7 +3,11 @@ package com.transferwise.banks.demo.transfer.domain.requirements;
 import java.util.List;
 
 public class TransferRequirements {
+
     private List<TransferRequirement> transferRequirements;
+
+    public TransferRequirements() {
+    }
 
     public TransferRequirements(List<TransferRequirement> transferRequirements) {
         this.transferRequirements = transferRequirements;

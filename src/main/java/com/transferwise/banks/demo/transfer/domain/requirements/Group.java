@@ -5,19 +5,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Group {
-        private String key;
-        private String name;
-        private String type;
-        private Boolean refreshRequirementsOnChange;
-        private Boolean required;
-        private String displayFormat;
-        private String example;
-        private Integer minLength;
-        private Integer maxLength;
-        private String validationRegexp;
-        private String validationAsync;
-        private List<ValuesAllowed> valuesAllowed = null;
-        private Map<String, Object> additionalProperties = new HashMap<>();
+    private String key;
+    private String name;
+    private String type;
+    private Boolean refreshRequirementsOnChange;
+    private Boolean required;
+    private String displayFormat;
+    private String example;
+    private Integer minLength;
+    private Integer maxLength;
+    private String validationRegexp;
+    private String validationAsync;
+    private List<ValuesAllowed> valuesAllowed = null;
+    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    public Group() {
+    }
 
     public Group(String key, String name, String type, Boolean refreshRequirementsOnChange, Boolean required, String displayFormat, String example, Integer minLength, Integer maxLength, String validationRegexp, String validationAsync, List<ValuesAllowed> valuesAllowed, Map<String, Object> additionalProperties) {
         this.key = key;

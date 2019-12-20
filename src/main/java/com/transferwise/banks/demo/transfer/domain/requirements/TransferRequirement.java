@@ -10,6 +10,9 @@ public class TransferRequirement {
     private List<Field> fields = null;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public TransferRequirement() {
+    }
+
     public TransferRequirement(String type, List<Field> fields, Map<String, Object> additionalProperties) {
         this.type = type;
         this.fields = fields;

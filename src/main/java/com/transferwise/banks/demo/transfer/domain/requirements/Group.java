@@ -1,9 +1,12 @@
 package com.transferwise.banks.demo.transfer.domain.requirements;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Group {
     private String key;
     private String name;

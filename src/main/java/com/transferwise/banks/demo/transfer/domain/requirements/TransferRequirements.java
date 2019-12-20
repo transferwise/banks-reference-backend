@@ -17,6 +17,10 @@ public class TransferRequirements {
         return transferRequirements;
     }
 
+    public void setTransferRequirements(List<TransferRequirement> transferRequirements) {
+        this.transferRequirements = transferRequirements;
+    }
+
     public Field getFieldByKey(final String key){
         return transferRequirements.stream().flatMap(t -> t.getFields().stream())
                 .filter(f -> isReferenceField(f, key)).findFirst().orElse(null);

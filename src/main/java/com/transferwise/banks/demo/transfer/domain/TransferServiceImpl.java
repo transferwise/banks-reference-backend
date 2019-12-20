@@ -1,5 +1,6 @@
 package com.transferwise.banks.demo.transfer.domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
 import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
@@ -11,10 +12,12 @@ import com.transferwise.banks.demo.transfer.domain.requirements.TransferRequirem
 import com.transferwise.banks.demo.transfer.domain.requirements.TransferRequirements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +32,8 @@ class TransferServiceImpl implements TransferService {
     private final QuotesService quotesService;
     private final RecipientsService recipientsService;
     private final CustomerTransferPersistence customerTransferPersistence;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     TransferServiceImpl(CredentialsManager credentialsManager, TransfersTWClient transfersTWClient, QuotesService quotesService, RecipientsService recipientsService, CustomerTransferPersistence customerTransferPersistence) {
         this.credentialsManager = credentialsManager;
@@ -57,7 +62,20 @@ class TransferServiceImpl implements TransferService {
     @Override
     public Flux<TransferRequirements> requirements(Long customerId, TransferRequest transferRequest) {
         return credentialsManager.refreshTokens(customerId)
-                .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, transferRequest));
+                .flatMapMany(twUserTokens -> transfersTWClient.requirements(twUserTokens, transferRequest))
+                .map(this::serialiseTransferRequirements);
+    }
+
+    private TransferRequirements serialiseTransferRequirements(String s) {
+        TransferRequirements transferRequirements = new TransferRequirements();
+        try {
+            TransferRequirement[] transferRequirementArr = objectMapper.readValue(s, TransferRequirement[].class);
+            transferRequirements.setTransferRequirements(List.of(transferRequirementArr));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            return transferRequirements;
+        }
     }
 
     //TODO Implement the real thing here & add test to it

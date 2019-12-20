@@ -2,7 +2,6 @@ package com.transferwise.banks.demo.transfer.web;
 
 import com.transferwise.banks.demo.transfer.domain.TransferRequest;
 import com.transferwise.banks.demo.transfer.domain.TransferService;
-import com.transferwise.banks.demo.transfer.domain.requirements.TransferRequirements;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,7 @@ public class TransferRequirementsController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public Publisher<TransferRequirements> create(@RequestParam final Long customerId, @RequestBody final CreateTransferRequest transferRequest) {
+    public Publisher<String> create(@RequestParam final Long customerId, @RequestBody final CreateTransferRequest transferRequest) {
         return transferService.requirements(customerId, mapToTransferRequest(transferRequest));
     }
 

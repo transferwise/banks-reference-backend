@@ -2,24 +2,20 @@ package com.transferwise.banks.demo.transfer.domain.requirements;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransferRequirement {
 
     private String type;
     private List<Field> fields = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public TransferRequirement() {
     }
 
-    public TransferRequirement(String type, List<Field> fields, Map<String, Object> additionalProperties) {
+    public TransferRequirement(String type, List<Field> fields) {
         this.type = type;
         this.fields = fields;
-        this.additionalProperties = additionalProperties;
     }
 
     public String getType() {
@@ -38,12 +34,5 @@ public class TransferRequirement {
         this.fields = fields;
     }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 }
 

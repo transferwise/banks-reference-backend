@@ -1,25 +1,25 @@
 package com.transferwise.banks.demo.transfer.domain;
 
 public class TransferReferenceValidation {
-    private Integer refereceMaxLength;
-    private Integer refereceMinLength;
-    private String referenceRegex;
+    private Integer minLength;
+    private Integer maxLength;
+    private String validationRegexp;
 
-    public TransferReferenceValidation(Integer refereceMaxLength, Integer refereceMinLength, String referenceRegex) {
-        this.refereceMaxLength = refereceMaxLength;
-        this.refereceMinLength = refereceMinLength;
-        this.referenceRegex = referenceRegex;
+    public TransferReferenceValidation(Integer minLength, Integer maxLength, String validationRegexp) {
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+        this.validationRegexp = validationRegexp;
     }
 
-    public Integer getRefereceMaxLength() {
-        return refereceMaxLength;
+    public Integer getMinLength() {
+        return minLength;
     }
 
-    public Integer getRefereceMinLength() {
-        return refereceMinLength;
+    public Integer getMaxLength() {
+        return maxLength;
     }
 
-    public String getReferenceRegex() {
-        return referenceRegex;
+    public String getValidationRegexp() {
+        return validationRegexp;
     }
 }

@@ -86,8 +86,6 @@ class TransferServiceImpl implements TransferService {
         try {
             transferRequirements = objectMapper.readValue(requirementsJson, new TypeReference<List<TransferRequirement>>() {
             });
-
-
         } catch (IOException e) {
             log.error("Error while parsing transfer requirements json", e);
         }

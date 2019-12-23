@@ -12,6 +12,11 @@ public class TransferRequest {
     public TransferRequest() {
     }
 
+    public TransferRequest(Long targetAccount, UUID quoteUuid) {
+        this.targetAccount = targetAccount;
+        this.quoteUuid = quoteUuid;
+    }
+
     public TransferRequest(Long targetAccount, UUID quoteUuid, TransferRequestDetails details) {
         this.targetAccount = targetAccount;
         this.quoteUuid = quoteUuid;

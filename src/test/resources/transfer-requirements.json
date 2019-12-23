@@ -1,0 +1,114 @@
+[
+  {
+    "type": "transfer",
+    "fields": [
+      {
+        "name": "Transfer reference",
+        "group": [
+          {
+            "key": "reference",
+            "name": "Transfer reference",
+            "type": "text",
+            "refreshRequirementsOnChange": false,
+            "required": false,
+            "displayFormat": null,
+            "example": null,
+            "minLength": 1,
+            "maxLength": 20,
+            "validationRegexp": null,
+            "validationAsync": null,
+            "valuesAllowed": null
+          }
+        ]
+      },
+      {
+        "name": "Transfer purpose",
+        "group": [
+          {
+            "key": "transferPurpose",
+            "name": "Transfer purpose",
+            "type": "select",
+            "refreshRequirementsOnChange": true,
+            "required": true,
+            "displayFormat": null,
+            "example": null,
+            "minLength": null,
+            "maxLength": null,
+            "validationRegexp": null,
+            "validationAsync": null,
+            "valuesAllowed": [
+              {
+                "key": "verification.transfers.purpose.purchase.property",
+                "name": "Buying property abroad"
+              },
+              {
+                "key": "verification.transfers.purpose.pay.bills",
+                "name": "Rent or other property expenses"
+              },
+              {
+                "key": "verification.transfers.purpose.mortgage",
+                "name": "Mortgage payment"
+              },
+              {
+                "key": "verification.transfers.purpose.pay.tuition",
+                "name": "Tuition fees or studying expenses"
+              },
+              {
+                "key": "verification.transfers.purpose.send.to.family",
+                "name": "Sending money home to family"
+              },
+              {
+                "key": "verification.transfers.purpose.living.expenses",
+                "name": "General monthly living expenses"
+              },
+              {
+                "key": "verification.transfers.purpose.other",
+                "name": "Other"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Source of funds",
+        "group": [
+          {
+            "key": "sourceOfFunds",
+            "name": "Source of funds",
+            "type": "select",
+            "refreshRequirementsOnChange": true,
+            "required": true,
+            "displayFormat": null,
+            "example": null,
+            "minLength": null,
+            "maxLength": null,
+            "validationRegexp": null,
+            "validationAsync": null,
+            "valuesAllowed": [
+              {
+                "key": "verification.source.of.funds.salary",
+                "name": "Salary"
+              },
+              {
+                "key": "verification.source.of.funds.investment",
+                "name": "Investments (stocks, properties, etc.)"
+              },
+              {
+                "key": "verification.source.of.funds.inheritance",
+                "name": "Inheritance"
+              },
+              {
+                "key": "verification.source.of.funds.loan",
+                "name": "Loan"
+              },
+              {
+                "key": "verification.source.of.funds.other",
+                "name": "Other"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -78,7 +78,8 @@ public class TransfersControllerIT extends ServerTest {
         mockWebServer.setDispatcher(new CustomMockWebServerDispatcher()
                 .withPathToFile("oauth", "user-credentials.json")
                 .withPathToFile("quote", "quote.json")
-                .withPathToFile("accounts", "get-recipient.json"));
+                .withPathToFile("accounts", "get-recipient.json")
+                .withPathToFile("transfer-requirements", "transfer-requirements.json"));
 
         webTestClient.post()
                 .uri(uriBuilder -> uriBuilder
@@ -92,7 +93,10 @@ public class TransfersControllerIT extends ServerTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.quoteId").isEqualTo(QUOTE_ID)
-                .jsonPath("$.recipientId").isEqualTo(RECIPIENT_ID);
+                .jsonPath("$.recipientId").isEqualTo(RECIPIENT_ID)
+                .jsonPath("$.transferReferenceValidation.minLength").isEqualTo(1)
+                .jsonPath("$.transferReferenceValidation.maxLength").isEqualTo(20)
+                .jsonPath("$.transferReferenceValidation.validationRegexp").isEmpty();
     }
 
     @Test

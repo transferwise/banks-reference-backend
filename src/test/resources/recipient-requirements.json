@@ -1,0 +1,81 @@
+[
+  {
+    "type": "iban",
+    "title": "IBAN",
+    "usageInfo": null,
+    "fields": [
+      {
+        "name": "Recipient type",
+        "group": [
+          {
+            "key": "legalType",
+            "name": "Recipient type",
+            "type": "select",
+            "refreshRequirementsOnChange": false,
+            "required": true,
+            "displayFormat": null,
+            "example": "",
+            "minLength": null,
+            "maxLength": null,
+            "validationRegexp": null,
+            "validationAsync": null,
+            "valuesAllowed": [
+              {
+                "key": "PRIVATE",
+                "name": "Person"
+              },
+              {
+                "key": "BUSINESS",
+                "name": "Business"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Bank code (BIC/SWIFT)",
+        "group": [
+          {
+            "key": "BIC",
+            "name": "Bank code (BIC/SWIFT)",
+            "type": "text",
+            "refreshRequirementsOnChange": false,
+            "required": false,
+            "displayFormat": null,
+            "example": "Choose recipient bank",
+            "minLength": 8,
+            "maxLength": 11,
+            "validationRegexp": "^[A-Za-z]{6}[A-Za-z\\d]{2}([A-Za-z\\d]{3})?$",
+            "validationAsync": null,
+            "valuesAllowed": null
+          }
+        ]
+      },
+      {
+        "name": "IBAN",
+        "group": [
+          {
+            "key": "IBAN",
+            "name": "IBAN",
+            "type": "text",
+            "refreshRequirementsOnChange": false,
+            "required": true,
+            "displayFormat": "**** **** **** **** **** **** **** ****",
+            "example": "DE89370400440532013000",
+            "minLength": 14,
+            "maxLength": 42,
+            "validationRegexp": "^[A-Z]{2}[a-zA-Z0-9 ]{12,40}$",
+            "validationAsync": null,
+            "valuesAllowed": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "email",
+    "title": "Email",
+    "usageInfo": null,
+    "fields": []
+  }
+]

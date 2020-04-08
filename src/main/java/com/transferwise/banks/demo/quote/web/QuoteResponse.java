@@ -1,6 +1,9 @@
 package com.transferwise.banks.demo.quote.web;
 
+import com.transferwise.banks.demo.quote.domain.QuoteNotice;
+
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 class QuoteResponse {
@@ -13,8 +16,10 @@ class QuoteResponse {
     private BigDecimal rate;
     private BigDecimal fee;
     private String formattedEstimatedDelivery;
+    private String rateType;
+    private List<QuoteNotice> notices;
 
-    public QuoteResponse(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, BigDecimal rate, BigDecimal fee, String formattedEstimatedDelivery) {
+    public QuoteResponse(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, BigDecimal rate, BigDecimal fee, String formattedEstimatedDelivery, String rateType, List<QuoteNotice> notices) {
         this.id = id;
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
@@ -23,6 +28,8 @@ class QuoteResponse {
         this.rate = rate;
         this.fee = fee;
         this.formattedEstimatedDelivery = formattedEstimatedDelivery;
+        this.rateType = rateType;
+        this.notices = notices;
     }
 
     public UUID getId() {
@@ -55,5 +62,13 @@ class QuoteResponse {
 
     public String getFormattedEstimatedDelivery() {
         return formattedEstimatedDelivery;
+    }
+
+    public String getRateType() {
+        return rateType;
+    }
+
+    public List<QuoteNotice> getNotices() {
+        return notices;
     }
 }

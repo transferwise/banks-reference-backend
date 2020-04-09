@@ -25,12 +25,12 @@ public class DemoUtilitiesController {
     }
 
     @PostMapping("new-customer")
-    public String createNewDemoCustomer() {
+    public Long createNewDemoCustomer() {
         Customer newDemoCustomer = new Customer("Test", "Name",
                 demoUtilitiesService.randomizeDOB(), demoUtilitiesService.randomizeEmail(), demoUtilitiesService.randomizePhone());
 
         newDemoCustomer = customersService.save(newDemoCustomer);
-        return newDemoCustomer.getId().toString();
+        return newDemoCustomer.getId();
     }
 
 }

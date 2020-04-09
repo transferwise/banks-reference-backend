@@ -15,8 +15,8 @@ public class DemoUtilitiesTest {
         String aPhoneNumber = sut.randomizePhone();
 
         assertThat(aPhoneNumber).isNotNull();
-        assertThat(aPhoneNumber.length()).isEqualTo(11);
-        assertThat(aPhoneNumber.substring(0,2)).isEqualTo("07");
+        assertThat(aPhoneNumber.length()).isEqualTo(13);
+        assertThat(aPhoneNumber.substring(0,4)).isEqualTo("+447");
     }
 
     @Test

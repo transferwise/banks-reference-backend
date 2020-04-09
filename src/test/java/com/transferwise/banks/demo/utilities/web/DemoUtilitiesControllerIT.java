@@ -49,7 +49,7 @@ public class DemoUtilitiesControllerIT {
 
         String customerID = resultActionsPost.andReturn().getResponse().getContentAsString();
 
-        ResultActions resultActionsGet = mockMvc.perform(get("/customers?id=".concat(customerID)).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/customers?id=".concat(customerID)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(Integer.valueOf(customerID))))

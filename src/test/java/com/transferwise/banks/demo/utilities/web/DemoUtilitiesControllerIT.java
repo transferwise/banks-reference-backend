@@ -56,7 +56,7 @@ public class DemoUtilitiesControllerIT {
                 .andExpect(jsonPath("$.firstName", is("Test")))
                 .andExpect(jsonPath("$.lastName", is("Name")))
                 .andExpect(jsonPath("$.dateOfBirth", stringContainsInOrder(List.of("19","-"))))
-                .andExpect(jsonPath("$.phoneNumber", startsWith("07")))
+                .andExpect(jsonPath("$.phoneNumber", startsWith("+447")))
                 .andExpect(jsonPath("$.email", stringContainsInOrder(List.of("test.reference.email", "@gmail.com"))));
     }
 }

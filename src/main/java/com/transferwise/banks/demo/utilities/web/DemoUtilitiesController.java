@@ -27,7 +27,7 @@ public class DemoUtilitiesController {
     @PostMapping("new-customer")
     public Long createNewDemoCustomer() {
         Customer newDemoCustomer = new Customer("Test", "Name",
-                demoUtilitiesService.randomizeDOB(), demoUtilitiesService.randomizeEmail(), demoUtilitiesService.randomizePhone());
+                demoUtilitiesService.randomizeDOB(), demoUtilitiesService.randomizePhone(), demoUtilitiesService.randomizeEmail());
 
         newDemoCustomer = customersService.save(newDemoCustomer);
         return newDemoCustomer.getId();

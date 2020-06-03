@@ -8,6 +8,7 @@ public class CustomerAddressMapperPersistence {
 
     public CustomerAddress mapToCustomerAddress(final CustomerAddressEntity customerAddressEntity) {
         return new CustomerAddress(
+                customerAddressEntity.getId(),
                 customerAddressEntity.getFirstLine(),
                 customerAddressEntity.getPostCode(),
                 customerAddressEntity.getCity(),

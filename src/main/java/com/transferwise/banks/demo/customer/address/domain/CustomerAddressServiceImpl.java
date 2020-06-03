@@ -17,6 +17,12 @@ class CustomerAddressServiceImpl implements CustomerAddressService {
         return customerAddress;
     }
 
+    public CustomerAddress findAddress(Long customerId) {
+        CustomerAddress customerAddress = customerAddressPersistence.findByCustomerId(customerId);
+
+        return customerAddress;
+    }
+
     public CustomerAddress save(CustomerAddress customerAddress) {
         return customerAddressPersistence.save(customerAddress);
     }

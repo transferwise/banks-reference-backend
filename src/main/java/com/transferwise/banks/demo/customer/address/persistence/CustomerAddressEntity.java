@@ -12,7 +12,6 @@ class CustomerAddressEntity {
     @GeneratedValue
     private Long id;
 
-    private Long profileId;
     private String firstLine;
     private String postCode;
     private String city;
@@ -35,7 +34,6 @@ class CustomerAddressEntity {
     }
 
     public Long getId() { return id; }
-    public Long getProfileId() { return profileId; }
     public String getFirstLine() { return firstLine; }
     public String getPostCode() { return postCode; }
     public String getCity() { return city; }

@@ -4,5 +4,7 @@ public interface CustomerAddressService {
 
     CustomerAddress find(Long id);
 
+    CustomerAddress findAddress(Long customerId);
+
     CustomerAddress save(CustomerAddress customerAddress);
 }

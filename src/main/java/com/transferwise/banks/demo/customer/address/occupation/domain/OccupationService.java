@@ -1,10 +1,12 @@
 package com.transferwise.banks.demo.customer.address.occupation.domain;
 
+import java.util.List;
+
 public interface OccupationService {
 
     Occupation find(Long id);
 
-    Occupation findByAddress(Long addressId);
+    List<Occupation> findByAddress(Long addressId);
 
     Occupation save(Occupation occupation);
 }

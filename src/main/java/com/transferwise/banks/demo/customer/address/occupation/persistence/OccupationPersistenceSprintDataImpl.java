@@ -5,6 +5,8 @@ import com.transferwise.banks.demo.customer.address.occupation.domain.Occupation
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 class OccupationPersistenceSprintDataImpl implements OccupationPersistence {
 
@@ -25,10 +27,10 @@ class OccupationPersistenceSprintDataImpl implements OccupationPersistence {
     }
 
     @Override
-    public Occupation findByAddressId(final Long addressId) {
+    public List<Occupation> findByAddressId(final Long addressId) {
         return
                 occupationRepository.findByAddressId(addressId)
-                        .map(occupationMapperPersistence::mapToOccupation)
+                        .map(occupationMapperPersistence::mapToOccupations)
                         .orElseThrow(ResourceNotFoundException::new);
     }
 

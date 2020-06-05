@@ -2,6 +2,8 @@ package com.transferwise.banks.demo.customer.address.occupation.domain;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 class OccupationServiceImpl implements OccupationService {
 
@@ -17,10 +19,10 @@ class OccupationServiceImpl implements OccupationService {
         return occupation;
     }
 
-    public Occupation findByAddress(Long addressId) {
-        Occupation occupation = occupationPersistence.findByAddressId(addressId);
+    public List<Occupation> findByAddress(Long addressId) {
+        List<Occupation> occupations = occupationPersistence.findByAddressId(addressId);
 
-        return occupation;
+        return occupations;
     }
 
     public Occupation save(Occupation occupation) {

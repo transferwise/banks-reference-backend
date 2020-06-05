@@ -17,7 +17,9 @@ class OccupationEntity {
 
     private long addressId;
 
-    public OccupationEntity(){ }
+    public OccupationEntity() {}
+
+    public OccupationEntity(Long id, String code, String format, Long addressId){ }
 
     public OccupationEntity(String code, String format, Long addressId) {
         this.code = code;

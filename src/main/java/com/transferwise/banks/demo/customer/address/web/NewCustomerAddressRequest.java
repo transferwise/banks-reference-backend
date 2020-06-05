@@ -1,7 +1,10 @@
 package com.transferwise.banks.demo.customer.address.web;
 
+import com.transferwise.banks.demo.customer.address.occupation.domain.Occupation;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 public class NewCustomerAddressRequest {
 
@@ -27,15 +30,18 @@ public class NewCustomerAddressRequest {
     @NotNull
     private Long customerId;
 
+    private List<Occupation> occupations;
+
     public NewCustomerAddressRequest(){}
 
-    public NewCustomerAddressRequest(@NotNull final String firstLine, @NotNull final String postCode, @NotNull final String city, final String state, @NotNull final String  country, @NotNull final Long customerId) {
+    public NewCustomerAddressRequest(@NotNull final String firstLine, @NotNull final String postCode, @NotNull final String city, final String state, @NotNull final String  country, @NotNull final Long customerId, final List<Occupation> occupations) {
         this.firstLine = firstLine;
         this.postCode = postCode;
         this.city = city;
         this.state = state;
         this.country = country;
         this.customerId = customerId;
+        this.occupations = occupations;
     }
 
     public String getFirstLine() { return firstLine; }
@@ -44,4 +50,5 @@ public class NewCustomerAddressRequest {
     public String getState() { return state; }
     public String getCountry() { return country; }
     public Long getCustomerId() { return customerId; }
+    public List<Occupation> getOccupations() { return occupations; }
 }

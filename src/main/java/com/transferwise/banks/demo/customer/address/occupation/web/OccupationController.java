@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController(value = "Simulates a bank's customer's occupation management. Does not act on TransferWise APIs")
@@ -20,7 +22,7 @@ public class OccupationController {
 
     @ApiOperation(value = "Get the simulated bank customer's occupations", notes = "This endpoint is used to retrieve the simulated bank customer's occupations")
     @GetMapping
-    public Occupation show(@RequestParam final long addressId) { return occupationService.findByAddress(addressId); }
+    public List<Occupation> show(@RequestParam final long addressId) { return occupationService.findByAddress(addressId); }
 
     @ApiOperation(value = "Save a simulated bank customer's occupations for an address", notes = "This endpoint is used to save a simulated bank customer's occupations for an address")
     @PostMapping(consumes = APPLICATION_JSON_VALUE)

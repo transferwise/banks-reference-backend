@@ -15,8 +15,6 @@ class OccupationEntity {
     private String code;
     private String format;
 
-    // Not sure if we want to include the customerId since it is already linked to the addressId which has the customerId
-    //private long customerId;
     private long addressId;
 
     public OccupationEntity(){ }

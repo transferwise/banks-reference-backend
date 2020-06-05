@@ -17,11 +17,19 @@ class OccupationPersistenceSprintDataImpl implements OccupationPersistence {
     }
 
     @Override
-    public Occupation findById(final Long addressId) {
+    public Occupation findById(final Long id) {
         return
-                occupationRepository.findById(addressId)
+                occupationRepository.findById(id)
                 .map(occupationMapperPersistence::mapToOccupation)
                 .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    @Override
+    public Occupation findByAddressId(final Long addressId) {
+        return
+                occupationRepository.findByAddressId(addressId)
+                        .map(occupationMapperPersistence::mapToOccupation)
+                        .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

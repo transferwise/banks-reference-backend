@@ -1,8 +1,8 @@
 package com.transferwise.banks.demo.customer.address.occupation.domain;
 
-import com.transferwise.banks.demo.customer.address.occupation.persistence.OccupationMapperPersistence;
 import org.springframework.stereotype.Component;
 
+@Component
 class OccupationServiceImpl implements OccupationService {
 
     private final OccupationPersistence occupationPersistence;
@@ -13,6 +13,12 @@ class OccupationServiceImpl implements OccupationService {
 
     public Occupation find(Long id) {
         Occupation occupation = occupationPersistence.findById(id);
+
+        return occupation;
+    }
+
+    public Occupation findByAddress(Long addressId) {
+        Occupation occupation = occupationPersistence.findByAddressId(addressId);
 
         return occupation;
     }

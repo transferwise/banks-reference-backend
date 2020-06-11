@@ -7,6 +7,8 @@ public class Occupation {
     private String format;
     private Long addressId;
 
+    public Occupation() {}
+
     public Occupation(Long id, String code, String format, Long addressId) {
         this.id = id;
         this.code = code;

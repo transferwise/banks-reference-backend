@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
-public class NewCustomerAddressRequest {
+public class NewAddressRequest {
 
     @NotNull
     private String firstLine;
@@ -32,9 +32,9 @@ public class NewCustomerAddressRequest {
 
     private List<Occupation> occupations;
 
-    public NewCustomerAddressRequest(){}
+    public NewAddressRequest(){}
 
-    public NewCustomerAddressRequest(@NotNull final String firstLine, @NotNull final String postCode, @NotNull final String city, final String state, @NotNull final String  country, @NotNull final Long customerId, final List<Occupation> occupations) {
+    public NewAddressRequest(@NotNull final String firstLine, @NotNull final String postCode, @NotNull final String city, final String state, @NotNull final String  country, @NotNull final Long customerId, final List<Occupation> occupations) {
         this.firstLine = firstLine;
         this.postCode = postCode;
         this.city = city;

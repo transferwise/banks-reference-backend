@@ -5,7 +5,7 @@ import com.transferwise.banks.demo.customer.domain.Customer;
 
 import java.util.List;
 
-public class CustomerAddress {
+public class Address {
 
     private Long id;
     private String firstLine;
@@ -17,7 +17,9 @@ public class CustomerAddress {
 
     private List<Occupation> occupations;
 
-    public CustomerAddress(Long id, String firstLine, String postCode, String city, String state, String country, Long customerId) {
+    public Address() {}
+
+    public Address(Long id, String firstLine, String postCode, String city, String state, String country, Long customerId) {
         this.id = id;
         this.firstLine = firstLine;
         this.postCode = postCode;
@@ -27,7 +29,7 @@ public class CustomerAddress {
         this.customerId = customerId;
     }
 
-    public CustomerAddress(String firstLine, String postCode, String city, String state, String country, Long customerId) {
+    public Address(String firstLine, String postCode, String city, String state, String country, Long customerId) {
         this.firstLine = firstLine;
         this.postCode = postCode;
         this.city = city;
@@ -36,7 +38,7 @@ public class CustomerAddress {
         this.customerId = customerId;
     }
 
-    public CustomerAddress(String firstLine, String postCode, String city, String state, String country, Long customerId, List<Occupation> occupations) {
+    public Address(String firstLine, String postCode, String city, String state, String country, Long customerId, List<Occupation> occupations) {
         this.firstLine = firstLine;
         this.postCode = postCode;
         this.city = city;

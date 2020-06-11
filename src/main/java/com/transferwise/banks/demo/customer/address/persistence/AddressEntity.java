@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity(name = "customer_addresses")
-class CustomerAddressEntity {
+class AddressEntity {
 
     @Id
     @GeneratedValue
@@ -21,10 +21,10 @@ class CustomerAddressEntity {
     @Column(unique = true)
     private long customerId;
 
-    public CustomerAddressEntity() {
+    public AddressEntity() {
     }
 
-    public CustomerAddressEntity(String firstLine, String postCode, String city, String state, String country, Long customerId) {
+    public AddressEntity(String firstLine, String postCode, String city, String state, String country, Long customerId) {
         this.firstLine = firstLine;
         this.postCode = postCode;
         this.city = city;

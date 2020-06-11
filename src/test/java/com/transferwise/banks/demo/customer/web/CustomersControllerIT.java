@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,7 +39,13 @@ public class CustomersControllerIT {
                 .andExpect(jsonPath("$.lastName", is("Customer 1")))
                 .andExpect(jsonPath("$.dateOfBirth", is("1980-01-01")))
                 .andExpect(jsonPath("$.phoneNumber", is("+37211223344")))
-                .andExpect(jsonPath("$.email", is("bank-customer-1@bank.com")));
+                .andExpect(jsonPath("$.email", is("bank-customer-1@bank.com")))
+                .andExpect(jsonPath("$.address.firstLine", is("56 Shoreditch High Street")))
+                .andExpect(jsonPath("$.address.city", is("London")))
+                .andExpect(jsonPath("$.address.postCode", is("EC1 6JJ")))
+                .andExpect(jsonPath("$.address.state", is("")))
+                .andExpect(jsonPath("$.address.country", is("GB")))
+                .andExpect(jsonPath("$.address.customerId", is(777)));
     }
 
     @Test
@@ -75,7 +82,16 @@ public class CustomersControllerIT {
                 .andExpect(jsonPath("$.lastName", is("customer")))
                 .andExpect(jsonPath("$.dateOfBirth", is("1950-05-05")))
                 .andExpect(jsonPath("$.phoneNumber", is("+37211223344")))
-                .andExpect(jsonPath("$.email", is("test@test.com")));
+                .andExpect(jsonPath("$.email", is("test@test.com")))
+                .andExpect(jsonPath("$.address", is(nullValue())));
+    }
+
+    @Test
+    public void shouldReturnNullAddressWhenNoAddressExists() throws Exception {
+        mockMvc.perform(get("/customers?id=999").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.address", is(nullValue())));
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.transferwise.banks.demo.credentials.web;
 
 import com.transferwise.banks.demo.client.params.Code;
 import com.transferwise.banks.demo.credentials.domain.CredentialsManager;
+import com.transferwise.banks.demo.customer.address.domain.Address;
 import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

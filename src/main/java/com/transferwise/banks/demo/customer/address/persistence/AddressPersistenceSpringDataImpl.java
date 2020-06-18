@@ -2,6 +2,7 @@ package com.transferwise.banks.demo.customer.address.persistence;
 
 import com.transferwise.banks.demo.customer.address.domain.Address;
 import com.transferwise.banks.demo.customer.address.domain.AddressPersistence;
+import com.transferwise.banks.demo.customer.address.occupation.domain.OccupationPersistence;
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,12 @@ class AddressPersistenceSpringDataImpl implements AddressPersistence {
 
     private final AddressMapperPersistence addressMapperPersistence;
     private final AddressRepository addressRepository;
+    private final OccupationPersistence occupationPersistence;
 
-    public AddressPersistenceSpringDataImpl(AddressMapperPersistence addressMapperPersistence, AddressRepository addressRepository) {
+    public AddressPersistenceSpringDataImpl(AddressMapperPersistence addressMapperPersistence, AddressRepository addressRepository, OccupationPersistence occupationPersistence) {
         this.addressMapperPersistence = addressMapperPersistence;
         this.addressRepository = addressRepository;
+        this.occupationPersistence = occupationPersistence;
     }
 
     @Override
@@ -44,7 +47,8 @@ class AddressPersistenceSpringDataImpl implements AddressPersistence {
                 addressEntity.getCity(),
                 addressEntity.getState(),
                 addressEntity.getCountry(),
-                addressEntity.getCustomerId()
+                addressEntity.getCustomerId(),
+                occupationPersistence.findByAddressId(addressEntity.getId())
         );
     }
 }

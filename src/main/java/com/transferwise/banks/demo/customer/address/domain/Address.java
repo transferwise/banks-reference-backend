@@ -38,6 +38,17 @@ public class Address {
         this.customerId = customerId;
     }
 
+    public Address(Long id, String firstLine, String postCode, String city, String state, String country, Long customerId, List<Occupation> occupations) {
+        this.id = id;
+        this.firstLine = firstLine;
+        this.postCode = postCode;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.customerId = customerId;
+        this.occupations = occupations;
+    }
+
     public Address(String firstLine, String postCode, String city, String state, String country, Long customerId, List<Occupation> occupations) {
         this.firstLine = firstLine;
         this.postCode = postCode;

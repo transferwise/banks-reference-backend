@@ -1,10 +1,12 @@
 package com.transferwise.banks.demo.credentials.domain;
 
+import com.transferwise.banks.demo.customer.address.domain.twaddress.TWAddressService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.ProfileService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
 import com.transferwise.banks.demo.credentials.persistence.twuser.TWUserPersistence;
 import com.transferwise.banks.demo.credentials.persistence.twusertokens.TWUserTokensPersistence;
+import com.transferwise.banks.demo.customer.address.domain.AddressService;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.CustomersPersistence;
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
@@ -25,7 +27,6 @@ public class CredentialsManager {
     private final TWUserTokensPersistence twUserTokensPersistence;
     private final ProfileService profileService;
     private final TWProfilePersistence twProfilePersistence;
-
 
     public CredentialsManager(final CredentialsTWClient credentialsTWClient,
                               final CustomersPersistence customersPersistence,
@@ -52,8 +53,7 @@ public class CredentialsManager {
                         .withRegistrationCode(registrationCode)))
                 .flatMap(credentialsTWClient::getUserTokens)
                 .map(twUserTokensPersistence::save)
-                .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer))
-                .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())));
+                .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer));
     }
 
     public Mono<TWProfile> existing(final Long customerId, final String code) {

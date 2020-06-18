@@ -38,6 +38,16 @@ public class Customer {
         this.email = email;
     }
 
+    public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, Address address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+    }
+
     public Customer(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;

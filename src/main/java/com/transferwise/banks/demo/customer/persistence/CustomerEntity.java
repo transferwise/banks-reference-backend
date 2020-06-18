@@ -1,6 +1,7 @@
 package com.transferwise.banks.demo.customer.persistence;
 
 import com.transferwise.banks.demo.client.params.Email;
+import com.transferwise.banks.demo.customer.address.domain.Address;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

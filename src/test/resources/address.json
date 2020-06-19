@@ -1,0 +1,17 @@
+{
+  "id": 36001903,
+  "profile": 14501891,
+  "details": {
+    "firstLine": "1 Random Walk",
+    "postCode": "34567",
+    "city": "New-York",
+    "country": "US",
+    "state": "New-York",
+    "occupations": [
+      {
+        "code": "Compliance Manager",
+        "format": "FREE_FORM"
+      }
+    ]
+  }
+}

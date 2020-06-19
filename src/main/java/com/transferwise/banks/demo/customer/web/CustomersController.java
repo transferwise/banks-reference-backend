@@ -26,7 +26,7 @@ public class CustomersController {
 
     @ApiOperation(value = "Get the simulated bank customer's data", notes = "This endpoint is used to retrieve the simulated bank customer's data")
     @GetMapping
-    public Customer show(@RequestParam final Long id) {
+    public Customer show(@RequestParam final Long id) throws Exception {
         return customersService.find(id);
     }
 

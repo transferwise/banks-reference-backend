@@ -1,8 +1,6 @@
 package com.transferwise.banks.demo.customer.address.domain;
 
 import com.transferwise.banks.demo.customer.address.occupation.domain.Occupation;
-import com.transferwise.banks.demo.customer.domain.Customer;
-
 import java.util.List;
 
 public class Address {

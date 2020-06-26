@@ -2,7 +2,7 @@ package com.transferwise.banks.demo.credentials.domain.twprofile;
 
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
-import com.transferwise.banks.demo.customer.address.domain.twaddress.TWAddressService;
+import com.transferwise.banks.demo.credentials.domain.twaddress.TWAddressService;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.CustomersPersistence;
 import org.slf4j.Logger;

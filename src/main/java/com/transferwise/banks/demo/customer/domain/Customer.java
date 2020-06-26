@@ -1,8 +1,8 @@
 package com.transferwise.banks.demo.customer.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.transferwise.banks.demo.customer.address.domain.Address;
-import com.transferwise.banks.demo.customer.address.occupation.domain.Occupation;
+import com.transferwise.banks.demo.customer.domain.address.Address;
+import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
 
 import java.time.LocalDate;
 import java.util.List;

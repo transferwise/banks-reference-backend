@@ -1,6 +1,6 @@
 package com.transferwise.banks.demo.customer.persistence;
 
-import com.transferwise.banks.demo.customer.address.domain.AddressPersistence;
+import com.transferwise.banks.demo.customer.domain.address.AddressPersistence;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import org.springframework.stereotype.Component;
 

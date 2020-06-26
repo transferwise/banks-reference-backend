@@ -1,0 +1,12 @@
+package com.transferwise.banks.demo.credentials.domain.twaddress;
+
+import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
+import com.transferwise.banks.demo.credentials.twclient.twaddress.TWAddressResponse;
+import reactor.core.publisher.Mono;
+
+public interface AddressTWClient {
+
+    Mono<TWAddressResponse> getAddress(TWUserTokens twUserTokens, Long addressId);
+
+    Mono<TWAddressResponse> createAddress(TWUserTokens twUserTokens, CreateAddress createAddress);
+}

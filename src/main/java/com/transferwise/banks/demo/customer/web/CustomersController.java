@@ -1,5 +1,9 @@
 package com.transferwise.banks.demo.customer.web;
 
+import com.transferwise.banks.demo.customer.domain.address.Address;
+import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
+import com.transferwise.banks.demo.customer.web.occupation.NewOccupationRequest;
+import com.transferwise.banks.demo.customer.web.address.NewAddressRequest;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.CustomersService;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -41,6 +48,31 @@ public class CustomersController {
                 newCustomerRequest.getLastName(),
                 newCustomerRequest.getDateOfBirth(),
                 newCustomerRequest.getPhoneNumber(),
-                newCustomerRequest.getEmail());
+                newCustomerRequest.getEmail(),
+                mapToAddress(newCustomerRequest.getAddress()));
+    }
+
+    private Address mapToAddress(final NewAddressRequest newAddressRequest) {
+        return new Address(
+                newAddressRequest.getFirstLine(),
+                newAddressRequest.getPostCode(),
+                newAddressRequest.getCity(),
+                newAddressRequest.getState(),
+                newAddressRequest.getCountry(),
+                mapToOccupations(newAddressRequest.getOccupations())
+        );
+    }
+
+    private List<Occupation> mapToOccupations(final List<NewOccupationRequest> newOccupationRequestList) {
+        List<Occupation> occupations = new ArrayList<>();
+
+        for(NewOccupationRequest newOccupationRequest : newOccupationRequestList ) {
+            occupations.add(new Occupation(
+                    newOccupationRequest.getCode(),
+                    newOccupationRequest.getFormat()
+            ));
+        }
+
+        return occupations;
     }
 }

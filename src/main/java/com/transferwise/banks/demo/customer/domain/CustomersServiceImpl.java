@@ -1,12 +1,13 @@
 package com.transferwise.banks.demo.customer.domain;
 
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
-import com.transferwise.banks.demo.customer.address.domain.Address;
-import com.transferwise.banks.demo.customer.address.occupation.domain.Occupation;
-import com.transferwise.banks.demo.customer.address.domain.AddressPersistence;
-import com.transferwise.banks.demo.customer.address.occupation.domain.OccupationPersistence;
+import com.transferwise.banks.demo.customer.domain.address.Address;
+import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
+import com.transferwise.banks.demo.customer.domain.address.AddressPersistence;
+import com.transferwise.banks.demo.customer.domain.occupation.OccupationPersistence;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -34,7 +35,6 @@ class CustomersServiceImpl implements CustomersService {
             customer.setCustomerAddress(address, occupations);
         }
 
-
         boolean transferWiseAccountLinked = twProfilePersistence.findByCustomerId(id)
                 .isPresent();
 
@@ -42,7 +42,24 @@ class CustomersServiceImpl implements CustomersService {
     }
 
     public Customer save(Customer customer) {
-        return customersPersistence.save(customer);
+        Customer cst = customersPersistence.save(customer);
+
+        if(cst.getId() != null){
+            customer.getAddress().setCustomerId(cst.getId());
+            Address address = addressPersistence.save(customer.getAddress());
+
+            if(address.getId() != null) {
+                List<Occupation> occupations = new ArrayList<>();
+                for(Occupation occupation : customer.getAddress().getOccupations()) {
+                    occupation.setAddressId(address.getId());
+                    occupations.add(occupationPersistence.save(occupation));
+                }
+
+                cst.setCustomerAddress(address, occupations);
+            }
+        }
+
+        return cst;
     }
 
 }

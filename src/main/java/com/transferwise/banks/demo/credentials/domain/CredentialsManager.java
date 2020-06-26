@@ -1,12 +1,10 @@
 package com.transferwise.banks.demo.credentials.domain;
 
-import com.transferwise.banks.demo.customer.address.domain.twaddress.TWAddressService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.ProfileService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
 import com.transferwise.banks.demo.credentials.persistence.twuser.TWUserPersistence;
 import com.transferwise.banks.demo.credentials.persistence.twusertokens.TWUserTokensPersistence;
-import com.transferwise.banks.demo.customer.address.domain.AddressService;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.CustomersPersistence;
 import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;

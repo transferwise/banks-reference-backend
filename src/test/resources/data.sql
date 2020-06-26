@@ -6,7 +6,7 @@ INSERT INTO customer_addresses(id, customer_id, first_line, city, post_code, sta
 INSERT INTO customer_addresses(id, customer_id, first_line, city, post_code, state, country) VALUES(888, 888, '1 Random Walk', 'New-York', '34567', 'New-York', 'US');
 
 INSERT INTO customer_occupations(id, address_id, code, format) VALUES(666, 777, 'QA Lead', 'FREE_FORM');
-INSERT INTO customer_occupations(id, address_id, code, format) VALUES(777, 777, 'Tech Lead', 'FREE_FORM');
+INSERT INTO customer_occupations(id, address_id, code, format) VALUES(777, 888, 'Tech Lead', 'FREE_FORM');
 INSERT INTO customer_occupations(id, address_id, code, format) VALUES(888, 888, 'Compliance Manager', 'FREE_FORM');
 
 INSERT INTO tw_user(tw_user_id, active, customer_id, email, registration_code) VALUES(1, true, 777, 'bank-customer-1@bank.com', '6d4f2f7c-3474-4b36-bbdc-225993cc3896');

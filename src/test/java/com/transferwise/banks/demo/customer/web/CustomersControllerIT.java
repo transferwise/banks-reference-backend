@@ -11,8 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -45,7 +44,11 @@ public class CustomersControllerIT {
                 .andExpect(jsonPath("$.address.postCode", is("EC1 6JJ")))
                 .andExpect(jsonPath("$.address.state", is("")))
                 .andExpect(jsonPath("$.address.country", is("GB")))
-                .andExpect(jsonPath("$.address.customerId", is(777)));
+                .andExpect(jsonPath("$.address.customerId", is(777)))
+                .andExpect(jsonPath("$.address.occupations").isArray())
+                .andExpect(jsonPath("$.address.occupations", hasSize(1)))
+                .andExpect(jsonPath("$.address.occupations[0].code", is("QA Lead")))
+                .andExpect(jsonPath("$.address.occupations[0].format", is("FREE_FORM")));
     }
 
     @Test
@@ -66,7 +69,24 @@ public class CustomersControllerIT {
 
     @Test
     public void shouldCreateBankCustomer() throws Exception {
-        String newCustomerRequestJson = "{\"firstName\":\"test\",\"lastName\":\"customer\",\"email\":\"test@test.com\",\"dateOfBirth\":\"1950-05-05\",\"phoneNumber\":\"+37211223344\"}";
+        String newCustomerRequestJson = "{\n" +
+                "    \"firstName\":\"test\",\n" +
+                "    \"lastName\":\"customer\",\n" +
+                "    \"email\":\"test@test.com\",\n" +
+                "    \"dateOfBirth\":\"1950-05-05\",\n" +
+                "    \"phoneNumber\":\"+37211223344\",\n" +
+                "    \"address\": {\n" +
+                "        \"firstLine\": \"56, Shoreditch High Street\",\n" +
+                "        \"postCode\": \"EC1V 6JJ\",\n" +
+                "        \"city\": \"London\", \n" +
+                "        \"state\": \"\",\n" +
+                "        \"country\": \"GB\",\n" +
+                "        \"occupations\": [{\n" +
+                "            \"code\": \"Clown\",\n" +
+                "            \"format\": \"FREE_FORM\"\n" +
+                "        }]\n" +
+                "    }\n" +
+                "}";
 
         mockMvc.perform(post("/customers").contentType(MediaType.APPLICATION_JSON)
                 .content(newCustomerRequestJson))
@@ -83,15 +103,16 @@ public class CustomersControllerIT {
                 .andExpect(jsonPath("$.dateOfBirth", is("1950-05-05")))
                 .andExpect(jsonPath("$.phoneNumber", is("+37211223344")))
                 .andExpect(jsonPath("$.email", is("test@test.com")))
-                .andExpect(jsonPath("$.address", is(nullValue())));
-    }
-
-    @Test
-    public void shouldReturnNullAddressWhenNoAddressExists() throws Exception {
-        mockMvc.perform(get("/customers?id=999").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.address", is(nullValue())));
+                .andExpect(jsonPath("$.address.id", is(2)))
+                .andExpect(jsonPath("$.address.firstLine", is("56, Shoreditch High Street")))
+                .andExpect(jsonPath("$.address.city", is("London")))
+                .andExpect(jsonPath("$.address.postCode", is("EC1V 6JJ")))
+                .andExpect(jsonPath("$.address.state", is("")))
+                .andExpect(jsonPath("$.address.country", is("GB")))
+                .andExpect(jsonPath("$.address.occupations").isArray())
+                .andExpect(jsonPath("$.address.occupations", hasSize(1)))
+                .andExpect(jsonPath("$.address.occupations[0].code", is("Clown")))
+                .andExpect(jsonPath("$.address.occupations[0].format", is("FREE_FORM")));
     }
 
     @Test

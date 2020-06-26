@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Component
 class TWAddressServiceImpl implements TWAddressService {
 
@@ -24,12 +26,12 @@ class TWAddressServiceImpl implements TWAddressService {
     }
 
     @Override
-    public Mono<TWAddressResponse> createAddress(TWUserTokens twUserTokens, TWProfile twProfile) {
-        final Address address = addressPersistence.findByCustomerId(twProfile.getCustomerId());
+    public Mono<TWAddressResponse> createAddress(Optional<TWUserTokens> twUserTokens, Optional<TWProfile> twProfile) {
+        final Address address = addressPersistence.findByCustomerId(twProfile.get().getCustomerId());
 
         if(address.getId() != null){
             final TWAddress twAddress = new TWAddress(address);
-            final CreateAddress createAddress = new CreateAddress(twProfile.getTwProfileId(), twAddress);
+            final CreateAddress createAddress = new CreateAddress(twProfile.get().getTwProfileId(), twAddress);
 
             return addressTWClient.createAddress(twUserTokens, createAddress);
         }

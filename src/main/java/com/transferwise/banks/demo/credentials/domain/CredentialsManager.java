@@ -1,5 +1,6 @@
 package com.transferwise.banks.demo.credentials.domain;
 
+import com.transferwise.banks.demo.credentials.domain.twaddress.TWAddressService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.ProfileService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
@@ -25,19 +26,21 @@ public class CredentialsManager {
     private final TWUserTokensPersistence twUserTokensPersistence;
     private final ProfileService profileService;
     private final TWProfilePersistence twProfilePersistence;
+    private final TWAddressService twAddressService;
 
     public CredentialsManager(final CredentialsTWClient credentialsTWClient,
                               final CustomersPersistence customersPersistence,
                               final TWUserPersistence twUserPersistence,
                               final TWUserTokensPersistence twUserTokensPersistence,
                               final ProfileService profileService,
-                              final TWProfilePersistence twProfilePersistence) {
+                              final TWProfilePersistence twProfilePersistence, TWAddressService twAddressService) {
         this.credentialsTWClient = credentialsTWClient;
         this.customersPersistence = customersPersistence;
         this.twUserPersistence = twUserPersistence;
         this.twUserTokensPersistence = twUserTokensPersistence;
         this.profileService = profileService;
         this.twProfilePersistence = twProfilePersistence;
+        this.twAddressService = twAddressService;
     }
 
     public Mono<TWProfile> signUp(final Long customerId) {
@@ -52,7 +55,8 @@ public class CredentialsManager {
                 .flatMap(credentialsTWClient::getUserTokens)
                 .map(twUserTokensPersistence::save)
                 .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer))
-                .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())));
+                .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())))
+                .doOnSuccess(twProfile -> twAddressService.createAddress(twUserTokensPersistence.findByCustomerId(customerId), twProfilePersistence.findByCustomerId(customerId)));
     }
 
     public Mono<TWProfile> existing(final Long customerId, final String code) {
@@ -83,5 +87,4 @@ public class CredentialsManager {
 
         return twUserTokensMono;
     }
-
 }

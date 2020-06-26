@@ -45,8 +45,7 @@ class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Mono<TWProfile> createPersonalProfile(final TWUserTokens twUserTokens, final Customer customer) {
-        return profileTWClient.createPersonalProfile(twUserTokens, buildCreatePersonalProfile(customer))
-                .doOnSuccess(twProfile -> twAddressService.createAddress(twUserTokens, twProfile));
+        return profileTWClient.createPersonalProfile(twUserTokens, buildCreatePersonalProfile(customer));
     }
 
     @Override

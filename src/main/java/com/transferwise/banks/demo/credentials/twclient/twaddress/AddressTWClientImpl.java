@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 import static com.transferwise.banks.demo.client.TransferWisePaths.ADDRESS_PATH;
 import static com.transferwise.banks.demo.client.TransferWisePaths.getAddressByIdPath;
 
@@ -22,12 +24,12 @@ public class AddressTWClientImpl implements AddressTWClient {
     public AddressTWClientImpl(WebClient client) { this.client = client; }
 
     @Override
-    public Mono<TWAddressResponse> createAddress(TWUserTokens twUserTokens, CreateAddress createAddress) {
+    public Mono<TWAddressResponse> createAddress(Optional<TWUserTokens> twUserTokens, CreateAddress createAddress) {
 
         return client.post()
                 .uri(ADDRESS_PATH)
                 .contentType(APPLICATION_JSON)
-                .header(AUTHORIZATION, twUserTokens.bearer())
+                .header(AUTHORIZATION, twUserTokens.get().bearer())
                 .body(fromObject(createAddress))
                 .retrieve()
                 .bodyToMono(TWAddressResponse.class)

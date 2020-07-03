@@ -41,13 +41,11 @@ class AddressPersistenceSpringDataImpl implements AddressPersistence {
 
     private Address mapToCustomerAddress(final AddressEntity addressEntity) {
         return new Address(
-                addressEntity.getId(),
                 addressEntity.getFirstLine(),
                 addressEntity.getPostCode(),
                 addressEntity.getCity(),
                 addressEntity.getState(),
                 addressEntity.getCountry(),
-                addressEntity.getCustomerId(),
                 occupationPersistence.findByAddressId(addressEntity.getId())
         );
     }

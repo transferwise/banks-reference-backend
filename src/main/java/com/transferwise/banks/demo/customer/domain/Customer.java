@@ -21,23 +21,6 @@ public class Customer {
 
     private Address address;
 
-    public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
-    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
     public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, Address address) {
         this.id = id;
         this.firstName = firstName;

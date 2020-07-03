@@ -1,11 +1,11 @@
 package com.transferwise.banks.demo.customer.persistence.occupation;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.transferwise.banks.demo.customer.persistence.address.AddressEntity;
+
+import javax.persistence.*;
 
 @Entity(name = "customer_occupations")
-class OccupationEntity {
+public class OccupationEntity {
 
     @Id
     @GeneratedValue
@@ -14,20 +14,27 @@ class OccupationEntity {
     private String code;
     private String format;
 
-    private long addressId;
+    //private long addressId;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id", insertable = false, updatable = false)
+    private AddressEntity address;
 
     public OccupationEntity() {}
 
-    public OccupationEntity(Long id, String code, String format, Long addressId){ }
-
-    public OccupationEntity(String code, String format, Long addressId) {
+    /*public OccupationEntity(String code, String format, Long addressId) {
         this.code = code;
         this.format = format;
         this.addressId = addressId;
+    }*/
+
+    public OccupationEntity(String code, String format) {
+        this.code = code;
+        this.format = format;
     }
 
     public Long getId() { return id; }
     public String getCode() { return code; }
     public String getFormat() { return format; }
-    public Long getAddressId() { return addressId; }
+    //public Long getAddressId() { return addressId; }
 }

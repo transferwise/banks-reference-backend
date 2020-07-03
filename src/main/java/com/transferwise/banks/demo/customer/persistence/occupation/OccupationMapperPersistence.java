@@ -11,10 +11,8 @@ public class OccupationMapperPersistence {
 
     public Occupation mapToOccupation(final OccupationEntity occupationEntity) {
         return new Occupation(
-                occupationEntity.getId(),
                 occupationEntity.getCode(),
-                occupationEntity.getFormat(),
-                occupationEntity.getAddressId()
+                occupationEntity.getFormat()
         );
     }
 
@@ -23,10 +21,8 @@ public class OccupationMapperPersistence {
 
         for (OccupationEntity occupationEntity : occupationEntities) {
             occupations.add(new Occupation(
-                    occupationEntity.getId(),
                     occupationEntity.getCode(),
-                    occupationEntity.getFormat(),
-                    occupationEntity.getAddressId()
+                    occupationEntity.getFormat()
             ));
         }
 
@@ -36,8 +32,7 @@ public class OccupationMapperPersistence {
     public OccupationEntity mapToOccupationEntity(final Occupation occupation) {
         return new OccupationEntity(
                 occupation.getCode(),
-                occupation.getFormat(),
-                occupation.getAddressId()
+                occupation.getFormat()
         );
     }
 }

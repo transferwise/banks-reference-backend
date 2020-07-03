@@ -8,13 +8,11 @@ public class AddressMapperPersistence {
 
     public Address mapToCustomerAddress(final AddressEntity addressEntity) {
         return new Address(
-                addressEntity.getId(),
                 addressEntity.getFirstLine(),
                 addressEntity.getPostCode(),
                 addressEntity.getCity(),
                 addressEntity.getState(),
-                addressEntity.getCountry(),
-                addressEntity.getCustomerId()
+                addressEntity.getCountry()
         );
     }
 
@@ -24,8 +22,7 @@ public class AddressMapperPersistence {
                 address.getPostCode(),
                 address.getCity(),
                 address.getState(),
-                address.getCountry(),
-                address.getCustomerId()
+                address.getCountry()
         );
     }
 }

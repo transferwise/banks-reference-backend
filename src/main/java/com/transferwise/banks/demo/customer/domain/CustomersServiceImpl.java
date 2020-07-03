@@ -28,13 +28,6 @@ class CustomersServiceImpl implements CustomersService {
     public Customer find(Long id) {
         Customer customer = customersPersistence.findById(id);
 
-        Address address = addressPersistence.findByCustomerId(id);
-
-        if(address.getId() != null) {
-            List<Occupation> occupations = occupationPersistence.findByAddressId(address.getId());
-            customer.setCustomerAddress(address, occupations);
-        }
-
         boolean transferWiseAccountLinked = twProfilePersistence.findByCustomerId(id)
                 .isPresent();
 
@@ -42,24 +35,7 @@ class CustomersServiceImpl implements CustomersService {
     }
 
     public Customer save(Customer customer) {
-        Customer cst = customersPersistence.save(customer);
-
-        if(cst.getId() != null){
-            customer.getAddress().setCustomerId(cst.getId());
-            Address address = addressPersistence.save(customer.getAddress());
-
-            if(address.getId() != null) {
-                List<Occupation> occupations = new ArrayList<>();
-                for(Occupation occupation : customer.getAddress().getOccupations()) {
-                    occupation.setAddressId(address.getId());
-                    occupations.add(occupationPersistence.save(occupation));
-                }
-
-                cst.setCustomerAddress(address, occupations);
-            }
-        }
-
-        return cst;
+        return customersPersistence.save(customer);
     }
 
 }

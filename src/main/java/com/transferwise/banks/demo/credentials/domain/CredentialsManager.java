@@ -56,7 +56,7 @@ public class CredentialsManager {
                 .map(twUserTokensPersistence::save)
                 .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer))
                 .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())))
-                .doOnSuccess(twProfile -> twAddressService.createAddress(twUserTokensPersistence.findByCustomerId(customerId), twProfilePersistence.findByCustomerId(customerId)));
+                .doOnSuccess(twProfile -> twAddressService.createAddress(customer.getAddress(), twUserTokensPersistence.findByCustomerId(customerId), twProfilePersistence.findByCustomerId(customerId)));
     }
 
     public Mono<TWProfile> existing(final Long customerId, final String code) {

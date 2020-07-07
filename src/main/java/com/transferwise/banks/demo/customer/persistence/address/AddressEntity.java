@@ -1,7 +1,5 @@
 package com.transferwise.banks.demo.customer.persistence.address;
 
-import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
-import com.transferwise.banks.demo.customer.persistence.CustomerEntity;
 import com.transferwise.banks.demo.customer.persistence.occupation.OccupationEntity;
 
 import javax.persistence.*;
@@ -20,13 +18,8 @@ public class AddressEntity {
     private String state;
     private String country;
 
-    @OneToOne(mappedBy = "address")
-    private CustomerEntity customer;
-
-    //private Long customerId;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "addressId")
     private List<OccupationEntity> occupations;
 
     public AddressEntity() {

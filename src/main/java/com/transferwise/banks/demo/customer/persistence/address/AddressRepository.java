@@ -6,5 +6,5 @@ import java.util.Optional;
 
 interface AddressRepository extends CrudRepository<AddressEntity, Long> {
 
-    Optional<AddressEntity> findByCustomerId(Long customerId);
+    Optional<AddressEntity> findById(Long id);
 }

@@ -2,11 +2,7 @@ package com.transferwise.banks.demo.customer.persistence.occupation;
 
 import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
 import com.transferwise.banks.demo.customer.domain.occupation.OccupationPersistence;
-import com.transferwise.banks.demo.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 class OccupationPersistenceSprintDataImpl implements OccupationPersistence {
@@ -17,24 +13,6 @@ class OccupationPersistenceSprintDataImpl implements OccupationPersistence {
     public OccupationPersistenceSprintDataImpl(OccupationMapperPersistence occupationMapperPersistence, OccupationRepository occupationRepository) {
         this.occupationMapperPersistence = occupationMapperPersistence;
         this.occupationRepository = occupationRepository;
-    }
-
-    @Override
-    public Occupation findById(final Long id) {
-        return
-                occupationRepository.findById(id)
-                .map(occupationMapperPersistence::mapToOccupation)
-                .orElseThrow(ResourceNotFoundException::new);
-    }
-
-    @Override
-    public List<Occupation> findByAddressId(final Long addressId) {
-        List<Occupation> occupations = new ArrayList<>();
-
-        return
-                occupationRepository.findByAddressId(addressId)
-                        .map(occupationMapperPersistence::mapToOccupations)
-                        .orElse(occupations);
     }
 
     @Override

@@ -18,24 +18,17 @@ class TWAddressServiceImpl implements TWAddressService {
     private static final Logger log = LoggerFactory.getLogger(TWAddressServiceImpl.class);
 
     private final AddressTWClient addressTWClient;
-    private final AddressPersistence addressPersistence;
 
-    TWAddressServiceImpl(AddressTWClient addressTWClient, AddressPersistence addressPersistence) {
+    TWAddressServiceImpl(AddressTWClient addressTWClient) {
         this.addressTWClient = addressTWClient;
-        this.addressPersistence = addressPersistence;
     }
 
     @Override
-    public Mono<TWAddressResponse> createAddress(Optional<TWUserTokens> twUserTokens, Optional<TWProfile> twProfile) {
-        final Address address = addressPersistence.findByCustomerId(twProfile.get().getCustomerId());
+    public Mono<TWAddressResponse> createAddress(Address address, Optional<TWUserTokens> twUserTokens, Optional<TWProfile> twProfile) {
 
-        if(address.getId() != null){
             final TWAddress twAddress = new TWAddress(address);
             final CreateAddress createAddress = new CreateAddress(twProfile.get().getTwProfileId(), twAddress);
 
             return addressTWClient.createAddress(twUserTokens, createAddress);
-        }
-
-        return null;
     }
 }

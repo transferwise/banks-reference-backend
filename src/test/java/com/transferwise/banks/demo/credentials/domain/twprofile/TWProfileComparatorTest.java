@@ -1,6 +1,7 @@
 package com.transferwise.banks.demo.credentials.domain.twprofile;
 
 import com.transferwise.banks.demo.customer.domain.Customer;
+import com.transferwise.banks.demo.customer.domain.address.Address;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -27,10 +28,17 @@ public class TWProfileComparatorTest {
 
         String email = "email@tw.com";
 
+        Address address = new Address(1L,
+                "56 Shoreditch High Street",
+                "E1 6JJ",
+                "London",
+                "",
+                "GB");
+
         ProfileDetails profileDetails = new ProfileDetails(firstName, lastName, profileDateOfBirth, phoneNumber);
         TWProfile twProfile = new TWProfile(twProfileId, customerId, type, profileDetails, now());
 
-        Customer customer = new Customer(customerId, firstName, lastName, customerDateOfBirth, phoneNumber, email);
+        Customer customer = new Customer(customerId, firstName, lastName, customerDateOfBirth, phoneNumber, email, address);
 
         //when
         Boolean result = twProfileComparator.isTwProfileEqualToCustomer(twProfile, customer);
@@ -56,10 +64,17 @@ public class TWProfileComparatorTest {
 
         String email = "email@tw.com";
 
+        Address address = new Address(1L,
+                "56 Shoreditch High Street",
+                "E1 6JJ",
+                "London",
+                "",
+                "GB");
+
         ProfileDetails profileDetails = new ProfileDetails(profileFirstName, lastName, profileDateOfBirth, phoneNumber);
         TWProfile twProfile = new TWProfile(twProfileId, customerId, type, profileDetails, now());
 
-        Customer customer = new Customer(customerId, customerFirstName, lastName, customerDateOfBirth, phoneNumber, email);
+        Customer customer = new Customer(customerId, customerFirstName, lastName, customerDateOfBirth, phoneNumber, email, address);
 
         //when
         Boolean result = twProfileComparator.isTwProfileEqualToCustomer(twProfile, customer);
@@ -84,10 +99,17 @@ public class TWProfileComparatorTest {
 
         String email = "email@tw.com";
 
+        Address address = new Address(1L,
+                "56 Shoreditch High Street",
+                "E1 6JJ",
+                "London",
+                "",
+                "GB");
+
         ProfileDetails profileDetails = new ProfileDetails(firstName, profileLastName, profileDateOfBirth, phoneNumber);
         TWProfile twProfile = new TWProfile(twProfileId, customerId, type, profileDetails, now());
 
-        Customer customer = new Customer(customerId, firstName, customerLastName, customerDateOfBirth, phoneNumber, email);
+        Customer customer = new Customer(customerId, firstName, customerLastName, customerDateOfBirth, phoneNumber, email, address);
 
         //when
         Boolean result = twProfileComparator.isTwProfileEqualToCustomer(twProfile, customer);
@@ -111,10 +133,17 @@ public class TWProfileComparatorTest {
 
         String email = "email@tw.com";
 
+        Address address = new Address(1L,
+                "56 Shoreditch High Street",
+                "E1 6JJ",
+                "London",
+                "",
+                "GB");
+
         ProfileDetails profileDetails = new ProfileDetails(firstName, lastName, profileDateOfBirth, phoneNumber);
         TWProfile twProfile = new TWProfile(twProfileId, customerId, type, profileDetails, now());
 
-        Customer customer = new Customer(customerId, firstName, lastName, customerDateOfBirth, phoneNumber, email);
+        Customer customer = new Customer(customerId, firstName, lastName, customerDateOfBirth, phoneNumber, email, address);
 
         //when
         Boolean result = twProfileComparator.isTwProfileEqualToCustomer(twProfile, customer);
@@ -139,10 +168,17 @@ public class TWProfileComparatorTest {
 
         String email = "email@tw.com";
 
+        Address address = new Address(1L,
+                "56 Shoreditch High Street",
+                "E1 6JJ",
+                "London",
+                "",
+                "GB");
+
         ProfileDetails profileDetails = new ProfileDetails(firstName, lastName, profileDateOfBirth, profilePhoneNumber);
         TWProfile twProfile = new TWProfile(twProfileId, customerId, type, profileDetails, now());
 
-        Customer customer = new Customer(customerId, firstName, lastName, customerDateOfBirth, customerPhoneNumber, email);
+        Customer customer = new Customer(customerId, firstName, lastName, customerDateOfBirth, customerPhoneNumber, email, address);
 
         //when
         Boolean result = twProfileComparator.isTwProfileEqualToCustomer(twProfile, customer);

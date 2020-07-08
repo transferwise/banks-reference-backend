@@ -2,7 +2,6 @@ package com.transferwise.banks.demo.credentials.domain.twprofile;
 
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
-import com.transferwise.banks.demo.credentials.domain.twaddress.TWAddressService;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.CustomersPersistence;
 import org.slf4j.Logger;
@@ -25,14 +24,12 @@ class ProfileServiceImpl implements ProfileService {
     private final CustomersPersistence customersPersistence;
     private final ProfileTWClient profileTWClient;
     private final TWProfileComparator twProfileComparator;
-    private final TWAddressService twAddressService;
 
-    ProfileServiceImpl(TWProfilePersistence twProfilePersistence, CustomersPersistence customersPersistence, ProfileTWClient profileTWClient, TWProfileComparator twProfileComparator, TWAddressService twAddressService) {
+    ProfileServiceImpl(TWProfilePersistence twProfilePersistence, CustomersPersistence customersPersistence, ProfileTWClient profileTWClient, TWProfileComparator twProfileComparator) {
         this.twProfilePersistence = twProfilePersistence;
         this.customersPersistence = customersPersistence;
         this.profileTWClient = profileTWClient;
         this.twProfileComparator = twProfileComparator;
-        this.twAddressService = twAddressService;
     }
 
 

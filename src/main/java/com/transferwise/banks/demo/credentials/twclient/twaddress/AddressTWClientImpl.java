@@ -35,14 +35,4 @@ public class AddressTWClientImpl implements AddressTWClient {
                 .bodyToMono(TWAddressResponse.class)
                 .map(twAddressResponse -> twAddressResponse);
     }
-
-    @Override
-    public Mono<TWAddressResponse> getAddress(TWUserTokens twUserTokens, Long addressId) {
-        return client.get()
-                .uri(getAddressByIdPath(addressId))
-                .header(AUTHORIZATION, twUserTokens.bearer())
-                .retrieve()
-                .bodyToMono(TWAddressResponse.class)
-                .map(twAddressResponse -> twAddressResponse);
-    }
 }

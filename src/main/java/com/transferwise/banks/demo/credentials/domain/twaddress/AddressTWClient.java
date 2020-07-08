@@ -8,7 +8,5 @@ import java.util.Optional;
 
 public interface AddressTWClient {
 
-    Mono<TWAddressResponse> getAddress(TWUserTokens twUserTokens, Long addressId);
-
     Mono<TWAddressResponse> createAddress(Optional<TWUserTokens> twUserTokens, CreateAddress createAddress);
 }

@@ -1,7 +1,6 @@
 package com.transferwise.banks.demo.customer.persistence;
 
 import com.transferwise.banks.demo.customer.domain.address.Address;
-import com.transferwise.banks.demo.customer.domain.address.AddressPersistence;
 import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
 import com.transferwise.banks.demo.customer.persistence.address.AddressEntity;

@@ -4,8 +4,6 @@ import com.transferwise.banks.demo.customer.domain.Customer;
 import com.transferwise.banks.demo.customer.domain.CustomersService;
 import com.transferwise.banks.demo.customer.domain.address.Address;
 import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
-import com.transferwise.banks.demo.customer.web.address.NewAddressRequest;
-import com.transferwise.banks.demo.customer.web.occupation.NewOccupationRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

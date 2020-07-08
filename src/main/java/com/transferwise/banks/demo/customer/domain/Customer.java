@@ -2,10 +2,8 @@ package com.transferwise.banks.demo.customer.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.transferwise.banks.demo.customer.domain.address.Address;
-import com.transferwise.banks.demo.customer.domain.occupation.Occupation;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class Customer {
 
@@ -65,10 +63,6 @@ public class Customer {
     }
 
     public Address getAddress() { return address; }
-    public void setCustomerAddress(Address address, List<Occupation> occupations) {
-        this.address = address;
-        this.address.setOccupations(occupations);
-    }
 
     public boolean isTransferWiseAccountLinked() {
         return transferWiseAccountLinked;

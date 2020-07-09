@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity(name = "customers")
-public class CustomerEntity {
+class CustomerEntity {
 
     @Id
     @GeneratedValue

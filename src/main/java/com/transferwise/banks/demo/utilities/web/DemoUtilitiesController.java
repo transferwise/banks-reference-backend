@@ -32,8 +32,8 @@ public class DemoUtilitiesController {
     @PostMapping("new-customer")
     public Long createNewDemoCustomer() {
         List<Occupation> occupations = new ArrayList<>();
-        occupations.add(new Occupation("Clown", "FREE_FORM"));
-        Address address = new Address("56, Shoreditch High Street", "EC1v 6JJ", "London", "", "GB", occupations);
+        occupations.add(new Occupation("Software Engineer", "FREE_FORM"));
+        Address address = new Address("56, Shoreditch High Street", "E1 6JJ", "London", "", "GB", occupations);
 
         Customer newDemoCustomer = new Customer("Test", "Name",
                 demoUtilitiesService.randomizeDOB(), demoUtilitiesService.randomizePhone(), demoUtilitiesService.randomizeEmail(), address);

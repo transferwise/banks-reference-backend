@@ -18,6 +18,11 @@ public interface TransferWisePaths {
     String TRANSFER_REQUIREMENTS_PATH = "/v1/transfer-requirements";
     String TRANSFERS_PATH = "/v1/transfers";
 
+<<<<<<< HEAD
+=======
+    String ADDRESS_PATH = "/v1/addresses";
+
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
     static String recipientRequirementsPath(final UUID quoteId) {
         return QUOTES_PATH_V1 + "/" + quoteId + "/account-requirements";
     }
@@ -37,4 +42,9 @@ public interface TransferWisePaths {
     static String updateWindowPath(final Long profileId) {
         return PROFILES_PATH_V1 + "/" + profileId + "/update-window";
     }
+<<<<<<< HEAD
+=======
+
+    static String getAddressByIdPath(final Long addressId) { return ADDRESS_PATH + "/" + addressId; }
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
 }

@@ -8,6 +8,10 @@
   "createdTime": "2019-09-11T16:09:33Z",
   "user": 1234,
   "profile": 9988,
+<<<<<<< HEAD
+=======
+  "rateType": "FIXED",
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
   "rateExpirationTime": "2019-09-13T16:09:33Z",
   "providedAmountType": "SOURCE",
   "status": "PENDING",

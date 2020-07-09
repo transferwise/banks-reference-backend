@@ -2,10 +2,14 @@ package com.transferwise.banks.demo.quote.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+=======
+import java.util.*;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
 
 import static java.util.Collections.unmodifiableList;
 
@@ -26,17 +30,29 @@ public class Quote {
     private Integer user;
     private Integer profile;
 
+<<<<<<< HEAD
+=======
+    private String rateType;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
     private LocalDateTime rateExpirationTime;
     private String providedAmountType;
     private String status;
 
     private LocalDateTime expirationTime;
 
+<<<<<<< HEAD
     private final List<QuoteNotice> notices = new ArrayList<>();
     private final List<PaymentOption> paymentOptions;
     private String formattedEstimatedDelivery;
 
     public Quote(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, String payOut, BigDecimal rate, LocalDateTime createdTime, BigDecimal fee, Integer user, Integer profile, LocalDateTime rateExpirationTime, String providedAmountType, String status, LocalDateTime expirationTime, List<PaymentOption> paymentOptions) {
+=======
+    private final List<QuoteNotice> notices;
+    private final List<PaymentOption> paymentOptions;
+    private String formattedEstimatedDelivery;
+
+    public Quote(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, String payOut, BigDecimal rate, LocalDateTime createdTime, BigDecimal fee, Integer user, Integer profile, String rateType, LocalDateTime rateExpirationTime, String providedAmountType, String status, LocalDateTime expirationTime, List<QuoteNotice> notices, List<PaymentOption> paymentOptions) {
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
         this.id = id;
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
@@ -48,10 +64,18 @@ public class Quote {
         this.fee = fee;
         this.user = user;
         this.profile = profile;
+<<<<<<< HEAD
+=======
+        this.rateType = rateType;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
         this.rateExpirationTime = rateExpirationTime;
         this.providedAmountType = providedAmountType;
         this.status = status;
         this.expirationTime = expirationTime;
+<<<<<<< HEAD
+=======
+        this.notices = notices;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
         this.paymentOptions = paymentOptions;
     }
 
@@ -61,6 +85,10 @@ public class Quote {
 
     public Quote(final List<PaymentOption> paymentOptions) {
         this.paymentOptions = paymentOptions;
+<<<<<<< HEAD
+=======
+        this.notices = new ArrayList<>();
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
     }
 
     public UUID getId() {
@@ -107,6 +135,13 @@ public class Quote {
         return profile;
     }
 
+<<<<<<< HEAD
+=======
+    public String getRateType() {
+        return rateType;
+    }
+
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
     public LocalDateTime getRateExpirationTime() {
         return rateExpirationTime;
     }

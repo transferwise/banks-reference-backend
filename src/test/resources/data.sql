@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 INSERT INTO customers(id, date_of_birth, email, first_name, last_name, phone_number) VALUES(777, '1980-01-01', 'bank-customer-1@bank.com', 'Bank', 'Customer 1', '+37211223344');
 INSERT INTO customers(id, date_of_birth, email, first_name, last_name, phone_number) VALUES(999, '1980-01-01', 'without-tw-999@bank.com', 'Bank', 'Customer Without TW', '+37211223344');
 INSERT INTO customers(id, date_of_birth, email, first_name, last_name, phone_number) VALUES(888, '1980-01-01', 'with-tw-888@bank.com', 'Bank', 'Customer With TW', '+37211223344');
+=======
+INSERT INTO customer_addresses(id, first_line, city, post_code, state, country) VALUES(777, '56 Shoreditch High Street', 'London', 'EC1 6JJ', '', 'GB');
+INSERT INTO customer_addresses(id, first_line, city, post_code, state, country) VALUES(888, '1 Random Walk', 'New-York', '34567', 'New-York', 'US');
+
+INSERT INTO customer_occupations(id, address_id, code, format) VALUES(666, 777, 'QA Lead', 'FREE_FORM');
+INSERT INTO customer_occupations(id, address_id, code, format) VALUES(777, 888, 'Tech Lead', 'FREE_FORM');
+INSERT INTO customer_occupations(id, address_id, code, format) VALUES(888, 888, 'Compliance Manager', 'FREE_FORM');
+
+INSERT INTO customers(id, address_id, date_of_birth, email, first_name, last_name, phone_number) VALUES(777, 777, '1980-01-01', 'bank-customer-1@bank.com', 'Bank', 'Customer 1', '+37211223344');
+INSERT INTO customers(id, address_id, date_of_birth, email, first_name, last_name, phone_number) VALUES(999, 777, '1980-01-01', 'without-tw-999@bank.com', 'Bank', 'Customer Without TW', '+37211223344');
+INSERT INTO customers(id, address_id, date_of_birth, email, first_name, last_name, phone_number) VALUES(888, 888, '1980-01-01', 'with-tw-888@bank.com', 'Bank', 'Customer With TW', '+37211223344');
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
 
 INSERT INTO tw_user(tw_user_id, active, customer_id, email, registration_code) VALUES(1, true, 777, 'bank-customer-1@bank.com', '6d4f2f7c-3474-4b36-bbdc-225993cc3896');
 

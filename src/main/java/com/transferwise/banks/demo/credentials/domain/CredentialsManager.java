@@ -1,5 +1,9 @@
 package com.transferwise.banks.demo.credentials.domain;
 
+<<<<<<< HEAD
+=======
+import com.transferwise.banks.demo.credentials.domain.twaddress.TWAddressService;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
 import com.transferwise.banks.demo.credentials.domain.twprofile.ProfileService;
 import com.transferwise.banks.demo.credentials.domain.twprofile.TWProfile;
 import com.transferwise.banks.demo.credentials.persistence.twprofile.TWProfilePersistence;
@@ -25,20 +29,32 @@ public class CredentialsManager {
     private final TWUserTokensPersistence twUserTokensPersistence;
     private final ProfileService profileService;
     private final TWProfilePersistence twProfilePersistence;
+<<<<<<< HEAD
 
+=======
+    private final TWAddressService twAddressService;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
 
     public CredentialsManager(final CredentialsTWClient credentialsTWClient,
                               final CustomersPersistence customersPersistence,
                               final TWUserPersistence twUserPersistence,
                               final TWUserTokensPersistence twUserTokensPersistence,
                               final ProfileService profileService,
+<<<<<<< HEAD
                               final TWProfilePersistence twProfilePersistence) {
+=======
+                              final TWProfilePersistence twProfilePersistence, TWAddressService twAddressService) {
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
         this.credentialsTWClient = credentialsTWClient;
         this.customersPersistence = customersPersistence;
         this.twUserPersistence = twUserPersistence;
         this.twUserTokensPersistence = twUserTokensPersistence;
         this.profileService = profileService;
         this.twProfilePersistence = twProfilePersistence;
+<<<<<<< HEAD
+=======
+        this.twAddressService = twAddressService;
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
     }
 
     public Mono<TWProfile> signUp(final Long customerId) {
@@ -53,7 +69,12 @@ public class CredentialsManager {
                 .flatMap(credentialsTWClient::getUserTokens)
                 .map(twUserTokensPersistence::save)
                 .flatMap(savedTwUserTokens -> profileService.createPersonalProfile(savedTwUserTokens, customer))
+<<<<<<< HEAD
                 .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())));
+=======
+                .map(twProfile -> twProfilePersistence.save(twProfile.withUpdatedAt(LocalDateTime.now())))
+                .doOnSuccess(twProfile -> twAddressService.createAddress(customer.getAddress(), twUserTokensPersistence.findByCustomerId(customerId), twProfilePersistence.findByCustomerId(customerId)));
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
     }
 
     public Mono<TWProfile> existing(final Long customerId, final String code) {
@@ -84,5 +105,8 @@ public class CredentialsManager {
 
         return twUserTokensMono;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 80005fdfa15e98a1dde8987b902e5886f92589cc
 }

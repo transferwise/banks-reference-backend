@@ -27,6 +27,7 @@ class TWQuoteResponse {
     private BigDecimal fee;
     private Integer user;
     private Integer profile;
+    private String rateType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime rateExpirationTime;
@@ -89,6 +90,10 @@ class TWQuoteResponse {
 
     public Integer getProfile() {
         return profile;
+    }
+
+    public String getRateType() {
+        return rateType;
     }
 
     public LocalDateTime getRateExpirationTime() {

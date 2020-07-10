@@ -1,6 +1,7 @@
 package com.transferwise.banks.demo.customer.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.transferwise.banks.demo.customer.domain.address.Address;
 
 import java.time.LocalDate;
 
@@ -16,21 +17,25 @@ public class Customer {
     private String email;
     private boolean transferWiseAccountLinked;
 
-    public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
+    private Address address;
+
+    public Customer(Long id, String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, Address address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.address = address;
     }
 
-    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
+    public Customer(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.address = address;
     }
 
     public Long getId() {
@@ -56,6 +61,8 @@ public class Customer {
     public String getEmail() {
         return email;
     }
+
+    public Address getAddress() { return address; }
 
     public boolean isTransferWiseAccountLinked() {
         return transferWiseAccountLinked;

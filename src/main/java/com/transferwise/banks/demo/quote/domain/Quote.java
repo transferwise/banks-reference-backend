@@ -2,10 +2,7 @@ package com.transferwise.banks.demo.quote.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -26,17 +23,18 @@ public class Quote {
     private Integer user;
     private Integer profile;
 
+    private String rateType;
     private LocalDateTime rateExpirationTime;
     private String providedAmountType;
     private String status;
 
     private LocalDateTime expirationTime;
 
-    private final List<QuoteNotice> notices = new ArrayList<>();
+    private final List<QuoteNotice> notices;
     private final List<PaymentOption> paymentOptions;
     private String formattedEstimatedDelivery;
 
-    public Quote(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, String payOut, BigDecimal rate, LocalDateTime createdTime, BigDecimal fee, Integer user, Integer profile, LocalDateTime rateExpirationTime, String providedAmountType, String status, LocalDateTime expirationTime, List<PaymentOption> paymentOptions) {
+    public Quote(UUID id, String sourceCurrency, String targetCurrency, BigDecimal sourceAmount, BigDecimal targetAmount, String payOut, BigDecimal rate, LocalDateTime createdTime, BigDecimal fee, Integer user, Integer profile, String rateType, LocalDateTime rateExpirationTime, String providedAmountType, String status, LocalDateTime expirationTime, List<QuoteNotice> notices, List<PaymentOption> paymentOptions) {
         this.id = id;
         this.sourceCurrency = sourceCurrency;
         this.targetCurrency = targetCurrency;
@@ -48,10 +46,12 @@ public class Quote {
         this.fee = fee;
         this.user = user;
         this.profile = profile;
+        this.rateType = rateType;
         this.rateExpirationTime = rateExpirationTime;
         this.providedAmountType = providedAmountType;
         this.status = status;
         this.expirationTime = expirationTime;
+        this.notices = notices;
         this.paymentOptions = paymentOptions;
     }
 
@@ -61,6 +61,7 @@ public class Quote {
 
     public Quote(final List<PaymentOption> paymentOptions) {
         this.paymentOptions = paymentOptions;
+        this.notices = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -105,6 +106,10 @@ public class Quote {
 
     public Integer getProfile() {
         return profile;
+    }
+
+    public String getRateType() {
+        return rateType;
     }
 
     public LocalDateTime getRateExpirationTime() {

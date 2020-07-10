@@ -1,11 +1,9 @@
 package com.transferwise.banks.demo.customer.persistence;
 
 import com.transferwise.banks.demo.client.params.Email;
+import com.transferwise.banks.demo.customer.persistence.address.AddressEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity(name = "customers")
@@ -23,15 +21,20 @@ class CustomerEntity {
     @Column(unique = true)
     private String email;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "addressId", referencedColumnName = "id")
+    private AddressEntity address;
+
     public CustomerEntity() {
     }
 
-    public CustomerEntity(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email) {
+    public CustomerEntity(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, AddressEntity address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.address = address;
     }
 
     public Email email() {
@@ -61,4 +64,6 @@ class CustomerEntity {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public AddressEntity getAddress() { return address; }
 }

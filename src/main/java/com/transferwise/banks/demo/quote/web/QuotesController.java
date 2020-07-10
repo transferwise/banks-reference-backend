@@ -4,11 +4,7 @@ import com.transferwise.banks.demo.quote.domain.CreateQuote;
 import com.transferwise.banks.demo.quote.domain.Quote;
 import com.transferwise.banks.demo.quote.domain.QuotesService;
 import org.reactivestreams.Publisher;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -48,7 +44,8 @@ public class QuotesController {
                 quote.getTargetAmount(),
                 quote.getRate(),
                 quote.getFee(),
-                quote.getFormattedEstimatedDelivery());
+                quote.getFormattedEstimatedDelivery(),
+                quote.getRateType(),
+                quote.getNotices());
     }
-
 }

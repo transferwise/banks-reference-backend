@@ -3,16 +3,14 @@ package com.transferwise.banks.demo.quote.twclient;
 import com.transferwise.banks.demo.client.params.ProfileId;
 import com.transferwise.banks.demo.client.params.TargetAccount;
 import com.transferwise.banks.demo.credentials.domain.TWUserTokens;
-import com.transferwise.banks.demo.quote.domain.CreateAnonymousQuote;
-import com.transferwise.banks.demo.quote.domain.CreateQuote;
-import com.transferwise.banks.demo.quote.domain.Quote;
-import com.transferwise.banks.demo.quote.domain.QuotesTWClient;
+import com.transferwise.banks.demo.quote.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import java.util.function.Function;
 
 import static com.transferwise.banks.demo.client.BodyRequests.forQuoteUpdate;
 import static com.transferwise.banks.demo.client.TransferWisePaths.QUOTES_PATH_V2;
@@ -32,7 +30,6 @@ class QuotesTWClientImpl implements QuotesTWClient {
         this.client = client;
     }
 
-
     @Override
     public Mono<Quote> createAnonymousQuote(final CreateAnonymousQuote createAnonymousQuote) {
         return client.post()
@@ -41,21 +38,7 @@ class QuotesTWClientImpl implements QuotesTWClient {
                 .body(fromObject(createAnonymousQuote))
                 .retrieve()
                 .bodyToMono(TWQuoteResponse.class)
-                .map(twQuoteResponse -> new Quote(twQuoteResponse.getId(), twQuoteResponse.getSourceCurrency(),
-                        twQuoteResponse.getTargetCurrency(),
-                        twQuoteResponse.getSourceAmount(),
-                        twQuoteResponse.getTargetAmount(),
-                        twQuoteResponse.getPayOut(),
-                        twQuoteResponse.getRate(),
-                        twQuoteResponse.getCreatedTime(),
-                        twQuoteResponse.getFee(),
-                        twQuoteResponse.getUser(),
-                        twQuoteResponse.getProfile(),
-                        twQuoteResponse.getRateExpirationTime(),
-                        twQuoteResponse.getProvidedAmountType(),
-                        twQuoteResponse.getStatus(),
-                        twQuoteResponse.getExpirationTime(),
-                        twQuoteResponse.getPaymentOptions()));
+                .map(twResponseToQuote);
     }
 
     @Override
@@ -67,22 +50,7 @@ class QuotesTWClientImpl implements QuotesTWClient {
                 .body(fromObject(createQuote))
                 .retrieve()
                 .bodyToMono(TWQuoteResponse.class)
-                .map(twQuoteResponse -> new Quote(twQuoteResponse.getId(), twQuoteResponse.getSourceCurrency(),
-                        twQuoteResponse.getTargetCurrency(),
-                        twQuoteResponse.getSourceAmount(),
-                        twQuoteResponse.getTargetAmount(),
-                        twQuoteResponse.getPayOut(),
-                        twQuoteResponse.getRate(),
-                        twQuoteResponse.getCreatedTime(),
-                        twQuoteResponse.getFee(),
-                        twQuoteResponse.getUser(),
-                        twQuoteResponse.getProfile(),
-                        twQuoteResponse.getRateExpirationTime(),
-                        twQuoteResponse.getProvidedAmountType(),
-                        twQuoteResponse.getStatus(),
-                        twQuoteResponse.getExpirationTime(),
-                        twQuoteResponse.getPaymentOptions()));
-
+                .map(twResponseToQuote);
     }
 
     @Override
@@ -94,22 +62,7 @@ class QuotesTWClientImpl implements QuotesTWClient {
                 .body(forQuoteUpdate(new ProfileId(profileId), new TargetAccount(recipientId)))
                 .retrieve()
                 .bodyToMono(TWQuoteResponse.class)
-                .map(twQuoteResponse -> new Quote(twQuoteResponse.getId(), twQuoteResponse.getSourceCurrency(),
-                        twQuoteResponse.getTargetCurrency(),
-                        twQuoteResponse.getSourceAmount(),
-                        twQuoteResponse.getTargetAmount(),
-                        twQuoteResponse.getPayOut(),
-                        twQuoteResponse.getRate(),
-                        twQuoteResponse.getCreatedTime(),
-                        twQuoteResponse.getFee(),
-                        twQuoteResponse.getUser(),
-                        twQuoteResponse.getProfile(),
-                        twQuoteResponse.getRateExpirationTime(),
-                        twQuoteResponse.getProvidedAmountType(),
-                        twQuoteResponse.getStatus(),
-                        twQuoteResponse.getExpirationTime(),
-                        twQuoteResponse.getPaymentOptions()));
-
+                .map(twResponseToQuote);
     }
 
     @Override
@@ -119,21 +72,27 @@ class QuotesTWClientImpl implements QuotesTWClient {
                 .header(AUTHORIZATION, twUserTokens.bearer())
                 .retrieve()
                 .bodyToMono(TWQuoteResponse.class)
-                .map(twQuoteResponse -> new Quote(twQuoteResponse.getId(), twQuoteResponse.getSourceCurrency(),
-                        twQuoteResponse.getTargetCurrency(),
-                        twQuoteResponse.getSourceAmount(),
-                        twQuoteResponse.getTargetAmount(),
-                        twQuoteResponse.getPayOut(),
-                        twQuoteResponse.getRate(),
-                        twQuoteResponse.getCreatedTime(),
-                        twQuoteResponse.getFee(),
-                        twQuoteResponse.getUser(),
-                        twQuoteResponse.getProfile(),
-                        twQuoteResponse.getRateExpirationTime(),
-                        twQuoteResponse.getProvidedAmountType(),
-                        twQuoteResponse.getStatus(),
-                        twQuoteResponse.getExpirationTime(),
-                        twQuoteResponse.getPaymentOptions()));
+                .map(twResponseToQuote);
     }
 
+    private final Function<TWQuoteResponse, Quote> twResponseToQuote =
+            twQuoteResponse ->
+                    new Quote(twQuoteResponse.getId(),
+                            twQuoteResponse.getSourceCurrency(),
+                            twQuoteResponse.getTargetCurrency(),
+                            twQuoteResponse.getSourceAmount(),
+                            twQuoteResponse.getTargetAmount(),
+                            twQuoteResponse.getPayOut(),
+                            twQuoteResponse.getRate(),
+                            twQuoteResponse.getCreatedTime(),
+                            twQuoteResponse.getFee(),
+                            twQuoteResponse.getUser(),
+                            twQuoteResponse.getProfile(),
+                            twQuoteResponse.getRateType(),
+                            twQuoteResponse.getRateExpirationTime(),
+                            twQuoteResponse.getProvidedAmountType(),
+                            twQuoteResponse.getStatus(),
+                            twQuoteResponse.getExpirationTime(),
+                            twQuoteResponse.getNotices(),
+                            twQuoteResponse.getPaymentOptions());
 }

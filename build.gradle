@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'org.springframework.boot' version '2.4.4'
     id 'java'
 }
 
@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.jetbrains:annotations:21.0.1'
+
     implementation 'org.springframework.boot:spring-boot-actuator'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'

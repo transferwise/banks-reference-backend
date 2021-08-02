@@ -1,12 +1,18 @@
+buildscript {
+    ext {
+        springBootVersion = '2.4.4'
+    }
+}
+
 plugins {
-    id 'org.springframework.boot' version '2.1.8.RELEASE'
+    id 'org.springframework.boot' version "${springBootVersion}"
     id 'java'
 }
 
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.transferwise.t4b'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -21,8 +27,16 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    implementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    runtimeOnly enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    testImplementation enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+    testAnnotationProcessor enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+
+
     implementation 'org.springframework.boot:spring-boot-actuator'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -37,6 +51,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.0.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.skyscreamer:jsonassert:1.5.0'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.2.2'
+    testImplementation 'com.squareup.okhttp3:mockwebserver'
     testImplementation 'com.h2database:h2'
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib'
 }
